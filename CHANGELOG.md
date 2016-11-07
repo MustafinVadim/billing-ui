@@ -8,6 +8,8 @@
 > - :house:     [Infrastructure]
 > - :nail_care: [Polish]
 
+### История изменений ведется в [релизах](https://github.com/skbkontur/billing-ui/releases)
+
 ## v1.21.1 (03.11.2016)
 ### :rocket: New Feature
 - Добавлена анимацию слайда справа
