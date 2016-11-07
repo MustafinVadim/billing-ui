@@ -19,7 +19,7 @@ class UtilityPanel extends PureComponent {
         );
 
         return (
-            <div className={utilityPanelClassNames}>
+            <div className={utilityPanelClassNames} data-ft-id="utility-panel">
                 <div className={styles.header}>
                     <div className={styles.close} onClick={this._handleCloseClick} data-ft-id="utility-panel-close">
                         <Icon type={IconTypes.ArrowChevronLeft} />

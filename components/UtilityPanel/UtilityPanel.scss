@@ -57,6 +57,8 @@ $horizontalIndent: 40px;
     }
 
     .body {
+        height: calc(100% - 55px);
         padding: 20px 30px;
+        box-sizing: border-box;
     }
 }
