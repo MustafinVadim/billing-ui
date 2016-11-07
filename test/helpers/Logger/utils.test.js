@@ -46,7 +46,7 @@ describe("Logger utils.js", () => {
         it("должен создать лог", () => {
             const logLevel = "logLevel";
             const result = createLog(logLevel, ["так быть не должно! Data: ", { hey: "hey!" }]);
-            expect(result).to.have.all.keys("level", "location", "stackTrace", "message", "timestamp");
+            expect(result).to.have.all.keys("level", "location", "stackTrace", "message", "dateTime");
         });
     });
 });
