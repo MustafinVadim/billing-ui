@@ -67,11 +67,13 @@ class DateSelect extends Component {
         }
     };
 
-    handleUp = () => {
+    handleUp = (evt) => {
+        evt.preventDefault();
         this.resetSize(this.state.pos - HEIGHT);
     };
 
-    handleDown = () => {
+    handleDown = (evt) => {
+        evt.preventDefault();
         this.resetSize(this.state.pos + HEIGHT);
     };
 
@@ -237,7 +239,7 @@ class DateSelect extends Component {
         return (
             <div className={holderClassNames} style={style} onKeyDown={this.handleKey} ref={(c) => { this._holder = c }}>
                 {!topCapped && (
-                    <div className={styles.up} onClick={this.handleUp} />
+                    <div className={styles.up} onMouseDown={this.handleUp} />
                 )}
                 <div className={styles.items} style={{height}}>
                     <div style={shiftStyle}>{items}</div>
@@ -249,7 +251,7 @@ class DateSelect extends Component {
                     />
                 </div>
                 {!botCapped && (
-                    <div className={styles.down} onClick={this.handleDown} />
+                    <div className={styles.down} onMouseDown={this.handleDown} />
                 )}
             </div>
         );
