@@ -1,10 +1,10 @@
 import GoogleAnalytics from "./../GoogleAnalytics";
 
 const analyticsMiddleware = (store) => (dispatch) => (action) => {
-    const { meta: { ga } = {}} = action;
+    const { meta } = action;
 
-    if (ga) {
-        const { category, action, label } = ga;
+    if (meta && meta.ga) {
+        const { category, action, label } = meta.ga;
         GoogleAnalytics.triggerEventAsync(category, action, label);
     }
 
