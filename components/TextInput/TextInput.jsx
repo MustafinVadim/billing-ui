@@ -27,6 +27,15 @@ class TextInput extends PureComponent {
         }
     };
 
+    _handleOnInput = (evt) => {
+        if (typeof this.props.onInput === "function") {
+            const value = evt.target.value;
+            this.props.onInput(value, evt, {
+                validationResult: validate(value, this.props.validateFunction)
+            });
+        }
+    };
+
     _handleOnFocus = (evt) => {
         if (typeof this.props.onFocus === "function") {
             const value = evt.target.value;
@@ -37,9 +46,10 @@ class TextInput extends PureComponent {
     };
 
     _handleOnBlur = (evt) => {
-        if (typeof this.props.onBlur === "function") {
-            const value = evt.target.value;
-            this.props.onBlur(evt, {
+        const { onBlur, value }  = this.props;
+
+        if (typeof onBlur === "function") {
+            onBlur(evt, {
                 validationResult: validate(value, this.props.validateFunction)
             });
         }
@@ -88,6 +98,7 @@ class TextInput extends PureComponent {
             type: "text",
             className: inputClassNames,
             onChange: this._handleOnChange,
+            onInput: this._handleOnInput,
             onFocus: this._handleOnFocus,
             onBlur: this._handleOnBlur
         };
@@ -103,8 +114,8 @@ class TextInput extends PureComponent {
 
                 {!isTextArea && mask && (
                     <MaskedInput {...inputProps} mask={mask}
-                        maskChar={maskChar || "_"}
-                        alwaysShowMask={alwaysShowMask} />
+                                 maskChar={maskChar || "_"}
+                                 alwaysShowMask={alwaysShowMask} />
                 )}
 
                 {!isTextArea && !mask && (
@@ -128,6 +139,7 @@ class TextInput extends PureComponent {
 
 TextInput.propTypes = {
     onChange: PropTypes.func,
+    onInput: PropTypes.func,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
     onKeyDown: PropTypes.func,
