@@ -6,6 +6,7 @@ import Button, { ButtonType } from "../Button";
 import styles from "./ActionsBar.scss";
 
 const ActionsBar = ({
+    showSubmit,
     showCancel,
     barClassName, submitClassName, cancelClassName,
     submitText, cancelText,
@@ -15,13 +16,15 @@ const ActionsBar = ({
     children
 }) => (
     <div className={cx(styles.actionsBar, barClassName)}>
-        <Button type={ButtonType.button}
-                onClick={onSubmitClick}
-                disabled={submitDisabled}
-                className={cx(styles.actionSubmit, submitClassName, {[styles.disabled]: submitDisabled})}
-                attributes={submitAttributes} >
-            {submitText}
-        </Button>
+        {showSubmit && (
+            <Button type={ButtonType.button}
+                    onClick={onSubmitClick}
+                    disabled={submitDisabled}
+                    className={cx(styles.actionSubmit, submitClassName, {[styles.disabled]: submitDisabled})}
+                    attributes={submitAttributes} >
+                {submitText}
+            </Button>
+        )}
         {showCancel && (
             <button type="button"
                     onClick={() => { if (!cancelDisabled) onCancelClick() }}
@@ -35,6 +38,7 @@ const ActionsBar = ({
 );
 
 ActionsBar.propTypes = {
+    showSubmit: PropTypes.bool.isRequired,
     showCancel: PropTypes.bool.isRequired,
 
     submitAttributes: PropTypes.object,
@@ -57,6 +61,7 @@ ActionsBar.propTypes = {
 };
 
 ActionsBar.defaultProps = {
+    showSubmit: true,
     showCancel: true,
 
     submitDisabled: false,
