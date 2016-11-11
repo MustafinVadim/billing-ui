@@ -11,7 +11,7 @@
     "stylelint": "stylelint ./**/*.scss --color --syntax scss",
     "stylefmt": "stylefmt --recursive ./styles & stylefmt --recursive ./components",
     "comb": "gulp sass:comb",
-    "preversion": "npm test",
+    "preversion": "npm run eslint && npm run stylelint && npm test",
     "postversion": "git push && git push --tags"
   },
   "repository": {

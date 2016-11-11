@@ -46,7 +46,7 @@ class TextInput extends PureComponent {
     };
 
     _handleOnBlur = (evt) => {
-        const { onBlur, value }  = this.props;
+        const { onBlur, value } = this.props;
 
         if (typeof onBlur === "function") {
             onBlur(evt, {

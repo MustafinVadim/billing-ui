@@ -202,7 +202,8 @@ Tooltip.propTypes = {
     offsetPosition: PropTypes.object,
     className: PropTypes.string,
     wrapper: PropTypes.node,
-    type: PropTypes.oneOf(Object.keys(TooltipType).map((key) => TooltipType[key]))
+    type: PropTypes.oneOf(Object.keys(TooltipType).map((key) => TooltipType[key])),
+    children: PropTypes.node
 };
 
 Tooltip.defaultProps = {

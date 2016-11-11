@@ -19,7 +19,8 @@ class ArrowFrameLink extends PureComponent {
 
 ArrowFrameLink.propTypes = {
     closeUrl: PropTypes.string.isRequired,
-    backText: PropTypes.string
+    backText: PropTypes.string,
+    styles: PropTypes.object
 };
 
 export default ArrowFrameLink;

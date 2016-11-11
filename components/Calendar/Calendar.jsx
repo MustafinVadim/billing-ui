@@ -167,8 +167,7 @@ class Calendar extends Component {
 
             const mouseX = this.state.mouseX;
             const mouseY = this.state.mouseY;
-            const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y +
-                DAY_HEIGHT > mouseY;
+            const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y + DAY_HEIGHT > mouseY;
 
             const cellClassNames = cx(styles.cell, {
                 [styles.active]: active,
