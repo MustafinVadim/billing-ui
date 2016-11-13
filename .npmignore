@@ -13,3 +13,4 @@
 .yarnrc
 yarn.lock
 /docs/*
+gh-pages-deploy-key.enc
