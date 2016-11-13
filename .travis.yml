@@ -4,6 +4,11 @@ node_js:
 - '5'
 script:
 - npm run test:ci
+after_success:
+- cd ./docs
+- npm i
+- npm run deploy-storybook
+- cd ..
 deploy:
   provider: npm
   email: vansosnin@gmail.com
