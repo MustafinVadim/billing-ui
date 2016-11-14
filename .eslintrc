@@ -13,7 +13,7 @@
     },
     "rules": {
         // global
-        "linebreak-style": [1, "windows"],
+//        "linebreak-style": [1, "windows"], // отключено потому что travis
         "eqeqeq": [2, "allow-null"],
         "no-cond-assign": 2,
         "constructor-super": 2,

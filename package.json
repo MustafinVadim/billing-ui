@@ -4,9 +4,8 @@
   "description": "KonturBilling UI components",
   "scripts": {
     "precommit": "npm run comb",
-    "test:ci": "npm run eslint:ci && npm run stylelint && npm test -- --reporter min",
+    "test:ci": "npm run eslint && npm run stylelint && npm test -- --reporter min",
     "test": "mocha ./test/**/*.test.js",
-    "eslint:ci": "eslint --config ./.ci-eslintrc ./**/**.js && eslint ./**/**.jsx",
     "eslint": "eslint ./**/**.js --cache && eslint ./**/**.jsx --cache",
     "stylelint": "stylelint ./**/*.scss --color --syntax scss",
     "stylefmt": "stylefmt --recursive ./styles & stylefmt --recursive ./components",
