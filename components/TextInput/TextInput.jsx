@@ -98,7 +98,7 @@ class TextInput extends PureComponent {
         const hasTooltip = ((tooltipType !== TooltipTypes.validation || isInvalid)) && tooltipCaption != null;
 
         return (
-            <div>
+            <div data-ft-id={`${inputProps["data-ft-id"]}-wrapper`}>
                 {isTextArea && (
                     <textarea {...inputProps} />
                 )}

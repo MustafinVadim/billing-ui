@@ -187,7 +187,7 @@ class Tooltip extends PureComponent {
         });
 
         return (
-            <div className={tooltipClassNames} ref={(el) => el && (this._tooltip = el)}>
+            <div className={tooltipClassNames} ref={(el) => el && (this._tooltip = el)} data-ft-id={`${type}-tooltip`}>
                 {children}
             </div>
         )
