@@ -1,1 +1,1 @@
-export default from "./UtilityPanelWrapper";
+export { default as default } from "./UtilityPanelWrapper";
