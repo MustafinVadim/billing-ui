@@ -14,8 +14,10 @@ export const httpMethod = {
     head: "head"
 };
 
-export function* fetchData({ url, data = null, onBegin = () => {}, onSuccess, onError = () => {}, requestMethod = httpMethod.post }) {
-    yield put(onBegin());
+export function* fetchData({ url, data = null, onBegin = null, onSuccess, onError = null, requestMethod = httpMethod.post }) {
+    if (onBegin) {
+        yield put(onBegin());
+    }
 
     try {
         const params = requestMethod === httpMethod.get ? { params: data } : data;
@@ -24,6 +26,8 @@ export function* fetchData({ url, data = null, onBegin = () => {}, onSuccess, on
         yield put(onSuccess(response.data));
     } catch (e) {
         Informer.showError(e.message);
-        yield put(onError(e));
+        if (onError) {
+            yield put(onError(e));
+        }
     }
 }
