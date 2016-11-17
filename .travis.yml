@@ -10,7 +10,7 @@ after_success:
 - ssh-add gh-pages-deploy-key
 - cd ./docs
 - npm i
-- npm run deploy-storybook
+- ./deploy.sh
 - cd ..
 deploy:
   provider: npm
