@@ -8,6 +8,10 @@ import textInputStyles from "./DefaultTextInput.scss";
 import classnames from "classnames";
 
 class DefaultTextInput extends PureComponent {
+    handlePlaceholderClick = () => {
+        this.input.focus();
+    };
+
     handleChange = (value, evt, data) => {
         const { onChange } = this.props;
 
@@ -34,9 +38,7 @@ class DefaultTextInput extends PureComponent {
 
         return (
             <span className={wrapperClassNames}>
-                <span className={placeholderWrapperClassNames} onClick={() => {
-                    this.input.focus()
-                }}>
+                <span className={placeholderWrapperClassNames} onClick={this.handlePlaceholderClick} onContextMenu={this.handlePlaceholderClick}>
                     <span className={placeholderClassNames}>{placeholder}</span>
                 </span>
                 <Input {...inputProps}

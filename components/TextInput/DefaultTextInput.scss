@@ -1,6 +1,7 @@
 ﻿@import "../../styles/variables";
 @import "../../styles/placeholders";
 @import "../../styles/materialdesign";
+@import "../../styles/bourbon";
 
 :local {
     .wrapper {
@@ -29,13 +30,13 @@
     }
 
     .placeholder-wrapper {
-        position: absolute;
-        top: 0;
-        left: 0;
+        @include position(absolute, 0 null null 0);
 
         padding: 0 4px;
 
         line-height: 30px;
+
+        pointer-events: none;
 
         &.as-hidden {
             display: none;
