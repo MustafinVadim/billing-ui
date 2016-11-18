@@ -261,6 +261,10 @@ class Autocomplete extends PureComponent {
         delete inputProps.onSelect;
         delete inputProps.defaultValue;
         delete inputProps.autocompleteWrapperClassName;
+        delete inputProps.shouldBeEmpty;
+        delete inputProps.optionItemClassName;
+        delete inputProps.menuWidth;
+        delete inputProps.optionClassName;
         delete inputProps.valueCreator;
 
         return (
