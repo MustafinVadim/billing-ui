@@ -44,9 +44,7 @@
     }
 
     .highlight {
-        background: transparent;
-
-        font-weight: bold;
+        background: $bgAutocompleteHighlightColor;
     }
 
     .description {
@@ -58,6 +56,6 @@
     }
 
     .empty {
-        padding: 10px 20px;
+        padding: 12px 20px 8px;
     }
 }

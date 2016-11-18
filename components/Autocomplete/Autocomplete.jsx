@@ -194,22 +194,27 @@ class Autocomplete extends PureComponent {
     }
 
     renderOption(optionData, index) {
-        const { renderItem } = this.props;
+        const { renderItem, optionItemClassName, optionClassName } = this.props;
         const { Text, Description } = optionData;
         const rootClass = cx({
             [styles.item]: true,
-            [styles.active]: this.state.selected === index
+            [styles.active]: this.state.selected === index,
+            [optionItemClassName]: optionItemClassName
         });
+        const optionClass = cx(
+            styles.option,
+            optionClassName
+        );
 
         return (
             <div key={index} className={rootClass}
-                onMouseDown={(e) => this.handleItemClick(e, index)}
-                onMouseEnter={(e) => this.setState({ selected: index })}
-                onMouseLeave={(e) => this.setState({ selected: -1 })}>
+                 onMouseDown={(e) => this.handleItemClick(e, index)}
+                 onMouseEnter={(e) => this.setState({ selected: index })}
+                 onMouseLeave={(e) => this.setState({ selected: -1 })}>
                 {renderItem
                     ? renderItem(optionData)
                     : (<div>
-                        <div className={styles.option}>
+                        <div className={optionClass}>
                             <Highlighter textToHighlight={Text} searchWords={[this.state.value]} highlightClassName={styles.highlight} />
                         </div>
                         <div className={styles.description}>
@@ -222,6 +227,8 @@ class Autocomplete extends PureComponent {
     }
 
     renderOptionsList() {
+        const { menuWidth } = this.props;
+
         if (!this.state.opened || !this.state.value) {
             return null;
         }
@@ -230,7 +237,7 @@ class Autocomplete extends PureComponent {
 
         return (
             <div className={styles.menuHolder}>
-                <div className={styles.menu}>
+                <div className={styles.menu} style={{width: menuWidth}}>
                     {options.length === 0
                         ? <div className={styles.empty}>ничего не найдено</div>
                         : options
@@ -258,7 +265,7 @@ class Autocomplete extends PureComponent {
 
         return (
             <span className={cx(styles.root, this.props.autocompleteWrapperClassName)}>
-                <TextInput {...inputProps}/>
+                <TextInput {...inputProps} />
                 {this.renderOptionsList()}
             </span>
         );
@@ -274,6 +281,10 @@ Autocomplete.propTypes = {
     ]),
 
     renderItem: PropTypes.func,
+    menuWidth: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
 
     onKeyDown: PropTypes.func,
     onBlur: PropTypes.func,
@@ -283,9 +294,12 @@ Autocomplete.propTypes = {
 
     shouldBeEmpty: PropTypes.bool,
     url: PropTypes.string.isRequired,
-    autocompleteWrapperClassName: PropTypes.string,
     requestData: PropTypes.object,
-    valueCreator: PropTypes.func
+    valueCreator: PropTypes.func,
+
+    autocompleteWrapperClassName: PropTypes.string,
+    optionItemClassName: PropTypes.string,
+    optionClassName: PropTypes.string
 };
 
 Autocomplete.defaultProps = {
