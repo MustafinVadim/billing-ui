@@ -152,10 +152,10 @@ class Autocomplete extends PureComponent {
     }
 
     choose(index) {
-        const { onChange } = this.props;
+        const { onChange, shouldBeEmpty } = this.props;
         const value = this._valueCreator(this.state.searchResult[index]);
 
-        if (!this.props.value) {
+        if (!this.props.value && !shouldBeEmpty) {
             this.setState({
                 value: value
             });
@@ -272,12 +272,16 @@ Autocomplete.propTypes = {
         PropTypes.array,
         PropTypes.func
     ]),
+
     renderItem: PropTypes.func,
+
     onKeyDown: PropTypes.func,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
     onSelect: PropTypes.func,
     onChange: PropTypes.func,
+
+    shouldBeEmpty: PropTypes.bool,
     url: PropTypes.string.isRequired,
     autocompleteWrapperClassName: PropTypes.string,
     requestData: PropTypes.object,
@@ -287,6 +291,7 @@ Autocomplete.propTypes = {
 Autocomplete.defaultProps = {
     requestData: {},
     defaultValue: "",
+    shouldBeEmpty: false,
     valueCreator: (searchItem) => searchItem.Text
 };
 
