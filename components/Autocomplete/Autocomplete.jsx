@@ -129,10 +129,16 @@ class Autocomplete extends PureComponent {
         this.search(pattern)
             .then((newSearchResult) => {
                 if (this.state.value === value) {
+                    let selected = -1;
+
+                    if (newSearchResult.length === 1) {
+                        selected = 0;
+                    }
+
                     this.setState({
                         searchResult: updateImmutableArrayByKey(this.state.searchResult, newSearchResult, "Value"),
                         opened: true,
-                        selected: -1
+                        selected
                     });
                 }
             });
