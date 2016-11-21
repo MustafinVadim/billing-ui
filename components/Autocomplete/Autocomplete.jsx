@@ -201,7 +201,7 @@ class Autocomplete extends PureComponent {
 
     renderOption(optionData, index) {
         const { renderItem, optionItemClassName, optionClassName } = this.props;
-        const { Text, Description } = optionData;
+        const { Text, Description, Addition } = optionData;
         const rootClass = cx({
             [styles.item]: true,
             [styles.active]: this.state.selected === index,
@@ -220,6 +220,9 @@ class Autocomplete extends PureComponent {
                 {renderItem
                     ? renderItem(optionData)
                     : (<div>
+                        <div className={styles.addition}>
+                            {Addition}
+                        </div>
                         <div className={optionClass}>
                             <Highlighter textToHighlight={Text} searchWords={[this.state.value]} highlightClassName={styles.highlight} />
                         </div>

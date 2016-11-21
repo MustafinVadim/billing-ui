@@ -28,6 +28,8 @@
     .item {
         padding: 10px 3px;
 
+        overflow: hidden;
+
         cursor: pointer;
 
         &.active {
@@ -52,6 +54,14 @@
 
     .highlight {
         background: $bgAutocompleteHighlightColor;
+    }
+
+    .addition {
+        float: right;
+        margin-right: -15px;
+
+        color: $textSecondaryColor;
+        line-height: $lineHeightRegular;
     }
 
     .description {
