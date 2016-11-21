@@ -13,7 +13,7 @@ class RadioGroup extends Component {
                 key: radio.props.value,
                 checked: value === radio.props.value,
                 onChange: (evt) => {
-                    onChange(evt.target.value);
+                    onChange(evt.target.value, evt);
                 }
             })
         });
