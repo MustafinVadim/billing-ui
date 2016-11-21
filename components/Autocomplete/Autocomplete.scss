@@ -45,7 +45,6 @@
         white-space: nowrap;
         text-overflow: clip;
 
-        :local(.item):hover &:before,
         :local(.item.active) &:before {
             background-image: linear-gradient(to right, rgba(245, 245, 245, .2), rgb(245, 245, 245) 75%);
         }
