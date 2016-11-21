@@ -180,7 +180,7 @@ class Autocomplete extends PureComponent {
         const optionData = this.state.searchResult[index];
 
         if (optionData && onSelect) {
-            return onSelect(optionData.Value, optionData.Text);
+            return onSelect(optionData.Value, optionData.Text, optionData.Data);
         }
     }
 
