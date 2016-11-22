@@ -213,7 +213,9 @@ class Autocomplete extends PureComponent {
         );
 
         return (
-            <div key={index} className={rootClass}
+            <div key={index}
+                 className={rootClass}
+                 data-ft-id={`autocomplete-item-${index}`}
                  onMouseDown={(e) => this.handleItemClick(e, index)}
                  onMouseEnter={(e) => this.setState({ selected: index })}
                  onMouseLeave={(e) => this.setState({ selected: -1 })}>
@@ -246,7 +248,7 @@ class Autocomplete extends PureComponent {
 
         return (
             <div className={styles.menuHolder}>
-                <div className={styles.menu} style={{width: menuWidth}}>
+                <div className={styles.menu} style={{ width: menuWidth }} data-ft-id="autocomplete-menu">
                     {options.length === 0
                         ? <div className={styles.empty}>ничего не найдено</div>
                         : options
