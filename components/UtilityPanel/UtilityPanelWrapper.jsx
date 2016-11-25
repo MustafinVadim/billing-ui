@@ -1,8 +1,9 @@
 import { PureComponent, PropTypes } from "react";
-import Portal from "react-portal";
 import ReactDOM from "react-dom";
 import cx from "classnames";
+
 import UtilityPanel from "./UtilityPanel";
+import Portal from "../Portal";
 
 import styles from "./UtilityPanelWrapper.scss";
 import utilityPanelStyles from "./UtilityPanel.scss";

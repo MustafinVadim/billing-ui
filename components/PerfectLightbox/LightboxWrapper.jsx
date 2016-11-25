@@ -1,8 +1,8 @@
 import { PureComponent, PropTypes } from "react";
 import ReactDOM from "react-dom";
-import Portal from "react-portal";
 import cx from "classnames";
 
+import Portal from "../Portal";
 import Lightbox from "./Lightbox";
 import positionTypes from "./LightboxPositionType";
 import styles from "./LightboxWrapper.scss";
