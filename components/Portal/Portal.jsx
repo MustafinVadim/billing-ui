@@ -167,14 +167,11 @@ Portal.propTypes = {
     onOpen: React.PropTypes.func,
     onClose: React.PropTypes.func,
     beforeClose: React.PropTypes.func,
-    onUpdate: React.PropTypes.func,
+    onUpdate: React.PropTypes.func
 };
 
 Portal.defaultProps = {
-    onOpen: () => {
-    },
-    onClose: () => {
-    },
-    onUpdate: () => {
-    },
+    onOpen: () => {},
+    onClose: () => {},
+    onUpdate: () => {}
 };
