@@ -16,7 +16,7 @@ class ServerTransport {
         this._isSending = false;
         this._wasDisabled = false;
 
-        this._debouncedSendLogs = throttle(this._sendLogs, this._config.logInterval, { leading: false });
+        this._debouncedSendLogs = throttle(this._sendLogs, this._config.logInterval);
         this._attachEvents();
     }
 
