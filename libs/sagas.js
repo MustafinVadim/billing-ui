@@ -1,5 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import axios from "./axios";
+import Logger, { generateAjaxErrorMessage } from "../helpers/Logger";
 import Informer from "Informer";
 
 export const httpMethod = {
@@ -26,6 +27,7 @@ export function* fetchData({ url, data = null, onBegin = null, onSuccess, onErro
         yield put(onSuccess(response.data));
     } catch (e) {
         Informer.showError(e.message);
+        Logger.error(generateAjaxErrorMessage({url, requestMethod, data, errorMessage: e.message}));
         if (onError) {
             yield put(onError(e));
         }
