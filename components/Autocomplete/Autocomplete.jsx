@@ -220,7 +220,7 @@ class Autocomplete extends PureComponent {
                  onMouseEnter={(e) => this.setState({ selected: index })}
                  onMouseLeave={(e) => this.setState({ selected: -1 })}>
                 {renderItem
-                    ? renderItem(optionData)
+                    ? renderItem(optionData, this.state.value)
                     : (<div>
                         <div className={styles["additional-info"]}>
                             {AdditionalInfo}
