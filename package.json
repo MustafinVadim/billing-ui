@@ -3,15 +3,16 @@
   "version": "1.27.0",
   "description": "KonturBilling UI components",
   "scripts": {
-    "precommit": "npm run comb",
+    "precommit": "yarn comb",
     "test:ci": "npm run eslint && npm run stylelint && npm test -- --reporter min",
     "test": "mocha ./test/**/*.test.js",
     "eslint": "eslint ./**/**.js --cache && eslint ./**/**.jsx --cache",
     "stylelint": "stylelint ./**/*.scss --color --syntax scss",
     "stylefmt": "stylefmt --recursive ./styles & stylefmt --recursive ./components",
     "comb": "gulp sass:comb",
-    "preversion": "npm run eslint && npm run stylelint && npm test",
-    "postversion": "git push && git push --tags"
+    "preversion": "yarn eslint && yarn stylelint && yarn test",
+    "postversion": "git push && git push --tags",
+    "storybook": "cd ./docs && yarn && yarn storybook && cd .."
   },
   "repository": {
     "type": "git",
