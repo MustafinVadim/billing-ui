@@ -4,7 +4,7 @@ import { CheckboxWrapper } from "./CheckboxWrapper";
 
 storiesOf("Checkbox", module)
     .add("main", () => (
-        <CheckboxWrapper checked={boolean("checked", true)}
+        <CheckboxWrapper checked={boolean("checked", false)}
                          disabled={boolean("disabled", false)}
                          readonly={boolean("readonly", false)}
                          onChange={action("changed")}
