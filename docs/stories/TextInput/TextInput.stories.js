@@ -1,6 +1,7 @@
 import React from "react";
 import { storiesOf, action } from "@kadira/storybook";
-import { text, boolean, number } from "@kadira/storybook-addon-knobs";
+import { text, boolean, number, select } from "@kadira/storybook-addon-knobs";
+import { TextInputType } from "../../../components/TextInput";
 
 import "./../../src/css/icon-fonts.scss";
 import { TextInputWrapper } from "./TextInputWrapper";
@@ -14,6 +15,6 @@ storiesOf("TextInput", module)
                           readonly={boolean("readonly", false)}
                           width={number("width", 400)}
                           height={number("height", undefined)}
-                          type={text("type", "default")}
+                          type={select("type", Object.keys(TextInputType), "default")}
         />
     ));
