@@ -58,6 +58,12 @@ class CompactTextInput extends PureComponent {
         const labelClassNames = classnames(styles.label, labelClassName, {
             [styles.filled]: value || this.state.isFocused
         });
+        const highlightClassNames = classnames(
+            styles.highlight,
+            {
+                [styles["is-regular"]]: this.state.isFocused
+            }
+        );
 
         return (
             <div className={wrapperClassNames}>
@@ -75,7 +81,7 @@ class CompactTextInput extends PureComponent {
                         this.input = inputNode && (inputNode.getElementsByTagName("input")[0] || inputNode.getElementsByTagName("textarea")[0]);
                     }}
                 />
-                <span className={styles.highlight} />
+                <span className={highlightClassNames} />
                 <span className={labelClassNames} onClick={this.handleOnClickLabel}>{placeholder}</span>
                 {(clearable && value) && <Clear className={styles.clear} onClick={this.handleClearClick} />}
             </div>

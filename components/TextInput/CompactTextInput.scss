@@ -40,18 +40,6 @@
             & ~ .label {
                 @extend %filled-text;
             }
-
-            & ~ .highlight {
-                :global {
-                    animation: inputHighlighter .3s ease;
-                }
-            }
-
-            &.input-validation-error ~ .highlight {
-                :global {
-                    animation-name: inputErrorHighlighter;
-                }
-            }
         }
 
         &[readonly],
@@ -63,12 +51,6 @@
 
                 &.filled {
                     @extend %filled-text;
-                }
-            }
-
-            & ~ .highlight {
-                :global {
-                    animation: none;
                 }
             }
         }
@@ -113,6 +95,18 @@
         opacity: .5;
 
         pointer-events: none;
+
+        &.is-regular {
+            :global {
+                animation: inputHighlighter .3s ease;
+            }
+        }
+
+        &.is-error {
+            :global {
+                animation-name: inputErrorHighlighter;
+            }
+        }/* todo: fix */
     }
 
     .clear {
