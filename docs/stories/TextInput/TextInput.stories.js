@@ -15,6 +15,6 @@ storiesOf("TextInput", module)
                           readonly={boolean("readonly", false)}
                           width={number("width", 400)}
                           height={number("height", undefined)}
-                          type={select("type", Object.keys(TextInputType), "default")}
+                          type={select("type", Object.keys(TextInputType), TextInputType.compact)}
         />
     ));
