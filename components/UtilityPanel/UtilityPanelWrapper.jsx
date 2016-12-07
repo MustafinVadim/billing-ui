@@ -21,7 +21,7 @@ class UtilityPanelWrapper extends PureComponent {
     };
 
     render() {
-        const { title, panelClassName, children, overlayClassName, headerContent } = this.props;
+        const { title, wrapperClassName, bodyClassName, children, overlayClassName, headerContent } = this.props;
 
         const portalClassNames = cx(
             styles.overlay,
@@ -35,7 +35,7 @@ class UtilityPanelWrapper extends PureComponent {
 
         delete portalProps.children;
         delete portalProps.overlayClassName;
-        delete portalProps.panelClassName;
+        delete portalProps.wrapperClassName;
         delete portalProps.title;
 
         return (
@@ -43,7 +43,8 @@ class UtilityPanelWrapper extends PureComponent {
                 <UtilityPanel
                     title={title}
                     headerContent={headerContent}
-                    className={panelClassName}
+                    wrapperClassName={wrapperClassName}
+                    bodyClassName={bodyClassName}
                     ref={(el) => {
                         this._utilityPanel = ReactDOM.findDOMNode(el)
                     }}>
@@ -65,7 +66,8 @@ UtilityPanelWrapper.propTypes = {
     onClose: PropTypes.func,
 
     overlayClassName: PropTypes.string,
-    panelClassName: PropTypes.string,
+    wrapperClassName: PropTypes.string,
+    bodyClassName: PropTypes.string,
     title: PropTypes.string,
     headerContent: PropTypes.node
 };

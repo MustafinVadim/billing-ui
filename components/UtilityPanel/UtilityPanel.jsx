@@ -11,15 +11,20 @@ class UtilityPanel extends PureComponent {
     };
 
     render() {
-        const { title, children, className, canGoBack, headerContent } = this.props;
+        const { title, children, canGoBack, headerContent, wrapperClassName, bodyClassName } = this.props;
 
-        const utilityPanelClassNames = cx(
-            styles.container,
-            className
+        const wrapperClassNames = cx(
+            styles.wrapper,
+            wrapperClassName
+        );
+
+        const bodyClassNames = cx(
+            styles.body,
+            bodyClassName
         );
 
         return (
-            <div className={utilityPanelClassNames} data-ft-id="utility-panel">
+            <div className={wrapperClassNames} data-ft-id="utility-panel">
                 <div className={styles.header}>
                     {canGoBack && (
                         <div className={styles.close} onClick={this._handleCloseClick} data-ft-id="utility-panel-close">
@@ -29,7 +34,7 @@ class UtilityPanel extends PureComponent {
                     <span data-ft-id="utility-panel-title">{title}</span>
                     {headerContent}
                 </div>
-                <div className={styles.body}>
+                <div className={bodyClassNames}>
                     {children}
                 </div>
             </div>
@@ -41,10 +46,14 @@ UtilityPanel.propTypes = {
     title: PropTypes.string,
     canGoBack: PropTypes.bool,
     headerContent: PropTypes.node,
+
     children: PropTypes.node,
+
     closeClick: PropTypes.func,
     closePortal: PropTypes.func, // передаётся сюда из Portal,
-    className: PropTypes.string
+
+    wrapperClassName: PropTypes.string,
+    bodyClassName: PropTypes.string
 };
 
 UtilityPanel.defaultProps = {

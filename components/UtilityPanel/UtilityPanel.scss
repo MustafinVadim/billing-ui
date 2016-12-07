@@ -5,7 +5,7 @@ $verticalIndent: 17px;
 $horizontalIndent: 30px;
 
 :local {
-    .container {
+    .wrapper {
         @include position(fixed, 0 null 0 0);
 
         width: 510px;
