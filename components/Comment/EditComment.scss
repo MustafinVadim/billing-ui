@@ -1,0 +1,62 @@
+﻿@import "../../styles/bourbon";
+@import "../../styles/variables";
+@import "../../styles/placeholders";
+
+:local {
+    .wrapper {
+        margin: -4px 0 0 18px;
+    }
+
+    .textarea {
+        width: 100%;
+        padding: 0;
+
+        overflow: hidden;
+
+        font-size: $fontSizeBig;
+    }
+
+    .input {
+        border-bottom: none !important;
+        outline: none;
+
+        line-height: $lineHeightRegular;
+
+        resize: none;
+
+        &:focus {
+            border-bottom: none !important;
+            outline: none;
+        }
+    }
+
+    .controls {
+        @extend %as-clearfix;
+
+        margin-top: 18px;
+        margin-left: 4px;
+    }
+
+    .button {
+        @extend %as-link;
+
+        float: left;
+        margin-right: 20px;
+    }
+
+    .save {
+        margin-right: 10px;
+
+        font-weight: bold;
+
+        &.disabled {
+            color: $textDisabledColor;
+
+            cursor: default;
+        }
+    }
+
+    .delete {
+        float: right;
+    }
+}

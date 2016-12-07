@@ -1,0 +1,52 @@
+﻿@import "../../styles/bourbon";
+@import "../../styles/variables";
+@import "../../styles/placeholders";
+
+:local {
+    .wrapper {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .text {
+        margin-left: 22px;
+
+        overflow: hidden;
+
+        transition: height $transitionBaseTime ease-out;
+
+        font-size: $fontSizeBig;
+        line-height: $lineHeightRegular;
+
+        &.overflow {
+            position: relative;
+
+            margin-bottom: 5px;
+        }
+
+        &.collapsed:after {
+            @include position(absolute, null null 0 0);
+
+            content: "";
+
+            width: 100%;
+            height: 20px;
+
+            background: linear-gradient(to top, $bgWhiteColor, rgba(255, 255, 255, .1));
+        }
+    }
+
+    .toggle {
+        margin-left: 20px;
+
+        font-weight: bold;
+    }
+
+    :global(.global_comment:hover) .text.collapsed:after {
+        background: linear-gradient(to top, $bgElementActiveLightColor, rgba(245, 245, 245, .1));
+    }
+
+    :global(.global_comment:hover) .text.collapsed ~ .toggle {
+        color: $linkActiveColor;
+    }
+}
