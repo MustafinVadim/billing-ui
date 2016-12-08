@@ -69,20 +69,16 @@ const Validation = {
         };
     },
 
-    StringMinLength: (length, error = "Нужно больше символов") => (value) => {
-        const MIN_LENGTH_REGEXP = new RegExp(`^[\\s\\S]{${length},}$`);
-
+    StringMinLength: (minLength, error = "Нужно больше символов") => (value) => {
         return {
-            isValid: MIN_LENGTH_REGEXP.test(value),
+            isValid: !value || value.length >= minLength,
             error
         };
     },
 
-    StringMaxLength: (length, error = "Превышена максимальная длина строки") => (value) => {
-        const MAX_LENGTH_REGEXP = new RegExp(`^[\\s\\S]{0,${length}}$`);
-
+    StringMaxLength: (maxLength, error = "Превышена максимальная длина строки") => (value) => {
         return {
-            isValid: MAX_LENGTH_REGEXP.test(value),
+            isValid: !value || value.trim().length <= maxLength,
             error
         };
     },
