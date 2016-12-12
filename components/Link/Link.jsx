@@ -25,7 +25,7 @@ class Link extends PureComponent {
         }
 
         return (
-            <span { ...tagProps } className={linkClassNames}>{children}</span>
+            <button type="button" { ...tagProps } className={linkClassNames}>{children}</button>
         );
     }
 }

@@ -42,7 +42,7 @@ class Button extends Component {
             return <button onClick={this._resolveOnClick} className={classNames} type={type} { ...attributes }>{children}</button>;
         }
 
-        return <span onClick={this._resolveOnClick} className={classNames} { ...attributes }>{children}</span>;
+        return <button type="button" onClick={this._resolveOnClick} className={classNames} { ...attributes }>{children}</button>;
     }
 }
 
