@@ -99,7 +99,7 @@ class Comment extends PureComponent {
 
         return (
             <div className={wrapperClassNames}>
-                <div className={commentClassNames} onClick={this._handleClick}>
+                <div className={commentClassNames} onClick={this._handleClick} data-ft-id="comment">
                     <Icon className={styles.icon} type={IconTypes.CommentLite} />
 
                     {isEditable ? (

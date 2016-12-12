@@ -1,7 +1,7 @@
 ﻿import { PureComponent, PropTypes } from "react";
 import cx from "classnames";
 
-import Link from "billing-ui/components/Link";
+import Link from "../Link";
 
 import styles from "./ReadComment.scss";
 

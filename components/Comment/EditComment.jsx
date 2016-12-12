@@ -1,12 +1,12 @@
 ﻿import { PureComponent, PropTypes } from "react";
 import cx from "classnames";
-import axios from "billing-ui/libs/axios";
+import axios from "../../libs/axios";
 import Informer from "Informer";
 
-import KeyCodes from "billing-ui/helpers/KeyCodes";
-import TextArea from "billing-ui/components/TextArea";
-import Icon, { IconTypes } from "billing-ui/components/Icon";
-import Link from "billing-ui/components/Link";
+import KeyCodes from "../../helpers/KeyCodes";
+import TextArea from "../TextArea";
+import Icon, { IconTypes } from "../Icon";
+import Link from "../Link";
 
 import { safeEncodeURI } from "../../helpers/EncodeHelpers";
 
@@ -120,11 +120,11 @@ class EditComment extends PureComponent {
                           onChange={this._handleTextChange} />
 
                 <div className={styles.controls}>
-                    <Link className={saveStyles} onClick={this._handleSave}>Сохранить</Link>
-                    <Link onClick={onCancel}>Отменить</Link>
+                    <Link className={saveStyles} onClick={this._handleSave} data-ft-id="comment-save">Сохранить</Link>
+                    <Link onClick={onCancel} data-ft-id="comment-cancel">Отменить</Link>
 
                     {savedComment && (
-                        <Link className={styles.delete} onClick={this._handleDelete}>
+                        <Link className={styles.delete} onClick={this._handleDelete} data-ft-id="comment-delete">
                             <Icon type={IconTypes.Trash} />
                             Удалить
                         </Link>
