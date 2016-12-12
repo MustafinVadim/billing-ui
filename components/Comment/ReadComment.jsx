@@ -38,8 +38,8 @@ class ReadComment extends PureComponent {
 
         const currentHeight = this._textBlock.style.height;
 
-        const blockBordersVerticalWidth = parseInt(getComputedStyle(this._textBlock).borderTopWidth) +
-            parseInt(getComputedStyle(this._textBlock).borderBottomWidth);
+        const blockBordersVerticalWidth = parseInt(getComputedStyle(this._textBlock).borderTopWidth)
+            + parseInt(getComputedStyle(this._textBlock).borderBottomWidth);
         this._textBlock.style.height = isCollapsed ? this._maxCollapsedHeight : 0;
         let newHeight = this._textBlock.scrollHeight + blockBordersVerticalWidth;
         this._textBlock.style.height = currentHeight;
