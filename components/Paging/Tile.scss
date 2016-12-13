@@ -6,8 +6,9 @@
         @extend %as-inline-block;
 
         width: 25px;
-        text-align: center;
         padding: 5px 0;
+
+        text-align: center;
     }
 
     .pagination {
@@ -21,22 +22,23 @@
 
     .link {
         @extend %as-link;
-
         @extend %row-item;
     }
 
     .active {
         @extend %row-item;
 
-        color: $textBaseColor;
         background: $bgButtonColor;
+
+        color: $textBaseColor;
     }
 
     .ellipsis {
         @extend %as-inline-block;
 
-        padding: 5px 0;
-        font-size: $fontSizeBig;
         width: 1em;
+        padding: 5px 0;
+
+        font-size: $fontSizeBig;
     }
 }
