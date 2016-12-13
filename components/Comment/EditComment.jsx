@@ -83,17 +83,23 @@ class EditComment extends PureComponent {
     };
 
     _sendRequest = (url, action, data = {}, actionData = {}) => {
+        const { onError, requestData } = this.props;
+
         return axios
             .post(
                 url,
-                { ...data, ...this.props.requestData }
+                { ...data, ...requestData }
             )
             .then(() => {
                 action({ ...actionData });
             })
             .catch(e => {
                 this._toggleIsSaving(false);
-                Informer.showError(e.message);
+                if (onError) {
+                    onError(e);
+                } else {
+                    Informer.showError(e.message);
+                }
             });
     };
 
@@ -147,6 +153,7 @@ EditComment.propTypes = {
     onSave: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
+    onError: PropTypes.func,
     onTextChange: PropTypes.func.isRequired
 };
 

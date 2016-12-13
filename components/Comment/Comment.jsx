@@ -77,7 +77,7 @@ class Comment extends PureComponent {
     };
 
     render() {
-        const { value, maxLength, saveUrl, deleteUrl, requestData, commentClassName, wrapperClassName } = this.props;
+        const { value, maxLength, saveUrl, deleteUrl, requestData, commentClassName, wrapperClassName, onError } = this.props;
         const { isEditable, isCollapsed } = this.state;
 
         const decodedValue = safeDecodeURI(value);
@@ -111,6 +111,7 @@ class Comment extends PureComponent {
                                      onSave={this._handleSave}
                                      onCancel={this._completeEditing}
                                      onDelete={this._handleDelete}
+                                     onError={onError}
                                      onTextChange={this._handleUnsavedTextChange}
                                      maxLength={maxLength}
                         />
@@ -135,6 +136,7 @@ Comment.propTypes = {
 
     onSave: PropTypes.func,
     onDelete: PropTypes.func,
+    onError: PropTypes.func,
 
     enableOnClickOutside: PropTypes.func,
     disableOnClickOutside: PropTypes.func,
