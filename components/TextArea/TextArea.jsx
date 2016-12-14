@@ -4,6 +4,7 @@ import cx from "classnames";
 import TextInput from "../TextInput";
 import TextInputType from "../TextInput/TextInputType";
 import {PositionTypes} from "../Tooltip";
+import calculateHeight from "./calculateHeight";
 import styles from "./TextArea.scss";
 
 class TextArea extends Component {
@@ -65,12 +66,7 @@ class TextArea extends Component {
         const { height } = this.state;
         const { minHeight } = this.props;
 
-        const currentHeight = textArea.style.height;
-
-        const textAreaBordersVerticalWidth = parseInt(getComputedStyle(textArea).borderTopWidth) + parseInt(getComputedStyle(textArea).borderBottomWidth);
-        textArea.style.height = 0;
-        let newHeight = textArea.scrollHeight + textAreaBordersVerticalWidth;
-        textArea.style.height = currentHeight;
+        let newHeight = calculateHeight(textArea);
 
         if (newHeight < minHeight) {
             newHeight = minHeight;
