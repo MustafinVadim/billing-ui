@@ -31,10 +31,12 @@ class Comment extends PureComponent {
     };
 
     handleClickOutside = () => {
-        this.setState({
-            isEditable: false,
-            isCollapsed: true
-        });
+        if (this.state.unsavedText === this.props.value) {
+            this.setState({
+                isEditable: false,
+                isCollapsed: true
+            });
+        }
     };
 
     _handleClick = () => {
