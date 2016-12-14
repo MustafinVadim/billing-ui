@@ -15,21 +15,34 @@ export const httpMethod = {
     head: "head"
 };
 
-export function* fetchData({ url, data = null, onBegin = null, onSuccess, onError = null, requestMethod = httpMethod.post }) {
+export function* fetchData({
+    url,
+    data = null,
+    onBegin = null,
+    onSuccess,
+    onError = null,
+    requestMethod = httpMethod.post,
+    additionalResponseData = null
+}) {
     if (onBegin) {
-        yield put(onBegin());
+        yield put(onBegin(additionalResponseData));
     }
 
     try {
         const params = requestMethod === httpMethod.get ? { params: data } : data;
         const response = yield call(axios[requestMethod], url, params);
+        const responseData = additionalResponseData ? {
+            ...response.data,
+            ...additionalResponseData
+        } : response.data;
 
-        yield put(onSuccess(response.data));
+        yield put(onSuccess(responseData));
     } catch (e) {
         Informer.showError(e.message);
-        Logger.error(generateAjaxErrorMessage({url, requestMethod, data, errorMessage: e.message}));
+        Logger.error(generateAjaxErrorMessage({ url, requestMethod, data, errorMessage: e.message }));
         if (onError) {
-            yield put(onError(e));
+            const errorData = additionalResponseData ? { ...additionalResponseData, error: e } : e;
+            yield put(onError(errorData));
         }
     }
 }
