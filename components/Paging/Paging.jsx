@@ -2,11 +2,9 @@ import { Component, PropTypes } from "react";
 import classnames from "classnames";
 import { range } from "underscore";
 
+import PageSizeSwitcher from "./PageSizeSwitcher";
 import Themes from "./Themes";
-
-import defaultTheme from "./Default.scss";
-import defaultSmallTheme from "./DefaultSmall.scss";
-import tileTheme from "./Tile.scss";
+import resolveTheme from "./themeResolver";
 
 class Paging extends Component {
     getPage(pageCount, counter, styles) {
@@ -38,20 +36,9 @@ class Paging extends Component {
     }
 
     render() {
-        const { PageSize, Total, wrapperClass, type } = this.props;
-        let styles = {};
+        const { PageSize, Total, wrapperClass, type, pageSizeSwitcherItems, onSwitchPageSize, activePageSize } = this.props;
 
-        switch (type) {
-            case Themes.DefaultTheme:
-                styles = defaultTheme;
-                break;
-            case Themes.DefaultSmallTheme:
-                styles = defaultSmallTheme;
-                break;
-            case Themes.TileTheme:
-                styles = tileTheme;
-                break;
-        }
+        const styles = resolveTheme(type);
 
         if (Total <= PageSize) {
             return null;
@@ -66,7 +53,7 @@ class Paging extends Component {
             <div className={paginationClassNames}>
                 <div className={styles.row}>
                     {this.getPages(styles)}
-                    <PageSizeSwither />
+                    {pageSizeSwitcherItems && <PageSizeSwitcher onClick={onSwitchPageSize} items={pageSizeSwitcherItems} active={activePageSize} type={type} />}
                 </div>
             </div>
         );
@@ -74,11 +61,16 @@ class Paging extends Component {
 }
 
 Paging.propTypes = {
-    onChange: PropTypes.func.isRequired,
+    Total: PropTypes.number.isRequired,
     CurrentPage: PropTypes.number.isRequired,
     PageSize: PropTypes.number.isRequired,
-    Total: PropTypes.number.isRequired,
     edgeCount: PropTypes.number,
+
+    onChange: PropTypes.func.isRequired,
+    onSwitchPageSize: PropTypes.func,
+
+    pageSizeSwitcherItems: PropTypes.arrayOf(PropTypes.string),
+    activePageSize: PropTypes.string,
     wrapperClass: PropTypes.string,
     type: PropTypes.oneOf(Object.keys(Themes))
 };

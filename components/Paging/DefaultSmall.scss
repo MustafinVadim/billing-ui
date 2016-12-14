@@ -1,12 +1,13 @@
 ﻿@import "./../../styles/variables";
 @import "./../../styles/placeholders";
+@import "./../../styles/bourbon";
 
 :local {
     .pagination {
         margin: 5px -20px -20px -30px;
 
         border-top: 1px solid $borderDarkColor;
-        box-shadow: 0 -1px 0 $bgLightColor;
+        box-shadow: 0 -1px 0 $borderLightColor;
     }
 
     .row {
@@ -36,11 +37,9 @@
         font-size: 20px;
 
         &:before {
-            content: "";
+            @include position(absolute, -3px null null 50%);
 
-            position: absolute;
-            top: -3px;
-            left: 50%;
+            content: "";
 
             width: 35px;
             height: 4px;

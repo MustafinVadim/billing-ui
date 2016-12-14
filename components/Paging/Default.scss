@@ -4,7 +4,7 @@
 :local {
     .pagination {
         border-top: 1px solid $borderDarkColor;
-        box-shadow: 0 -1px 0 #f7f7f7;
+        box-shadow: 0 -1px 0 $borderLightColor;
     }
 
     .row {
@@ -34,11 +34,9 @@
         font-size: $fontSizeRegularHeader;
 
         &:before {
-            content: "";
+            @include position(absolute, -6px null null 50%);
 
-            position: absolute;
-            top: -6px;
-            left: 50%;
+            content: "";
 
             width: 50px;
             height: 3px;

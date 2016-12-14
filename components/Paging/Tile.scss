@@ -5,10 +5,14 @@
     %row-item {
         @extend %as-inline-block;
 
-        width: 25px;
-        padding: 5px 0;
+        margin-right: 5px;
+        padding: 5px 10px;
 
         text-align: center;
+
+        &:last-child {
+            margin-right: 0;
+        }
     }
 
     .pagination {
@@ -40,5 +44,18 @@
         padding: 5px 0;
 
         font-size: $fontSizeBig;
+    }
+
+    .wrapper {
+        float: right;
+    }
+
+    .label {
+        @extend %as-inline-block;
+
+        margin-right: 5px;
+        padding: 5px 0;
+
+        font-weight: normal;
     }
 }
