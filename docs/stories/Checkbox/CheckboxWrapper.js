@@ -1,6 +1,5 @@
 import React from "react";
 
-import "./../../src/css/icon-fonts.scss";
 import Checkbox from "./../../../components/Checkbox";
 
 export class CheckboxWrapper extends React.Component {
@@ -29,7 +28,9 @@ export class CheckboxWrapper extends React.Component {
             <Checkbox {...this.props}
                       checked={this.state.checked}
                       onChange={this.handleOnChange}
-            />
+            >
+                Checkbox
+            </Checkbox>
         );
     }
 }

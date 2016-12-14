@@ -1,0 +1,55 @@
+﻿@import "../../styles/variables";
+@import "../../styles/placeholders";
+@import "../../styles/bourbon";
+$verticalIndent: 20px;
+$horizontalIndent: 30px;
+
+:local {
+    .wrapper {
+        position: relative;
+
+        border-bottom: 1px solid $borderDarkColor;
+
+        font-size: $fontSizeBig;
+    }
+
+    .comment {
+        padding: $verticalIndent $horizontalIndent;
+
+        line-height: $lineHeightRegular;
+
+        &:hover {
+            background: $bgElementActiveLightColor;
+
+            cursor: pointer;
+        }
+
+        &.empty {
+            color: $textInactiveColor;
+
+            &:hover {
+                color: $textBaseColor;
+            }
+        }
+
+        &.editable {
+            padding-bottom: 20px;
+
+            background: $bgElementActiveLightColor;
+
+            cursor: default;
+        }
+    }
+
+    .icon {
+        float: left;
+        margin-top: -1px;
+
+        font-size: $fontSizeBig;
+        line-height: $lineHeightRegular;
+
+        :local(.comment:hover) & {
+            color: $textBaseColor;
+        }
+    }
+}

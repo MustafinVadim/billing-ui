@@ -13,7 +13,7 @@ module.exports = {
     },
     postcss: function() {
         return [
-            autoprefixer({ browsers: ["last 5 versions", "> 0.02%", "ie >= 8"] }),
+            autoprefixer({ browsers: ["last 5 versions", "> 0.02%", "ie >= 9"] }),
             postcssPseudoelements
         ];
     },

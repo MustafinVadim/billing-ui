@@ -5,7 +5,7 @@ import backgrounds from "react-storybook-addon-backgrounds";
 
 setAddon(infoAddon);
 
-addDecorator(story => <div style={{ padding: "20px" }}>{story()}</div>);
+addDecorator(story => <div style={{ padding: "20px", fontFamily: "Segoe UI,Helvetica Neue,Arial,Tahoma,sans-serif" }}>{story()}</div>);
 addDecorator(withKnobs);
 addDecorator(backgrounds([
     { name: "main", value: "#ffffff", default: true },

@@ -18,10 +18,8 @@ class Dropdown extends Component {
     _ignoreTimeout = null;
 
     constructor(props) {
-        const { defaultCaption } = props;
-
         super(props);
-        this._caption = defaultCaption;
+        this._initOptions(props);
     }
 
     componentDidMount() {

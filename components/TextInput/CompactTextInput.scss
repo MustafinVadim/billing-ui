@@ -33,23 +33,12 @@
 
         background: transparent;
 
+        font-family: inherit;
         font-size: $fontSizeBig;
 
         &:focus {
             & ~ .label {
                 @extend %filled-text;
-            }
-
-            & ~ .highlight {
-                :global {
-                    animation: inputHighlighter .3s ease;
-                }
-            }
-
-            &.input-validation-error ~ .highlight {
-                :global {
-                    animation-name: inputErrorHighlighter;
-                }
             }
         }
 
@@ -62,12 +51,6 @@
 
                 &.filled {
                     @extend %filled-text;
-                }
-            }
-
-            & ~ .highlight {
-                :global {
-                    animation: none;
                 }
             }
         }
@@ -88,7 +71,9 @@
         transition: .2s ease all;
 
         color: $textSecondaryColor;
+        font-family: inherit;
         font-weight: normal;
+        line-height: 1;
 
         cursor: text;
         pointer-events: none;
@@ -110,6 +95,18 @@
         opacity: .5;
 
         pointer-events: none;
+
+        &.is-regular {
+            :global {
+                animation: inputHighlighter .3s ease;
+            }
+        }
+
+        &.is-error {
+            :global {
+                animation-name: inputErrorHighlighter;
+            }
+        }/* todo: fix */
     }
 
     .clear {

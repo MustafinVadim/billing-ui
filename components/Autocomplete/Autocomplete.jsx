@@ -277,6 +277,7 @@ class Autocomplete extends PureComponent {
         delete inputProps.menuWidth;
         delete inputProps.optionClassName;
         delete inputProps.valueCreator;
+        delete inputProps.renderItem;
 
         return (
             <span className={cx(styles.root, this.props.autocompleteWrapperClassName)}>
