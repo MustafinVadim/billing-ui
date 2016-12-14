@@ -19,9 +19,9 @@ describe("ArrayHelper", () => {
 
         it("should replace object element", () => {
             const initArr = freeze([1, 2, "a", 4, 5]);
-            const expectedArr = [1, 2, {b: "b"}, 4, 5];
+            const expectedArr = [1, 2, { b: "b" }, 4, 5];
 
-            const actual = replaceByIndex({b: "b"}, 2, initArr);
+            const actual = replaceByIndex({ b: "b" }, 2, initArr);
 
             expect(actual).to.deep.equal(expectedArr);
         });
@@ -42,7 +42,7 @@ describe("ArrayHelper", () => {
 
     describe("omit entity by index ", () => {
         it("it should omit array element by index", () => {
-            const initialArray = freeze([ 1, 2, 3, 4, 5]);
+            const initialArray = freeze([1, 2, 3, 4, 5]);
             const expectedArray = [1, 2, 4, 5];
 
             const actual = omitEntityByIndex(2, initialArray);
