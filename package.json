@@ -1,6 +1,6 @@
 {
   "name": "billing-ui",
-  "version": "1.29.1",
+  "version": "1.29.2",
   "description": "KonturBilling UI components",
   "scripts": {
     "precommit": "yarn comb",
