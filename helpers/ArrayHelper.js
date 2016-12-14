@@ -48,7 +48,15 @@ export const findIndexAndEntity = (predicate, arr) => {
 };
 
 export const arrayReduceHelper = (elementPredicate, elementReducer, state, action) => {
-    const [index, entityState] = findIndexAndEntity(elementPredicate, state);
+    let index;
+    let entityState;
+
+    if (typeof elementPredicate  === "function") {
+        [index, entityState] = findIndexAndEntity(elementPredicate, state);
+    } else {
+        index = elementPredicate;
+        entityState = state[index];
+    }
 
     if (index === -1) {
         return state;

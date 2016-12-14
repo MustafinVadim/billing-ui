@@ -157,5 +157,18 @@ describe("ArrayHelper", () => {
 
             expect(newState).to.deep.equal(expectedState);
         });
+
+        it("должен ... по индексу", () => {
+            const expectedState = freeze([1, 2, "b", 4, 5]);
+
+            const newState = arrayReduceHelper(
+                2,
+                reducer,
+                initArr,
+                action
+            );
+
+            expect(newState).to.deep.equal(expectedState);
+        });
     });
 });
