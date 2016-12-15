@@ -4,11 +4,7 @@
 :local {
     .pagination {
         border-top: 1px solid $borderDarkColor;
-        box-shadow: 0 -1px 0 #f7f7f7;
-
-        &.small {
-            margin: 5px -20px -20px -30px;
-        }
+        box-shadow: 0 -1px 0 $borderLightColor;
     }
 
     .row {
@@ -17,10 +13,6 @@
         font-size: 15px;
         font-weight: bold;
         text-align: center;
-
-        &.small {
-            margin: 5px 0;
-        }
     }
 
     .link {
@@ -31,12 +23,6 @@
 
         font-size: $fontSizeRegularHeader;
         text-align: center;
-
-        &.small {
-            width: 50px;
-
-            font-size: 20px;
-        }
     }
 
     .active {
@@ -48,29 +34,15 @@
         font-size: $fontSizeRegularHeader;
 
         &:before {
-            content: "";
+            @include position(absolute, -6px null null 50%);
 
-            position: absolute;
-            top: -6px;
-            left: 50%;
+            content: "";
 
             width: 50px;
             height: 3px;
             margin-left: -25px;
 
             background: $textBaseColor;
-        }
-
-        &.small {
-            font-size: 20px;
-
-            &:before {
-                top: -3px;
-
-                width: 35px;
-                height: 4px;
-                margin-left: -18px;
-            }
         }
     }
 }

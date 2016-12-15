@@ -1,0 +1,61 @@
+﻿@import "./../../styles/variables";
+@import "./../../styles/placeholders";
+
+:local {
+    %row-item {
+        @extend %as-inline-block;
+
+        margin-right: 5px;
+        padding: 5px 10px;
+
+        text-align: center;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .pagination {
+        margin: 10px 0;
+    }
+
+    .row {
+        font-size: $fontSizeBig;
+        font-weight: bold;
+    }
+
+    .link {
+        @extend %as-link;
+        @extend %row-item;
+    }
+
+    .active {
+        @extend %row-item;
+
+        background: $bgButtonColor;
+
+        color: $textBaseColor;
+    }
+
+    .ellipsis {
+        @extend %as-inline-block;
+
+        width: 1em;
+        padding: 5px 0;
+
+        font-size: $fontSizeBig;
+    }
+
+    .switcher {
+        float: right;
+    }
+
+    .label {
+        @extend %as-inline-block;
+
+        margin-right: 5px;
+        padding: 5px 0;
+
+        font-weight: normal;
+    }
+}

@@ -1,35 +1,37 @@
-import {Component, PropTypes } from "react";
+import { Component, PropTypes } from "react";
 import classnames from "classnames";
 import { range } from "underscore";
 
-import pagingStyles from "./Paging.scss";
+import PageSizeSwitcher from "./PageSizeSwitcher";
+import Themes from "./Themes";
+import resolveTheme from "./themeResolver";
 
 class Paging extends Component {
+    constructor(props) {
+        super(props);
+
+        const { type, styles } = this.props;
+
+        this.styles = styles || resolveTheme(type);
+    }
+
     getPage(pageCount, counter) {
-        const { CurrentPage, isSmall, onChange, edgeCount } = this.props;
-
-        const paginationActiveClassNames = classnames(pagingStyles.active, {
-            [pagingStyles.small]: isSmall
-        });
-
-        const paginationLinkClassNames = classnames(pagingStyles.link, {
-            [pagingStyles.small]: isSmall
-        });
+        const { CurrentPage, onChange, edgeCount } = this.props;
 
         const leftEdge = CurrentPage - edgeCount;
         const rightEdge = CurrentPage + edgeCount;
 
         if (counter !== 1 && counter !== pageCount && (leftEdge >= counter || rightEdge <= counter)) {
-            return leftEdge === counter || rightEdge === counter ? <span key={`ellipsis_${counter}`}>...</span> : null;
+            return leftEdge === counter || rightEdge === counter ? <span key={`ellipsis_${counter}`} className={this.styles.ellipsis}>...</span> : null;
         }
 
         if (CurrentPage === counter) {
-            return <span key={`pageNumber_${counter}`} className={paginationActiveClassNames}>{counter}</span>;
+            return <span key={`pageNumber_${counter}`} className={this.styles.active}>{counter}</span>;
         }
 
         return (
-            <span key={`pageNumber_${counter}`} className={paginationLinkClassNames}
-                onClick={onChange.bind(this, counter)}>
+            <span key={`pageNumber_${counter}`} className={this.styles.link}
+                  onClick={onChange.bind(this, counter)}>
                 {counter}
             </span>
         );
@@ -42,24 +44,24 @@ class Paging extends Component {
     }
 
     render() {
-        const { PageSize, Total, isSmall, wrapperClass } = this.props;
+        const { PageSize, Total, wrapperClass, type, pageSizeSwitcherItems, onSwitchPageSize, activePageSize, styles } = this.props;
 
         if (Total <= PageSize) {
             return null;
         }
 
-        const paginationClassNames = classnames(pagingStyles.pagination, wrapperClass, {
-            [pagingStyles.small]: isSmall
-        });
-
-        const paginationRowClassNames = classnames(pagingStyles.row, {
-            [pagingStyles.small]: isSmall
-        });
+        const paginationClassNames = classnames(
+            this.styles.pagination,
+            wrapperClass
+        );
 
         return (
             <div className={paginationClassNames}>
-                <div className={paginationRowClassNames}>
-                    {this.getPages()}
+                <div className={this.styles.row}>
+                    {this.getPages(this.styles)}
+                    {pageSizeSwitcherItems && (
+                        <PageSizeSwitcher onClick={onSwitchPageSize} items={pageSizeSwitcherItems} active={activePageSize} type={type} styles={styles}/>
+                    )}
                 </div>
             </div>
         );
@@ -67,17 +69,29 @@ class Paging extends Component {
 }
 
 Paging.propTypes = {
-    onChange: PropTypes.func.isRequired,
+    Total: PropTypes.number.isRequired,
     CurrentPage: PropTypes.number.isRequired,
     PageSize: PropTypes.number.isRequired,
-    Total: PropTypes.number.isRequired,
-    isSmall: PropTypes.bool.isRequired,
     edgeCount: PropTypes.number,
-    wrapperClass: PropTypes.string
+
+    onChange: PropTypes.func.isRequired,
+    onSwitchPageSize: PropTypes.func,
+
+    pageSizeSwitcherItems: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+    activePageSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    type: PropTypes.oneOf(Object.keys(Themes)),
+    styles: PropTypes.shape({
+        pagination: PropTypes.string,
+        row: PropTypes.string,
+        link: PropTypes.string,
+        active: PropTypes.active,
+        ellipsis: PropTypes.string
+    })
 };
 
 Paging.defaultProps = {
-    edgeCount: 5
+    edgeCount: 5,
+    type: Themes.DefaultTheme
 };
 
 export default Paging;
