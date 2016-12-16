@@ -1,0 +1,58 @@
+﻿@import "./../../../styles/variables";
+@import "./../../../styles/placeholders";
+@import "~susy/sass/susy";
+
+:global {
+    @keyframes slideInLeft {
+        0% {
+            margin-left: 0;
+        }
+
+        40% {
+            margin-left: -80%;
+        }
+
+        100% {
+            margin-left: -100%;
+        }
+    }
+    @keyframes slideInRight {
+        0% {
+            margin-left: -100%;
+        }
+
+        40% {
+            margin-left: -20%;
+        }
+
+        100% {
+            margin-left: 0;
+        }
+    }
+}
+
+:local {
+    .wrapper {
+        @extend %as-inline-block;
+
+        background: $bgWhiteColor;
+
+        &.previous {
+            :global {
+                animation: slideInLeft .3s ease-out forwards;
+            }
+        }
+
+        &.current {
+            &:global(.right) {
+                :global {
+                    animation: slideInRight .3s ease-out forwards;
+                }
+            }
+        }
+
+        &.hidden {
+            @extend %as-hidden;
+        }
+    }
+}

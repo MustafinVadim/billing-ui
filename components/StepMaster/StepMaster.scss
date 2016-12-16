@@ -1,0 +1,174 @@
+﻿@import "./../../styles/variables";
+@import "./../../styles/placeholders";
+@import "../../node_modules/susy/sass/_susy";
+$susy: (columns: 3, gutters: 0, gutter-position: before);
+
+:local {
+    %action-button {
+        position: relative;
+
+        height: 46px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        box-sizing: border-box;
+
+        background: $bgLightColor;
+
+        font-size: $fontSizeBig;
+        text-align: center;
+
+        cursor: pointer;
+
+        &:hover {
+            background: $bgBaseColor;
+        }
+
+        &.action-button-disabled {
+            background: $bgLightColor;
+
+            color: $textDisabledColor;
+
+            cursor: default;
+
+            &:hover {
+                background: $bgLightColor;
+            }
+        }
+    }
+
+    .header {
+        padding: 20px 40px;
+
+        border-bottom: 1px solid $borderDarkColor;
+        background: $bgWhiteColor;
+    }
+
+    .header-step {
+        position: relative;
+
+        margin-right: 5px;
+
+        color: $textSecondaryColor;
+        font-size: $fontSizeGreat;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+
+        &.active-step {
+            color: $textBaseColor;
+
+            &:before,
+            &:after {
+                content: "";
+
+                position: absolute;
+                left: 50%;
+
+                width: 0;
+                height: 0;
+                margin-left: -10px;
+
+                border-width: 0 10px;
+                border-style: solid;
+                border-color: transparent;
+            }
+
+            &:before {
+                bottom: -17px;
+
+                border-bottom-width: 12px;
+                border-bottom-color: $borderDarkColor;
+            }
+
+            &:after {
+                bottom: -18px;
+
+                border-bottom-width: 11px;
+                border-bottom-color: $borderWhiteColor;
+            }
+        }
+    }
+
+    .content {
+        padding: 20px 0;
+
+        overflow: hidden;
+
+        transition: height .2s ease-in-out;
+
+        white-space: nowrap;
+    }
+
+    .actions {
+        @include container;
+
+        margin-top: 20px;
+    }
+
+    .previous-button {
+        @include span(1 first);
+        @extend %action-button;
+
+        &:before {
+            content: "←";
+
+            position: absolute;
+            top: 12px;
+            left: 75px;
+
+            transition: left .3s ease-in-out;
+
+            font-size: 20px;
+        }
+
+        &:hover:before {
+            left: 65px;
+        }
+
+        &.action-button-disabled:hover:before {
+            left: 75px;
+        }
+    }
+
+    .submit-button {
+        @include span(1);
+        @extend %action-button;
+
+        border-right: 1px solid $borderWhiteColor;
+        border-left: 1px solid $borderWhiteColor;
+        background: #178fdf;
+
+        color: $textWhiteColor;
+        font-size: $fontSizeRegular;
+        line-height: $lineHeightRegular;
+
+        &:hover {
+            background: darken(#178fdf, 10%);
+        }
+    }
+
+    .next-button {
+        @include span(1 last);
+        @extend %action-button;
+
+        &:before {
+            content: "→";
+
+            position: absolute;
+            top: 12px;
+            right: 75px;
+
+            transition: right .3s ease-in-out;
+
+            font-size: 20px;
+        }
+
+        &:hover:before {
+            right: 65px;
+        }
+
+        &.action-button-disabled:hover:before {
+            right: 75px;
+        }
+    }
+}
