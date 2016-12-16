@@ -28,8 +28,9 @@
 
         display: block;
         width: 100%;
-        padding: 5px 3px 3px;
+        padding: 4px 3px 3px;
         box-sizing: border-box;
+        line-height: $lineHeightRegular;
 
         background: transparent;
 
@@ -73,7 +74,7 @@
         color: $textSecondaryColor;
         font-family: inherit;
         font-weight: normal;
-        line-height: 1;
+        line-height: $lineHeightRegular;
 
         cursor: text;
         pointer-events: none;
