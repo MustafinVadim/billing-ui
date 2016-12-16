@@ -123,7 +123,8 @@ class EditComment extends PureComponent {
                           value={unsavedText}
                           ref={el => { this._textarea = el } }
                           onKeyUp={this._handleKeyUp}
-                          onChange={this._handleTextChange} />
+                          onChange={this._handleTextChange}
+                          data-ft-id="comment-textarea" />
 
                 <div className={styles.controls}>
                     <Link className={saveStyles} onClick={this._handleSave} data-ft-id="comment-save">Сохранить</Link>
