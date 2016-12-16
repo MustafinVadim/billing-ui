@@ -32,7 +32,14 @@ let nodeStyleCache = {};
 let hiddenTextarea;
 
 const getNodeStyling = node => {
-    const nodeId = `${node.getAttribute("id")}_${node.getAttribute("name")}_${node.getAttribute("class")}`;
+    var nodeAttrId = node.getAttribute("id");
+    var nodeAttrName = node.getAttribute("name");
+    var nodeAttrClass = node.getAttribute("class");
+    let nodeId = null;
+
+    if (nodeAttrId || nodeAttrName || nodeAttrClass) {
+        nodeId = `${nodeAttrId}_${nodeAttrName}_${nodeAttrClass}`;
+    }
 
     if (nodeStyleCache[nodeId]) {
         return nodeStyleCache[nodeId];
@@ -63,7 +70,8 @@ const getNodeStyling = node => {
         boxSizing
     };
 
-    if (nodeId) {
+
+    if(nodeId) {
         nodeStyleCache[nodeId] = nodeInfo;
     }
 
@@ -75,6 +83,7 @@ export default node => {
 
     if (!hiddenTextarea) {
         hiddenTextarea = document.createElement("textarea");
+        hiddenTextarea.setAttribute("style", HIDDEN_TEXTAREA_STYLE);
         document.body.appendChild(hiddenTextarea);
     }
 
