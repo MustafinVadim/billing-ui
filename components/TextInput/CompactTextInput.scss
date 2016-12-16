@@ -30,12 +30,12 @@
         width: 100%;
         padding: 4px 3px 3px;
         box-sizing: border-box;
-        line-height: $lineHeightRegular;
 
         background: transparent;
 
         font-family: inherit;
         font-size: $fontSizeBig;
+        line-height: $lineHeightRegular;
 
         &:focus {
             & ~ .label {
