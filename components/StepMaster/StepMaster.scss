@@ -1,6 +1,6 @@
 ﻿@import "./../../styles/variables";
 @import "./../../styles/placeholders";
-@import "../../node_modules/susy/sass/_susy";
+@import "~susy/sass/susy";
 $susy: (columns: 3, gutters: 0, gutter-position: before);
 
 :local {
