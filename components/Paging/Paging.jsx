@@ -84,7 +84,7 @@ Paging.propTypes = {
         pagination: PropTypes.string,
         row: PropTypes.string,
         link: PropTypes.string,
-        active: PropTypes.active,
+        active: PropTypes.string,
         ellipsis: PropTypes.string
     })
 };
