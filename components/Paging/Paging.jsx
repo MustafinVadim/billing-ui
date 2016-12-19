@@ -44,7 +44,7 @@ class Paging extends Component {
     }
 
     render() {
-        const { PageSize, Total, wrapperClass, type, pageSizeSwitcherItems, onSwitchPageSize, activePageSize, styles } = this.props;
+        const { PageSize, Total, wrapperClass, type, pageSizeSwitcherItems, onSwitchPageSize, activePageSize, styles, showPages } = this.props;
 
         if (Total <= PageSize) {
             return null;
@@ -58,7 +58,7 @@ class Paging extends Component {
         return (
             <div className={paginationClassNames}>
                 <div className={this.styles.row}>
-                    {this.getPages(this.styles)}
+                    {showPages && this.getPages(this.styles)}
                     {pageSizeSwitcherItems && (
                         <PageSizeSwitcher onClick={onSwitchPageSize} items={pageSizeSwitcherItems} active={activePageSize} type={type} styles={styles}/>
                     )}
@@ -73,6 +73,7 @@ Paging.propTypes = {
     CurrentPage: PropTypes.number.isRequired,
     PageSize: PropTypes.number.isRequired,
     edgeCount: PropTypes.number,
+    showPages: PropTypes.bool,
 
     onChange: PropTypes.func.isRequired,
     onSwitchPageSize: PropTypes.func,
@@ -91,7 +92,8 @@ Paging.propTypes = {
 
 Paging.defaultProps = {
     edgeCount: 5,
-    type: Themes.DefaultTheme
+    type: Themes.DefaultTheme,
+    showPages: true
 };
 
 export default Paging;
