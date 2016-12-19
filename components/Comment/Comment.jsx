@@ -31,7 +31,7 @@ class Comment extends PureComponent {
     };
 
     handleClickOutside = () => {
-        if (this.state.unsavedText === this.props.value) {
+        if (this.state.unsavedText === this._getDecodedValue()) {
             this.setState({
                 isEditable: false,
                 isCollapsed: true
@@ -72,17 +72,19 @@ class Comment extends PureComponent {
 
     _completeEditing = () => {
         this.setState({
-            unsavedText: this.props.value,
+            unsavedText: this._getDecodedValue(),
             isCollapsed: true,
             isEditable: false
         });
     };
 
+    _getDecodedValue = () => safeDecodeURI(this.props.value);
+
     render() {
-        const { value, maxLength, saveUrl, deleteUrl, requestData, commentClassName, wrapperClassName, onError } = this.props;
+        const { maxLength, saveUrl, deleteUrl, requestData, commentClassName, wrapperClassName, onError } = this.props;
         const { isEditable, isCollapsed } = this.state;
 
-        const decodedValue = safeDecodeURI(value);
+        const decodedValue = this._getDecodedValue();
 
         const wrapperClassNames = cx(
             styles.wrapper,
