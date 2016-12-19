@@ -20,6 +20,8 @@
     }
 
     .row {
+        overflow: hidden;
+
         font-size: $fontSizeBig;
         font-weight: bold;
     }
