@@ -81,6 +81,8 @@ Paging.propTypes = {
     pageSizeSwitcherItems: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
     activePageSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     type: PropTypes.oneOf(Object.keys(Themes)),
+
+    wrapperClass: PropTypes.string,
     styles: PropTypes.shape({
         pagination: PropTypes.string,
         row: PropTypes.string,

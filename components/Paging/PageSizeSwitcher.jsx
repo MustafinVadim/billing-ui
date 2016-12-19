@@ -20,7 +20,7 @@ class PageSizeSwitcher extends PureComponent {
                 return <span key={item} className={this.styles.active}>{item}</span>
             }
 
-            return <span key={item} onClick={() => {onClick(item)}} className={this.styles.link}>{item}</span>
+            return <span key={item} onClick={ () => { onClick(item) } } className={this.styles.link}>{item}</span>
         })
     }
 

@@ -70,8 +70,7 @@ const getNodeStyling = node => {
         boxSizing
     };
 
-
-    if(nodeId) {
+    if (nodeId) {
         nodeStyleCache[nodeId] = nodeInfo;
     }
 
