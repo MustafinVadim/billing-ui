@@ -22,6 +22,13 @@ class Comment extends PureComponent {
 
     componentDidUpdate = () => {
         const { enableOnClickOutside, disableOnClickOutside } = this.props;
+        const decodedValue = this._getDecodedValue();
+
+        if (!this.state.unsavedText && decodedValue) {
+            this.state = {
+                unsavedText: decodedValue
+            };
+        }
 
         if (this.state.isEditable) {
             enableOnClickOutside();
