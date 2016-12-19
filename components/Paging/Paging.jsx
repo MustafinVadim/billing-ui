@@ -92,7 +92,7 @@ Paging.propTypes = {
 
 Paging.defaultProps = {
     edgeCount: 5,
-    type: Themes.DefaultTheme,
+    type: Themes.GeneralTheme,
     showPages: true
 };
 
