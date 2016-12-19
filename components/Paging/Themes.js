@@ -1,6 +1,6 @@
 export const Themes = {
-    DefaultTheme: "DefaultTheme",
-    DefaultSmallTheme: "DefaultSmallTheme",
+    GeneralTheme: "GeneralTheme",
+    GeneralSmallTheme: "GeneralSmallTheme",
     TileTheme: "TileTheme"
 };
 
