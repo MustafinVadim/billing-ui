@@ -8,7 +8,7 @@ const DIGITS_ONLY_REGEXP = /^\d+$/;
 const KPP_REGEXP = /^\d{9}$/;
 const SETTLEMENT_ACCOUNT_REGEXP = /^\d{20}$/;
 
-const EMAIL_REGEXP = /^[\W]*([\wа-яА-Я\d+\-.%]+@[\wа-яА-Я\d\-.]+\.[\wа-яА-Я\d]{2,4})*$/;
+const EMAIL_REGEXP = /^[\wа-яА-Я\d+\-.%]+@[\wа-яА-Я\d\-.]+\.[\wа-яА-Я\d]{2,4}$/;
 const EMAILS_REGEXP = /^[\W]*([\wа-яА-Я\d+\-.%]+@[\wа-яА-Я\d\-.]+\.[\wа-яА-Я\d]{2,4}[\W]*[,;]{1}[\W]*)*([\wа-яА-Я\d+\-.%]+@[\wа-яА-Я\d\-.]+\.[\wа-яА-Я\d]{2,4})[\W]*$/;
 
 const PHONE_REGEXP = /^((\+7|8)(([\s|\(|\)|\t|\n|-]*\d){10})$)|(\+7$)/;
@@ -53,7 +53,7 @@ export const validate = (value, validateFunction) => {
 const Validation = {
     Email: (error = "Неверный формат e-mail") => (value) => {
         return {
-            isValid: !value || value.trim() === "" || EMAIL_REGEXP.test(value),
+            isValid: !value || value.trim() === "" || EMAIL_REGEXP.test(value.trim()),
             error
         };
     },
