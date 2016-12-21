@@ -70,7 +70,7 @@ class StepMaster extends PureComponent {
 
         const availableNextStep = currentStepIndex !== steps.length - 1 && isValidCurrentStep;
         return (
-            <div className={cx(styles.wrapper, classNames)} data-ft-id="stem-master">
+            <div className={cx(styles.wrapper, classNames)} data-ft-id="step-master">
                 <div className={styles.header}>
                     {(steps || []).map((step, i) => (
                         <span key={step} className={cx(styles["header-step"], {[styles["active-step"]]: i === currentStepIndex})}>

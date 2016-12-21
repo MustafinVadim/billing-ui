@@ -1,9 +1,8 @@
 ﻿@import "./../../../styles/variables";
 @import "./../../../styles/placeholders";
-@import "~susy/sass/susy";
 
 :global {
-    @keyframes slideInLeft {
+    @keyframes leftSlide {
         0% {
             margin-left: 0;
         }
@@ -16,7 +15,7 @@
             margin-left: -100%;
         }
     }
-    @keyframes slideInRight {
+    @keyframes rightSlide {
         0% {
             margin-left: -100%;
         }
@@ -39,14 +38,14 @@
 
         &.previous {
             :global {
-                animation: slideInLeft .3s ease-out forwards;
+                animation: leftSlide .3s ease-out forwards;
             }
         }
 
         &.current {
             &:global(.right) {
                 :global {
-                    animation: slideInRight .3s ease-out forwards;
+                    animation: rightSlide .3s ease-out forwards;
                 }
             }
         }

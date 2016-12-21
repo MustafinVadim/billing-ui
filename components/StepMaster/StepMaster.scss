@@ -1,6 +1,7 @@
 ﻿@import "./../../styles/variables";
 @import "./../../styles/placeholders";
-@import "~susy/sass/susy";
+@import "./../../styles/susy";
+@import "./../../styles/bourbon";
 $susy: (columns: 3, gutters: 0, gutter-position: before);
 
 :local {
@@ -110,11 +111,9 @@ $susy: (columns: 3, gutters: 0, gutter-position: before);
         @extend %action-button;
 
         &:before {
-            content: "←";
+            @include position(absolute, 12px null null 75px);
 
-            position: absolute;
-            top: 12px;
-            left: 75px;
+            content: "←";
 
             transition: left .3s ease-in-out;
 
@@ -149,14 +148,11 @@ $susy: (columns: 3, gutters: 0, gutter-position: before);
 
     .next-button {
         @include span(1 last);
+        @include position(absolute, 12px 75px null null);
         @extend %action-button;
 
         &:before {
             content: "→";
-
-            position: absolute;
-            top: 12px;
-            right: 75px;
 
             transition: right .3s ease-in-out;
 
