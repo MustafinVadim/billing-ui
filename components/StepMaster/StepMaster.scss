@@ -148,10 +148,11 @@ $susy: (columns: 3, gutters: 0, gutter-position: before);
 
     .next-button {
         @include span(1 last);
-        @include position(absolute, 12px 75px null null);
         @extend %action-button;
 
         &:before {
+            @include position(absolute, 12px 75px null null);
+
             content: "→";
 
             transition: right .3s ease-in-out;
