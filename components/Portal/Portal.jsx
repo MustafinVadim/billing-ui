@@ -1,8 +1,8 @@
-import React from "react";
+import { PureComponent, PropTypes, cloneElement } from "react";
 import ReactDOM, { findDOMNode } from "react-dom";
 import KeyCodes from "../../helpers/KeyCodes";
 
-export default class Portal extends React.PureComponent {
+class Portal extends PureComponent {
 
     constructor() {
         super();
@@ -138,7 +138,7 @@ export default class Portal extends React.PureComponent {
 
         let children = props.children;
         if (typeof props.children.type === "function") {
-            children = React.cloneElement(props.children, { closePortal: this.closePortal });
+            children = cloneElement(props.children, { closePortal: this.closePortal });
         }
 
         this.portal = ReactDOM.unstable_renderSubtreeIntoContainer(
@@ -151,23 +151,23 @@ export default class Portal extends React.PureComponent {
 
     render() {
         if (this.props.openByClickOn) {
-            return React.cloneElement(this.props.openByClickOn, { onClick: this.handleWrapperClick });
+            return cloneElement(this.props.openByClickOn, { onClick: this.handleWrapperClick });
         }
         return null;
     }
 }
 
 Portal.propTypes = {
-    className: React.PropTypes.string,
-    children: React.PropTypes.element.isRequired,
-    openByClickOn: React.PropTypes.element,
-    closeOnEsc: React.PropTypes.bool,
-    closeOnOutsideClick: React.PropTypes.bool,
-    isOpened: React.PropTypes.bool,
-    onOpen: React.PropTypes.func,
-    onClose: React.PropTypes.func,
-    beforeClose: React.PropTypes.func,
-    onUpdate: React.PropTypes.func
+    className: PropTypes.string,
+    children: PropTypes.element.isRequired,
+    openByClickOn: PropTypes.element,
+    closeOnEsc: PropTypes.bool,
+    closeOnOutsideClick: PropTypes.bool,
+    isOpened: PropTypes.bool,
+    onOpen: PropTypes.func,
+    onClose: PropTypes.func,
+    beforeClose: PropTypes.func,
+    onUpdate: PropTypes.func
 };
 
 Portal.defaultProps = {
@@ -175,3 +175,5 @@ Portal.defaultProps = {
     onClose: () => {},
     onUpdate: () => {}
 };
+
+export default Portal;
