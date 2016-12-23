@@ -1,6 +1,7 @@
 ﻿@import "../../styles/placeholders";
 @import "../../styles/variables";
 @import "../../styles/bourbon";
+$sidePadding: 3px;
 
 :local {
     .root {
@@ -26,38 +27,35 @@
     }
 
     .item {
-        $sidePadding: 3px;
-
-        @extend %fading-text;
-
         padding: 10px $sidePadding;
 
         overflow: hidden;
 
         cursor: pointer;
 
-        &:before {
-            top: 0;
-            right: $sidePadding;
-            bottom: 0;
-        }
-
         &.active {
             background: $bgElementActiveLightColor;
-
-            &:before {
-                background-image: linear-gradient(to right, rgba(245, 245, 245, .2), rgb(245, 245, 245) 75%);
-            }
         }
     }
 
     .option {
+        @extend %fading-text;
+
         margin-bottom: 5px;
 
         overflow: hidden;
 
         white-space: nowrap;
         text-overflow: clip;
+
+        &:before {
+            top: 0;
+            bottom: 0;
+        }
+
+        :local(.item.active) &:before {
+            background-image: linear-gradient(to right, rgba(245, 245, 245, .2), rgb(245, 245, 245) 75%);
+        }
     }
 
     .highlight {
