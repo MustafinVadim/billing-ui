@@ -21,7 +21,7 @@ class UtilityPanelWrapper extends PureComponent {
     };
 
     render() {
-        const { title, wrapperClassName, bodyClassName, children, overlayClassName, headerContent } = this.props;
+        const { title, wrapperClassName, bodyClassName, children, overlayClassName, headerAdditionalContent } = this.props;
 
         const portalClassNames = cx(
             styles.overlay,
@@ -42,7 +42,7 @@ class UtilityPanelWrapper extends PureComponent {
             <Portal { ...portalProps } className={portalClassNames}>
                 <UtilityPanel
                     title={title}
-                    headerContent={headerContent}
+                    headerAdditionalContent={headerAdditionalContent}
                     wrapperClassName={wrapperClassName}
                     bodyClassName={bodyClassName}
                     ref={(el) => {
@@ -69,7 +69,7 @@ UtilityPanelWrapper.propTypes = {
     wrapperClassName: PropTypes.string,
     bodyClassName: PropTypes.string,
     title: PropTypes.string,
-    headerContent: PropTypes.node
+    headerAdditionalContent: PropTypes.node
 };
 
 export default UtilityPanelWrapper;

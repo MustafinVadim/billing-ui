@@ -11,7 +11,7 @@ class UtilityPanel extends PureComponent {
     };
 
     render() {
-        const { title, children, canGoBack, headerContent, wrapperClassName, bodyClassName } = this.props;
+        const { title, children, canGoBack, headerAdditionalContent, wrapperClassName, bodyClassName } = this.props;
 
         const wrapperClassNames = cx(
             styles.wrapper,
@@ -32,7 +32,7 @@ class UtilityPanel extends PureComponent {
                         </div>
                     )}
                     <span data-ft-id="utility-panel-title">{title}</span>
-                    {headerContent}
+                    {headerAdditionalContent}
                 </div>
                 <div className={bodyClassNames}>
                     {children}
@@ -45,7 +45,7 @@ class UtilityPanel extends PureComponent {
 UtilityPanel.propTypes = {
     title: PropTypes.string,
     canGoBack: PropTypes.bool,
-    headerContent: PropTypes.node,
+    headerAdditionalContent: PropTypes.node,
 
     children: PropTypes.node,
 
