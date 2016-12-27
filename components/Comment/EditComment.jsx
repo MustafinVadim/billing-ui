@@ -8,7 +8,7 @@ import TextArea from "../TextArea";
 import Icon, { IconTypes } from "../Icon";
 import Link from "../Link";
 
-import { safeEncodeURI } from "../../helpers/EncodeHelpers";
+import { safeEncodeURI, safeDecodeURI } from "../../helpers/EncodeHelpers";
 
 import styles from "./EditComment.scss";
 
@@ -113,6 +113,8 @@ class EditComment extends PureComponent {
             }
         );
 
+        const decodedUnsavedText = safeDecodeURI(unsavedText);
+
         return (
             <div className={styles.wrapper}>
                 <TextArea placeholder="Написать комментарий"
@@ -120,7 +122,7 @@ class EditComment extends PureComponent {
                           inputClassName={styles.input}
                           maxLength={maxLength}
                           width="100%"
-                          value={unsavedText}
+                          value={decodedUnsavedText}
                           ref={el => { this._textarea = el } }
                           onKeyUp={this._handleKeyUp}
                           onChange={this._handleTextChange}
