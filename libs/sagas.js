@@ -15,6 +15,8 @@ export const httpMethod = {
     head: "head"
 };
 
+export const DEFAULT_ERROR_MESSAGE = "Ошибка сервера. Попробуйте чуть позже.";
+
 export function* fetchData({
     url,
     data = null,
@@ -38,7 +40,7 @@ export function* fetchData({
 
         yield put(onSuccess(responseData));
     } catch (e) {
-        Informer.showError(e.message);
+        Informer.showError(DEFAULT_ERROR_MESSAGE);
         Logger.error(generateAjaxErrorMessage({ url, requestMethod, data, errorMessage: e.message }));
         if (onError) {
             const errorData = additionalResponseData ? { ...additionalResponseData, error: e } : e;
