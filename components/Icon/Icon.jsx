@@ -1,11 +1,21 @@
 import { PureComponent, PropTypes } from "react";
 import IconType from "./IconType";
 import classnames from "classnames";
+import styles from "./Icon.scss";
 
 class Icon extends PureComponent {
     render() {
         const { type, className, onClick } = this.props;
-        const iconClass = classnames("iconic base-unselectable", className);
+        const hasStrikeout = type === IconType.TrashStrikeout;
+        const iconClass = classnames(
+            "iconic base-unselectable",
+            styles.icon,
+            {
+                [styles.strikeout]: hasStrikeout
+            },
+            className
+        );
+
         return (
             <span className={iconClass} unselectable="on" onClick={onClick}>
                 {type}

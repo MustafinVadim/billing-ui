@@ -1,0 +1,20 @@
+﻿@import "../../styles/bourbon";
+@import "../../styles/variables";
+
+:local {
+    .icon {
+        position: relative;
+    }
+
+    .strikeout:after {
+        @include position(absolute, .1em null null .4em);
+
+        content: "";
+
+        height: 1.2em;
+
+        transform: rotate(-45deg);
+
+        border-left: 1px solid $textBaseColor;
+    }
+}
