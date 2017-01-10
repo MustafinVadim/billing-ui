@@ -32,7 +32,6 @@ export const IconTypes = {
     ShoppingCartSolid: "\ue07c",
     Skip: "\ue052",
     Trash: "\ue022",
-    TrashStrikeout: "\ue022",
     Undo: "\ue012",
     Upload: "\ue02c",
     ArrowBoldDown: "\ue040",

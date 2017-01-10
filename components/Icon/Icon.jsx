@@ -5,13 +5,13 @@ import styles from "./Icon.scss";
 
 class Icon extends PureComponent {
     render() {
-        const { type, className, onClick } = this.props;
-        const hasStrikeout = type === IconType.TrashStrikeout;
+        const { type, className, onClick, isStrikeout } = this.props;
+
         const iconClass = classnames(
             "iconic base-unselectable",
             styles.icon,
             {
-                [styles.strikeout]: hasStrikeout
+                [styles.strikeout]: isStrikeout
             },
             className
         );
@@ -27,12 +27,14 @@ class Icon extends PureComponent {
 Icon.propTypes = {
     type: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    isStrikeout: PropTypes.bool
 };
 
 Icon.defaultProps = {
     className: "",
-    onClick: () => {}
+    onClick: () => {},
+    isStrikeout: false
 };
 
 export const IconTypes = IconType;
