@@ -121,7 +121,8 @@ describe("String helper", () => {
         });
 
         it("should switch to russian language string with symbols", () => {
-            expect(switchToRusLanguage("{}[],.<>:;'`Ё")).to.equal("ХЪхъбюБЮЖжэёЁ");
+            expect(switchToRusLanguage("{}[],.<>:;'`~")).to.equal("ХЪхъбюБЮЖжэёЁ");
+            // eslint-disable-next-line quotes
             expect(switchToRusLanguage('"')).to.equal("Э");
         });
     });

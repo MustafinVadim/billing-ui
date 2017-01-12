@@ -113,6 +113,7 @@ const layoutDictionary = {
     ";": "ж",
     ":": "Ж",
     "'": "э",
+    // eslint-disable-next-line quotes
     '"': "Э",
     "z": "я",
     "Z": "Я",
