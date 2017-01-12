@@ -1,5 +1,7 @@
 import { expect } from "chai";
-import { isUpperCase, innKppResolver, datesRangeResolver, toLowerFirstLetter, toShortProductName } from "../../helpers/StringHelpers";
+import {
+    isUpperCase, innKppResolver, datesRangeResolver, toLowerFirstLetter, toShortProductName, translite, switchToRusLanguage
+} from "../../helpers/StringHelpers";
 
 describe("String helper", () => {
     describe("isUpperCase helper", () => {
@@ -104,6 +106,23 @@ describe("String helper", () => {
         it("should trim full name with hyphen", () => {
             const actual = toShortProductName("Контур-Биллинг");
             expect(actual).to.equal("Биллинг");
+        });
+    });
+
+    describe("transliteration", () => {
+        it("should transliterate russian string", () => {
+            expect(translite("Привет")).to.equal("Privet");
+        });
+    });
+
+    describe("switch to russian language", () => {
+        it("should switch to russian language simple string", () => {
+            expect(switchToRusLanguage("ghbdtn")).to.equal("привет");
+        });
+
+        it("should switch to russian language string with symbols", () => {
+            expect(switchToRusLanguage("{}[],.<>:;'`Ё")).to.equal("ХЪхъбюБЮЖжэёЁ");
+            expect(switchToRusLanguage('"')).to.equal("Э");
         });
     });
 });

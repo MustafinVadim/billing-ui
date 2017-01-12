@@ -1,49 +1,3 @@
-export const isUpperCase = str => str === str.toUpperCase();
-
-export const innKppResolver = (inn, kpp) => {
-    let resolvedString = inn;
-    resolvedString += kpp ? ` — ${kpp}` : "";
-
-    return resolvedString;
-};
-
-export const datesRangeResolver = (beginDate, endDate) => {
-    if (!beginDate && !endDate) {
-        return null;
-    }
-
-    if (!beginDate) {
-        return `до ${endDate}`;
-    }
-
-    if (!endDate) {
-        return beginDate;
-    }
-
-    return `${beginDate} — ${endDate}`;
-};
-
-export const toLowerFirstLetter = str => {
-    if (!str) {
-        return "";
-    }
-
-    if (str.length === 1) {
-        return str.toLowerCase();
-    }
-
-    return str.substr(0, 1).toLowerCase() + str.substr(1);
-};
-
-export const toShortProductName = string => {
-    return string.replace("Контур.", "").replace("Контур-", "");
-};
-
-export const translite = string => {
-    const replacer = (symbol) => (transliteDictionary[symbol] || symbol);
-    return string.replace(/[А-яёЁ]/g, replacer)
-};
-
 const transliteDictionary = {
     "а": "a",
     "б": "b",
@@ -111,4 +65,126 @@ const transliteDictionary = {
     "Ь": "",
     "Ю": "YU",
     "Я": "YA"
+};
+
+const layoutDictionary = {
+    "q": "й",
+    "Q": "Й",
+    "w": "ц",
+    "W": "Ц",
+    "e": "у",
+    "E": "У",
+    "r": "к",
+    "R": "К",
+    "t": "е",
+    "T": "Е",
+    "y": "н",
+    "Y": "Н",
+    "u": "г",
+    "U": "Г",
+    "i": "ш",
+    "I": "Ш",
+    "o": "щ",
+    "O": "Щ",
+    "p": "з",
+    "P": "З",
+    "[": "х",
+    "{": "Х",
+    "]": "ъ",
+    "}": "Ъ",
+    "a": "ф",
+    "A": "Ф",
+    "s": "ы",
+    "S": "Ы",
+    "d": "в",
+    "D": "В",
+    "f": "а",
+    "F": "А",
+    "g": "п",
+    "G": "П",
+    "h": "р",
+    "H": "Р",
+    "j": "о",
+    "J": "О",
+    "k": "л",
+    "K": "Л",
+    "l": "д",
+    "L": "Д",
+    ";": "ж",
+    ":": "Ж",
+    "'": "э",
+    '"': "Э",
+    "z": "я",
+    "Z": "Я",
+    "x": "ч",
+    "X": "Ч",
+    "c": "с",
+    "C": "С",
+    "v": "м",
+    "V": "М",
+    "b": "и",
+    "B": "И",
+    "n": "т",
+    "N": "Т",
+    "m": "ь",
+    "M": "Ь",
+    ",": "б",
+    "<": "Б",
+    ".": "ю",
+    ">": "Ю",
+    "`": "ё",
+    "~": "Ё"
+};
+
+export const isUpperCase = str => str === str.toUpperCase();
+
+export const innKppResolver = (inn, kpp) => {
+    let resolvedString = inn;
+    resolvedString += kpp ? ` — ${kpp}` : "";
+
+    return resolvedString;
+};
+
+export const datesRangeResolver = (beginDate, endDate) => {
+    if (!beginDate && !endDate) {
+        return null;
+    }
+
+    if (!beginDate) {
+        return `до ${endDate}`;
+    }
+
+    if (!endDate) {
+        return beginDate;
+    }
+
+    return `${beginDate} — ${endDate}`;
+};
+
+export const toLowerFirstLetter = str => {
+    if (!str) {
+        return "";
+    }
+
+    if (str.length === 1) {
+        return str.toLowerCase();
+    }
+
+    return str.substr(0, 1).toLowerCase() + str.substr(1);
+};
+
+export const toShortProductName = string => {
+    return string.replace("Контур.", "").replace("Контур-", "");
+};
+
+export const translite = string => {
+    const replacer = symbol => (transliteDictionary[symbol] || symbol);
+
+    return string.replace(/[А-яёЁ]/g, replacer);
+};
+
+export const switchToRusLanguage = string => {
+    const replacer = symbol => (layoutDictionary[symbol] || symbol);
+
+    return string.replace(/[\S]/g, replacer);
 };
