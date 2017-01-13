@@ -230,7 +230,7 @@ class Autocomplete extends PureComponent {
                         <div className={optionClass}>
                             <Highlighter
                                 textToHighlight={Text}
-                                searchWords={[value, switchToRusLanguage(value),switchToEngLanguage(value)]}
+                                searchWords={[value, switchToRusLanguage(value), switchToEngLanguage(value)]}
                                 highlightClassName={styles.highlight} />
                         </div>
                         <div className={styles.description}>
