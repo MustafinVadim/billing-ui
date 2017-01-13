@@ -5,6 +5,7 @@ import axios from "../../libs/axios";
 
 import keyCodes from "../../helpers/KeyCodes";
 import { updateImmutableArrayByKey } from "../../helpers/ArrayHelper";
+import { switchToRusLanguage, switchToEngLanguage } from "../../helpers/StringHelpers";
 
 import TextInput from "../TextInput";
 import styles from "./Autocomplete.scss";
@@ -201,6 +202,7 @@ class Autocomplete extends PureComponent {
 
     renderOption(optionData, index) {
         const { renderItem, optionItemClassName, optionClassName } = this.props;
+        const { value } = this.state;
         const { Text, Description, AdditionalInfo } = optionData;
         const rootClass = cx({
             [styles.item]: true,
@@ -226,7 +228,10 @@ class Autocomplete extends PureComponent {
                             {AdditionalInfo}
                         </div>
                         <div className={optionClass}>
-                            <Highlighter textToHighlight={Text} searchWords={[this.state.value]} highlightClassName={styles.highlight} />
+                            <Highlighter
+                                textToHighlight={Text}
+                                searchWords={[value, switchToRusLanguage(value),switchToEngLanguage(value)]}
+                                highlightClassName={styles.highlight} />
                         </div>
                         <div className={styles.description}>
                             {Description}

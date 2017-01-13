@@ -67,7 +67,7 @@ const transliteDictionary = {
     "Я": "YA"
 };
 
-const layoutDictionary = {
+const layoutRuDictionary = {
     "q": "й",
     "Q": "Й",
     "w": "ц",
@@ -137,6 +137,78 @@ const layoutDictionary = {
     "~": "Ё"
 };
 
+const layoutEnDictionary = {
+    "й": "q",
+    "Й": "Q",
+    "ц": "w",
+    "Ц": "W",
+    "у": "e",
+    "У": "E",
+    "к": "r",
+    "К": "R",
+    "е": "t",
+    "Е": "T",
+    "н": "y",
+    "Н": "Y",
+    "г": "u",
+    "Г": "U",
+    "ш": "i",
+    "Ш": "I",
+    "щ": "o",
+    "Щ": "O",
+    "з": "p",
+    "З": "P",
+    "х": "[",
+    "Х": "{",
+    "ъ": "]",
+    "Ъ": "}",
+    "ф": "a",
+    "Ф": "A",
+    "ы": "s",
+    "Ы": "S",
+    "в": "d",
+    "В": "D",
+    "а": "f",
+    "А": "F",
+    "п": "g",
+    "П": "G",
+    "р": "h",
+    "Р": "H",
+    "о": "j",
+    "О": "J",
+    "л": "k",
+    "Л": "K",
+    "д": "l",
+    "Д": "L",
+    "ж": ";",
+    "Ж": ":",
+    "э": "'",
+    // eslint-disable-next-line quotes
+    "Э": '"',
+    "я": "z",
+    "Я": "Z",
+    "ч": "x",
+    "Ч": "X",
+    "с": "c",
+    "С": "C",
+    "м": "v",
+    "М": "V",
+    "и": "b",
+    "И": "B",
+    "т": "n",
+    "Т": "N",
+    "ь": "m",
+    "Ь": "M",
+    "б": ",",
+    "Б": "<",
+    "ю": ".",
+    "Ю": ">",
+    ".": "/",
+    ",": "?",
+    // eslint-disable-next-line quotes
+    '"': "@"
+};
+
 export const isUpperCase = str => str === str.toUpperCase();
 
 export const innKppResolver = (inn, kpp) => {
@@ -185,7 +257,13 @@ export const translite = string => {
 };
 
 export const switchToRusLanguage = string => {
-    const replacer = symbol => (layoutDictionary[symbol] || symbol);
+    const replacer = symbol => (layoutRuDictionary[symbol] || symbol);
+
+    return string.replace(/[\S]/g, replacer);
+};
+
+export const switchToEngLanguage = string => {
+    const replacer = symbol => (layoutEnDictionary[symbol] || symbol);
 
     return string.replace(/[\S]/g, replacer);
 };

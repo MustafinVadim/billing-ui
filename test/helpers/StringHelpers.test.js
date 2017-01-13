@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import {
-    isUpperCase, innKppResolver, datesRangeResolver, toLowerFirstLetter, toShortProductName, translite, switchToRusLanguage
+    isUpperCase, innKppResolver, datesRangeResolver, toLowerFirstLetter, toShortProductName, translite, switchToRusLanguage, switchToEngLanguage
 } from "../../helpers/StringHelpers";
 
 describe("String helper", () => {
@@ -124,6 +124,20 @@ describe("String helper", () => {
             expect(switchToRusLanguage("{}[],.<>:;'`~")).to.equal("ХЪхъбюБЮЖжэёЁ");
             // eslint-disable-next-line quotes
             expect(switchToRusLanguage('"')).to.equal("Э");
+        });
+    });
+
+    describe("switch to english language", () => {
+        it("should switch to english language simple string", () => {
+            expect(switchToEngLanguage("руддщ")).to.equal("hello");
+        });
+
+        it("should switch to english language string with symbols", () => {
+            expect(switchToEngLanguage("ХЪхъбюБЮЖжэ")).to.equal("{}[],.<>:;'");
+            // eslint-disable-next-line quotes
+            expect(switchToEngLanguage("Э")).to.equal('"');
+            // eslint-disable-next-line quotes
+            expect(switchToEngLanguage('"')).to.equal("@");
         });
     });
 });
