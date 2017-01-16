@@ -101,7 +101,7 @@ $susy: (columns: 3, gutters: 0, gutter-position: before);
     }
 
     .actions {
-        @include container;
+        @include container();
 
         margin-top: 20px;
     }
