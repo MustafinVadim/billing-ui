@@ -93,7 +93,7 @@ class ActionsBar extends PureComponent {
         return (
             <div className={styles["actionsBar-wrapper"]}>
                 <div className={styles["ghost-actionsBar"]} style={ghostActionsBarStyle}></div>
-                <div className={actionsBarClassNames} style={actionsBarStyle} ref={el => this._actionsBarNode = ReactDOM.findDOMNode(el)}>
+                <div className={actionsBarClassNames} style={actionsBarStyle} ref={el => { this._actionsBarNode = ReactDOM.findDOMNode(el) }}>
                     {showSubmit && (
                         <Button type={ButtonType.button}
                             onClick={onSubmitClick}
