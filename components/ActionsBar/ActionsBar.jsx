@@ -1,41 +1,124 @@
-import { PropTypes } from "react";
+import { PureComponent, PropTypes } from "react";
+import ReactDOM from "react-dom";
 import cx from "classnames";
+import debounce from "lodash/debounce";
+import events from "add-event-listener";
+import isEqual from "lodash/isEqual";
 
 import Button, { ButtonType } from "../Button";
+import NavigatorResolver from "../../helpers/NavigatorResolver";
+import { containerNodeSelector } from "./StickyActionBarContainer";
+import { findContainer, getAbsoluteHeight } from "../../helpers/NodeHelper";
 
 import styles from "./ActionsBar.scss";
 
-const ActionsBar = ({
-    showSubmit,
-    showCancel,
-    barClassName, submitClassName, cancelClassName,
-    submitText, cancelText,
-    submitDisabled, cancelDisabled,
-    onSubmitClick, onCancelClick,
-    submitAttributes, cancelAttributes,
-    children
-}) => (
-    <div className={cx(styles.actionsBar, barClassName)}>
-        {showSubmit && (
-            <Button type={ButtonType.button}
-                    onClick={onSubmitClick}
-                    disabled={submitDisabled}
-                    className={cx(styles.actionSubmit, submitClassName, {[styles.disabled]: submitDisabled})}
-                    attributes={submitAttributes} >
-                {submitText}
-            </Button>
-        )}
-        {showCancel && (
-            <button type="button"
-                    onClick={() => { if (!cancelDisabled) onCancelClick() }}
-                    className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
-                    { ...cancelAttributes } >
-                {cancelText}
-            </button>
-        )}
-        {children}
-    </div>
-);
+class ActionsBar extends PureComponent {
+    constructor(props) {
+        super(props);
+        this._isIEInWin10 = NavigatorResolver.isWin10 && (NavigatorResolver.isIE11 || NavigatorResolver.isEdge);
+
+        this.state = {
+            fixed: false,
+            heightActionsBar: 0
+        };
+    }
+
+    componentDidMount() {
+        this._handleResize = debounce(this._renderActionsBar.bind(this), 100);
+        this._handleRender = debounce(this._renderActionsBar.bind(this), 50);
+
+        this._handleRender();
+        events.addEventListener(window, "resize", this._handleResize);
+    }
+
+    componentDidUpdate() {
+        this._handleRender();
+    }
+
+    componentWillUnmount() {
+        events.removeEventListener(window, "resize", this._handleResize);
+    }
+
+    _renderActionsBar() {
+        this._containerNode = findContainer(this._actionsBarNode, containerNodeSelector);
+        this._mainWrapperNode = this._containerNode && findContainer(this._containerNode);
+
+        if (!this._containerNode) {
+            return;
+        }
+
+        const newState = this._collectState();
+        if (!isEqual(newState, this.state)) {
+            this.setState(newState)
+        }
+    }
+
+    _collectState() {
+        const fixed = this._containerNode.scrollHeight > this._mainWrapperNode.clientHeight;
+
+        if (this.state.fixed === fixed) {
+            return this.state;
+        }
+
+        return {
+            fixed,
+            heightActionsBar: fixed && this._actionsBarNode
+                ? getAbsoluteHeight(this._actionsBarNode)
+                : 0
+        }
+    }
+
+    handleCancelClick = () => {
+        const { cancelDisabled, onCancelClick } = this.props;
+
+        if (!cancelDisabled) {
+            onCancelClick();
+        }
+    };
+
+    render() {
+        const {
+            showSubmit, showCancel, barClassName, submitClassName, cancelClassName, submitText, cancelText, submitDisabled, cancelDisabled,
+            onSubmitClick, submitAttributes, cancelAttributes, children
+        } = this.props;
+
+        const actionsBarClassNames = cx(styles.actionsBar, barClassName, {
+            [styles.fixed]: this.state.fixed && !this._isIEInWin10,
+            [styles["ms-device-fixed"]]: this.state.fixed && this._isIEInWin10
+        });
+
+        const actionsBarStyle = this.state.fixed ? { width: this._containerNode.offsetWidth } : {};
+        const ghostActionsBarStyle = this.state.fixed ? { height: this.state.heightActionsBar } : {};
+
+        return (
+            <div className={styles["actionsBar-wrapper"]}>
+                <div className={styles["ghost-actionsBar"]} style={ghostActionsBarStyle}></div>
+                <div className={actionsBarClassNames} style={actionsBarStyle} ref={el => this._actionsBarNode = ReactDOM.findDOMNode(el)}>
+                    {showSubmit && (
+                        <Button type={ButtonType.button}
+                            onClick={onSubmitClick}
+                            disabled={submitDisabled}
+                            className={cx(styles.actionSubmit, submitClassName, {[styles.disabled]: submitDisabled})}
+                            attributes={submitAttributes}
+                        >
+                            {submitText}
+                        </Button>
+                    )}
+                    {showCancel && (
+                        <button type="button"
+                            onClick={this.handleCancelClick}
+                            className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
+                            { ...cancelAttributes }
+                        >
+                            {cancelText}
+                        </button>
+                    )}
+                    {children}
+                </div>
+            </div>
+        );
+    }
+}
 
 ActionsBar.propTypes = {
     showSubmit: PropTypes.bool.isRequired,

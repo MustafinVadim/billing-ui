@@ -2,4 +2,35 @@
 
 :local {
     @include action-bar();
+
+    %as-fixed {
+        position: fixed;
+        bottom: 0;
+
+        margin-bottom: 0;
+
+        transition: all .3s ease-in-out;
+    }
+
+    .ghost-actionsBar {
+        padding: 0;
+
+        visibility: hidden;
+    }
+
+    .actionsBar {
+        box-sizing: border-box;
+
+        &.fixed {
+            @extend %as-fixed;
+
+            box-sizing: border-box;
+        }
+
+        &.ms-device-fixed {
+            @extend %as-fixed;
+
+            position: -ms-device-fixed;
+        }
+    }
 }
