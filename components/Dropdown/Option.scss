@@ -17,12 +17,12 @@
         cursor: pointer;
 
         &:after {
-            @include position(absolute, 70px null null 0);
+            @include position(absolute, null null 0 0);
 
             content: "";
 
             width: 100%;
-            height: 17px;
+            height: 20px;
 
             background: linear-gradient(to bottom, rgba(255, 255, 255, .2), rgb(255, 255, 255) 75%);
         }
