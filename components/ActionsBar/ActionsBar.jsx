@@ -24,8 +24,8 @@ class ActionsBar extends PureComponent {
     }
 
     componentDidMount() {
-        this._handleResize = debounce(this._renderActionsBar.bind(this), 100);
-        this._handleRender = debounce(this._renderActionsBar.bind(this), 50);
+        this._handleResize = debounce(this._renderStickyActionsBar.bind(this), 100);
+        this._handleRender = debounce(this._renderStickyActionsBar.bind(this), 50);
 
         this._handleRender();
         events.addEventListener(window, "resize", this._handleResize);
@@ -39,7 +39,7 @@ class ActionsBar extends PureComponent {
         events.removeEventListener(window, "resize", this._handleResize);
     }
 
-    _renderActionsBar() {
+    _renderStickyActionsBar() {
         this._containerNode = findContainer(this._actionsBarNode, containerNodeSelector);
         this._mainWrapperNode = this._containerNode && findContainer(this._containerNode);
 

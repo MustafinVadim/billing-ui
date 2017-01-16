@@ -13,8 +13,6 @@
     }
 
     .ghost-actionsBar {
-        padding: 0;
-
         visibility: hidden;
     }
 
@@ -23,8 +21,6 @@
 
         &.fixed {
             @extend %as-fixed;
-
-            box-sizing: border-box;
         }
 
         &.ms-device-fixed {
