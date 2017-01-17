@@ -27,6 +27,12 @@
         &.clearable {
             padding-right: 30px;
         }
+
+        &:focus {
+            & ~ .counter {
+                opacity: 1;
+            }
+        }
     }
 
     .placeholder-wrapper {
@@ -62,6 +68,25 @@
 
         &:hover {
             color: $textErrorColor;
+        }
+    }
+
+    .counter {
+        @extend %as-inline-block;
+
+        position: absolute;
+        right: 0;
+
+        margin-top: 3px;
+
+        opacity: 0;
+
+        transition: opacity .1s ease-in-out;
+
+        color: $textSecondaryColor;
+
+        &.invalid {
+            opacity: 1;
         }
     }
 }

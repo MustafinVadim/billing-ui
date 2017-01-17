@@ -41,6 +41,10 @@
             & ~ .label {
                 @extend %filled-text;
             }
+
+            & ~ .counter {
+                opacity: 1;
+            }
         }
 
         &[readonly],
@@ -53,6 +57,10 @@
                 &.filled {
                     @extend %filled-text;
                 }
+            }
+
+            & ~ .counter {
+                opacity: 0;
             }
         }
 
@@ -125,6 +133,25 @@
 
         &:hover {
             color: $textErrorColor;
+        }
+    }
+
+    .counter {
+        @extend %as-inline-block;
+
+        position: absolute;
+        right: 0;
+
+        margin-top: 3px;
+
+        opacity: 0;
+
+        transition: opacity .1s ease-in-out;
+
+        color: $textSecondaryColor;
+
+        &.invalid {
+            opacity: 1;
         }
     }
 }

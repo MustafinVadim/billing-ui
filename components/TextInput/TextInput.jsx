@@ -57,23 +57,33 @@ class TextInput extends PureComponent {
             isValid,
             isTextArea,
             inputClassName,
+            counterClassName,
             tooltipCaption,
             tooltipType,
             tooltipPosition,
             tooltipClassName,
             clearable,
             forceInvalid,
+            maxCounter,
             ...others
         } = this.props;
         const { wasTouched } = this.state;
 
         const isInvalid = (!isValid && wasTouched) || forceInvalid;
 
+        const hasCounter = !!maxCounter;
+        const valueLength = others.value ? others.value.length : 0;
+        const counter = maxCounter - valueLength;
+
         const inputClassNames = classnames(styles.input, inputClassName, {
             [styles["input-validation-error"]]: isInvalid,
             [styles.readonly]: others.readonly,
             [styles.disabled]: others.disabled,
             [styles.clearable]: clearable
+        });
+
+        const counterClassNames = classnames(styles.counter, counterClassName, {
+            [styles["invalid"]]: isInvalid && counter < 0
         });
 
         const inputProps = {
@@ -106,12 +116,18 @@ class TextInput extends PureComponent {
 
                 {!isTextArea && mask && (
                     <MaskedInput {...inputProps} mask={mask}
-                                 maskChar={maskChar || "_"}
-                                 alwaysShowMask={alwaysShowMask} />
+                        maskChar={maskChar || "_"}
+                        alwaysShowMask={alwaysShowMask} />
                 )}
 
                 {!isTextArea && !mask && (
                     <input {...inputProps} />
+                )}
+
+                {hasCounter && (
+                    <span className={counterClassNames}>
+                        {counter}
+                    </span>
                 )}
 
                 {hasTooltip && (
@@ -143,12 +159,14 @@ TextInput.propTypes = {
     validateFunction: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.func)]),
     isTextArea: PropTypes.bool,
     maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    maxCounter: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     mask: PropTypes.string,
     maskChar: PropTypes.string,
     alwaysShowMask: PropTypes.bool,
     inputClassName: PropTypes.string,
+    counterClassName: PropTypes.string,
     styles: PropTypes.object,
     tooltipCaption: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.element]),
     tooltipClassName: PropTypes.string,
