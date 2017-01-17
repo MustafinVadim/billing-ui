@@ -1,15 +1,15 @@
 ﻿import { PureComponent, PropTypes } from "react";
-import { debounce } from "underscore";
-import Highlighter from "react-highlight-words";
+import debounce from "lodash/debounce";
+import cx from "classnames";
 import axios from "../../libs/axios";
 
+import Highlighter from "../Highlighter";
 import keyCodes from "../../helpers/KeyCodes";
 import { updateImmutableArrayByKey } from "../../helpers/ArrayHelper";
 import { switchToRusLanguage, switchToEngLanguage } from "../../helpers/StringHelpers";
 
 import TextInput from "../TextInput";
 import styles from "./Autocomplete.scss";
-import cx from "classnames";
 
 class Autocomplete extends PureComponent {
     _valueCreator = null;
@@ -230,8 +230,7 @@ class Autocomplete extends PureComponent {
                         <div className={optionClass}>
                             <Highlighter
                                 textToHighlight={Text}
-                                searchWords={[value, switchToRusLanguage(value), switchToEngLanguage(value)]}
-                                highlightClassName={styles.highlight} />
+                                searchWords={[value, switchToRusLanguage(value), switchToEngLanguage(value)]} />
                         </div>
                         <div className={styles.description}>
                             {Description}
