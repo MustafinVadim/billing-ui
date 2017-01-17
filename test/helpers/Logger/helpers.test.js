@@ -16,7 +16,7 @@ describe("logger generateAjaxErrorMessage helper", () => {
         const expected = [
             `REQUEST URL: ${url}`,
             `HTTP METHOD: ${requestMethod}`,
-            `REQUEST DATA: ${data}`,
+            `REQUEST DATA: ${JSON.stringify(data)}`,
             `ERROR MESSAGE: ${errorMessage}`
         ];
 
