@@ -72,7 +72,7 @@ class TextInput extends PureComponent {
         const isInvalid = (!isValid && wasTouched) || forceInvalid;
 
         const hasCounter = !!maxCounter;
-        const valueLength = others.value ? others.value.length : 0;
+        const valueLength = others.value ? others.value.trim().length : 0;
         const counter = maxCounter - valueLength;
 
         const inputClassNames = classnames(styles.input, inputClassName, {
