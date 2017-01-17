@@ -1,4 +1,7 @@
 import memoize from "lodash/memoize";
+import pick from "lodash/pick";
+import filter from "lodash/filter";
+import isPlainObject from "lodash/isPlainObject";
 
 const INN_WEIGHTS = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8];
 const LEGAL_INN_LENGTH = 10;
@@ -29,6 +32,37 @@ const matchInnCheckSum = memoize((inn) => {
 
     return isInnLegal ? matchCheckSum(innDigits, 9) : (matchCheckSum(innDigits, 10) && matchCheckSum(innDigits, 11));
 });
+
+export const isFieldValid = (validationResults) => {
+    return !Object.keys(validationResults || {}).some(field => {
+        if (Array.isArray(validationResults[field])) {
+            return (validationResults[field] || []).some(validationResult => !validationResult.isValid);
+        }
+
+        return !validationResults[field].isValid;
+    });
+};
+
+export const isFormInvalid = (form) => {
+    if (!form) {
+        return false;
+    }
+
+    if (Array.isArray(form)) {
+        return (form || []).some(f => isFormInvalid(f));
+    }
+
+    if (isPlainObject(form)) {
+        return !isFieldValid(form.validationResult)
+            || Object.keys(form || {}).some(f => isFormInvalid(form[f]));
+    }
+
+    return false;
+};
+
+export const getFormWithoutValidation = (form) => {
+    return pick(form, filter(Object.keys(form || {}), field => field !== "validationResult"));
+};
 
 export const validate = (value, validateFunction) => {
     if (typeof validateFunction === "function") {
