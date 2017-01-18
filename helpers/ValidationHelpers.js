@@ -39,6 +39,10 @@ export const isFieldValid = (validationResults) => {
             return (validationResults[field] || []).some(validationResult => !validationResult.isValid);
         }
 
+        if (isPlainObject(validationResults[field]) && validationResults[field].isValid === undefined) {
+            return !isFieldValid(validationResults[field]);
+        }
+
         return !validationResults[field].isValid;
     });
 };
