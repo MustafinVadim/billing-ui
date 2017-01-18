@@ -1,4 +1,5 @@
 import memoize from "lodash/memoize";
+import has from "lodash/has";
 import pick from "lodash/pick";
 import filter from "lodash/filter";
 import isPlainObject from "lodash/isPlainObject";
@@ -33,17 +34,22 @@ const matchInnCheckSum = memoize((inn) => {
     return isInnLegal ? matchCheckSum(innDigits, 9) : (matchCheckSum(innDigits, 10) && matchCheckSum(innDigits, 11));
 });
 
+const isValidationResult = (validationResults) => has(validationResults, "isValid");
+
 export const isFieldValid = (validationResults) => {
     return !Object.keys(validationResults || {}).some(field => {
+        if (isValidationResult(validationResults[field])) {
+            return !validationResults[field].isValid;
+        }
+
         if (Array.isArray(validationResults[field])) {
             return (validationResults[field] || []).some(validationResult => !validationResult.isValid);
         }
 
-        if (isPlainObject(validationResults[field]) && validationResults[field].isValid === undefined) {
+        if (isPlainObject(validationResults[field])) {
             return !isFieldValid(validationResults[field]);
         }
 
-        return !validationResults[field].isValid;
     });
 };
 

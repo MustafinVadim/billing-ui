@@ -39,6 +39,19 @@ describe("ValidationHelpers", () => {
         it("Должен вернуть false - т.к. есть невалидное поле на линейной форме", () => {
             const validationResults = freeze({
                 Fio: DEFAULT_VALIDATION_RESULT,
+                ProductId: DEFAULT_VALIDATION_RESULT,
+                Contact: {
+                    Fio: DEFAULT_VALIDATION_RESULT,
+                    Post: DEFAULT_VALIDATION_RESULT,
+                    Emails: {
+                        Emails1: DEFAULT_VALIDATION_RESULT,
+                        Emails2: DEFAULT_VALIDATION_RESULT
+                    },
+                    Phones: {
+                        Phones1: DEFAULT_VALIDATION_RESULT,
+                        Phones2: DEFAULT_VALIDATION_RESULT
+                    }
+                },
                 Post: { isValid: false, error: "Длина не должны превышать 255 символов" }
             });
 
@@ -71,6 +84,43 @@ describe("ValidationHelpers", () => {
                     DEFAULT_VALIDATION_RESULT,
                     { isValid: false, error: "Не валидный e-mail" }
                 ]
+            });
+
+            const isValidForm = isFieldValid(validationResults);
+
+            expect(isValidForm).to.be.false;
+        });
+
+        it("Должен вернуть true - т.к. все поля валидные во вложенной валидации (проверка прохода по объекту)", () => {
+            const validationResults = freeze({
+                Fio: DEFAULT_VALIDATION_RESULT,
+                Post: DEFAULT_VALIDATION_RESULT,
+                Emails: {
+                    Emails1: DEFAULT_VALIDATION_RESULT,
+                    Emails2: DEFAULT_VALIDATION_RESULT
+                }
+            });
+
+            const isValidForm = isFieldValid(validationResults);
+
+            expect(isValidForm).to.be.true;
+        });
+
+        it("Должен вернуть false - т.к. есть невалидное поле во вложенной валидации (проверка прохода по объекту)", () => {
+            const validationResults = freeze({
+                ProductId: DEFAULT_VALIDATION_RESULT,
+                Contact: {
+                    Fio: DEFAULT_VALIDATION_RESULT,
+                    Post: DEFAULT_VALIDATION_RESULT,
+                    Emails: {
+                        Emails1: DEFAULT_VALIDATION_RESULT,
+                        Emails2: DEFAULT_VALIDATION_RESULT
+                    },
+                    Phones: {
+                        Phones1: DEFAULT_VALIDATION_RESULT,
+                        Phones2: { isValid: false, error: "Не валидный телефон" }
+                    }
+                }
             });
 
             const isValidForm = isFieldValid(validationResults);
