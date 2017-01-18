@@ -19,6 +19,8 @@
     .actionsBar {
         box-sizing: border-box;
 
+        backface-visibility: hidden;
+
         &.fixed {
             @extend %as-fixed;
         }
