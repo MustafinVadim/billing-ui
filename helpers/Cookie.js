@@ -3,7 +3,7 @@ const cookie = {
         cookie._checkKeyValid(key);
         const pattern = new RegExp("(?:^|; )" + key + "=([^;]*)");
         const matches = document.cookie.match(pattern);
-        return matches ? JSON.parse(decodeURIComponent(matches[1])) : undefined;
+        return matches && matches[1] ? JSON.parse(decodeURIComponent(matches[1])) : undefined;
     },
 
     set: (key, value, options) => {
