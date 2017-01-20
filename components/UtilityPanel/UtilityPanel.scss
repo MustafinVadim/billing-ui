@@ -3,6 +3,7 @@
 @import "../../styles/animations";
 $verticalIndent: 17px;
 $horizontalIndent: 30px;
+$headerHeight: 57px;
 
 :local {
     .wrapper {
@@ -55,10 +56,7 @@ $horizontalIndent: 30px;
     }
 
     .body {
-        height: calc(100% - 55px);
+        height: calc(100% - #{$headerHeight});
         box-sizing: border-box;
-
-        overflow-x: hidden;
-        overflow-y: auto;
     }
 }

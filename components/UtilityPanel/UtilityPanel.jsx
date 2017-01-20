@@ -1,5 +1,6 @@
 import { PureComponent, PropTypes } from "react";
 import cx from "classnames";
+import Scrollbar from "../../components/Scrollbar";
 import Icon, { IconTypes } from "../Icon";
 
 import styles from "./UtilityPanel.scss";
@@ -34,9 +35,9 @@ class UtilityPanel extends PureComponent {
                     <span data-ft-id="utility-panel-title">{title}</span>
                     {headerAdditionalContent}
                 </div>
-                <div className={bodyClassNames}>
+                <Scrollbar containerClassName={bodyClassNames}>
                     {children}
-                </div>
+                </Scrollbar>
             </div>
         );
     }
