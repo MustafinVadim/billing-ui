@@ -1,0 +1,82 @@
+﻿@import "../../styles/bourbon";
+@import "../../styles/variables";
+
+:local {
+    $borderRadius: 3px;
+    $defaultWidth: 6px;
+    $color: #000;
+
+    .container {
+        position: relative;
+
+        width: 100%;
+        height: 100%;
+
+        overflow: hidden;
+    }
+
+    .view {
+        @include position(absolute, 0 0 0 0);
+
+        overflow-y: scroll;
+    }
+
+    .track {
+        opacity: 0;
+
+        transition: $transitionDefault;
+
+        border-radius: $borderRadius;
+
+        &.is-vertical {
+            @include position(absolute, 2px 2px 2px null);
+
+            width: $defaultWidth * 2;
+        }
+
+        &.is-horizontal {
+            @include position(absolute, null 2px 2px 2px);
+
+            height: $defaultWidth * 2;
+        }
+
+        :local(.container:hover) & {
+            opacity: 1;
+        }
+    }
+
+    .thumb {
+        position: relative;
+        z-index: $scrollBarZIndex;
+
+        opacity: .2;
+
+        transition: $transitionDefault;
+
+        border-radius: $borderRadius;
+        background-color: $color;
+
+        &.is-vertical {
+            width: $defaultWidth;
+            margin: auto;
+
+            &:hover {
+                width: $defaultWidth * 2;
+            }
+        }
+
+        &.is-horizontal {
+            height: $defaultWidth;
+
+            &:hover {
+                height: $defaultWidth * 2;
+            }
+        }
+
+        &:hover {
+            opacity: .5;
+
+            border-radius: $borderRadius * 2;
+        }
+    }
+}
