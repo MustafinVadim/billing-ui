@@ -49,7 +49,6 @@ export const isFieldValid = (validationResults) => {
         if (isPlainObject(validationResults[field])) {
             return !isFieldValid(validationResults[field]);
         }
-
     });
 };
 
