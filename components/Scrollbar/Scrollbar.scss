@@ -51,14 +51,14 @@
 
         opacity: .2;
 
-        transition: $transitionDefault;
-
         border-radius: $borderRadius;
         background-color: $color;
 
         &.is-vertical {
             width: $defaultWidth;
             margin: auto;
+
+            transition: width $transitionBaseTime $transitionBaseTimingFunction;
 
             &:hover {
                 width: $defaultWidth * 2;
@@ -67,6 +67,8 @@
 
         &.is-horizontal {
             height: $defaultWidth;
+
+            transition: height $transitionBaseTime $transitionBaseTimingFunction;
 
             &:hover {
                 height: $defaultWidth * 2;
