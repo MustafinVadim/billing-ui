@@ -23,4 +23,11 @@ describe("generate url with query parameters", () => {
         const actual = getUrlWithQuery(initUrl, initParams);
         expect(actual).to.deep.equal(expectedUrl);
     });
+
+    it("не падает, если не передавать params", () => {
+        const initUrl = "/controller/action";
+
+        const actual = getUrlWithQuery(initUrl);
+        expect(actual).to.deep.equal(initUrl);
+    });
 });
