@@ -57,6 +57,5 @@ $headerHeight: 57px;
 
     .body {
         height: calc(100% - #{$headerHeight});
-        box-sizing: border-box;
     }
 }

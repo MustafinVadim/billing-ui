@@ -1,8 +1,8 @@
 import { PureComponent, PropTypes } from "react";
-import cx from "classnames";
 import ReactScrollbar from "react-custom-scrollbars";
 
 import styles from "./Scrollbar.scss";
+import cx from "classnames";
 
 class Scrollbar extends PureComponent {
     _renderTrackHorizontal = props => {
