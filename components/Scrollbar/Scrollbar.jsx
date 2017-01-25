@@ -5,6 +5,22 @@ import styles from "./Scrollbar.scss";
 import cx from "classnames";
 
 class Scrollbar extends PureComponent {
+    constructor(props) {
+        super(props);
+        this._scrollbar = null;
+        this._autoUpdateInterval = setInterval(this._forceUpdate, 60);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this._autoUpdateInterval);
+    }
+
+    _forceUpdate = () => {
+        if (this._scrollbar) {
+            this._scrollbar.forceUpdate();
+        }
+    };
+
     _renderTrackHorizontal = props => {
         const resetStyle = {
             position: null,
@@ -61,6 +77,9 @@ class Scrollbar extends PureComponent {
                 renderTrackVertical={this._renderTrackVertical}
                 renderThumbHorizontal={this._renderThumbHorizontal}
                 renderThumbVertical={this._renderThumbVertical}
+                ref={el => {
+                    this._scrollbar = el
+                }}
             >
                 {children}
             </ReactScrollbar>
