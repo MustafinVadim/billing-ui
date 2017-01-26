@@ -60,7 +60,7 @@ class Scrollbar extends PureComponent {
     };
 
     render() {
-        const { children, containerClassName, onScroll } = this.props;
+        const { children, containerClassName, ...scrollbarProps } = this.props;
 
         const resetDefaultContainerStyle = {
             position: null,
@@ -77,7 +77,7 @@ class Scrollbar extends PureComponent {
                 renderTrackVertical={this._renderTrackVertical}
                 renderThumbHorizontal={this._renderThumbHorizontal}
                 renderThumbVertical={this._renderThumbVertical}
-                onScroll={onScroll}
+                {...scrollbarProps}
                 ref={el => {
                     this._scrollbar = el
                 }}
@@ -91,9 +91,8 @@ class Scrollbar extends PureComponent {
 Scrollbar.propTypes = {
     containerClassName: PropTypes.string,
 
-    children: PropTypes.node.isRequired,
-
-    onScroll: PropTypes.func
+    children: PropTypes.node.isRequired
+    // Так же можно передать остальные props ReactScrollbar
 };
 
 export default Scrollbar;
