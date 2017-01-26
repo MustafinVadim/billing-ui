@@ -7,6 +7,9 @@ class GoogleAnalytics {
                 GoogleAnalytics.triggerEventAsync(evt.category, evt.action, evt.label);
             });
         }
+        else {
+            GoogleAnalytics.triggerEventAsync(evt.category, evt.action, evt.label);
+        }
     }
 
     static triggerEventAsync(category, action, label) {
