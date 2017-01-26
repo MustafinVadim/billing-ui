@@ -6,9 +6,8 @@ class GoogleAnalytics {
             events.forEach(evt => {
                 GoogleAnalytics.triggerEventAsync(evt.category, evt.action, evt.label);
             });
-        }
-        else {
-            GoogleAnalytics.triggerEventAsync(evt.category, evt.action, evt.label);
+        } else {
+            GoogleAnalytics.triggerEventAsync(events.category, events.action, events.label);
         }
     }
 
