@@ -1,0 +1,49 @@
+﻿@import "../variables";
+
+%shadow-box {
+    margin-top: 10px;
+    padding: 10px 20px 10px 30px;
+    box-sizing: border-box;
+
+    border: 1px solid $borderBaseColor;
+    border-top-color: $borderLightColor;
+    border-bottom-color: transparent;
+    border-radius: 1px;
+    background: $bgElementActiveLightColor;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+
+    line-height: $lineHeightRegular;
+
+    cursor: pointer;
+
+    &:hover,
+    &.is-active {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .3);
+    }
+}
+
+%as-reset-button {
+    border: none;
+    background: transparent;
+
+    &:hover,
+    &:focus {
+        border: none;
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+%as-reset-input {
+    border: none;
+    background-color: transparent;
+
+    cursor: pointer;
+
+    &:focus,
+    &:active {
+        border: none;
+        outline: none;
+        box-shadow: none;
+    }
+}
