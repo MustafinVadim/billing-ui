@@ -69,6 +69,7 @@ TextInputWrapper.propTypes = {
     counterClassName: PropTypes.string,
     labelClassName: PropTypes.string,
     placeholderClassName: PropTypes.string,
+    placeholderWrapperClassName: PropTypes.string,
     styles: PropTypes.object,
     type: PropTypes.oneOf(Object.keys(TextInputType).map((key) => TextInputType[key]))
     // Так же можно передать остальные стандартные атрибуты текстового инпута, но визуально они ни как не обрабатываются

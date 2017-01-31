@@ -28,11 +28,11 @@ class DefaultTextInput extends PureComponent {
     };
 
     render() {
-        const { styles, wrapperClassName, placeholderClassName, placeholder, value, clearable, ...inputProps } = this.props;
+        const { styles, wrapperClassName, placeholderClassName, placeholderWrapperClassName, placeholder, value, clearable, ...inputProps } = this.props;
 
         const wrapperClassNames = classnames(styles.wrapper, wrapperClassName);
         const placeholderClassNames = classnames(styles.placeholder, placeholderClassName);
-        const placeholderWrapperClassNames = classnames(styles["placeholder-wrapper"], {
+        const placeholderWrapperClassNames = classnames(styles["placeholder-wrapper"], placeholderWrapperClassName, {
             [styles["as-hidden"]]: value
         });
 
@@ -42,11 +42,11 @@ class DefaultTextInput extends PureComponent {
                     <span className={placeholderClassNames}>{placeholder}</span>
                 </span>
                 <Input {...inputProps}
-                       value={value}
-                       clearable={clearable}
-                       styles={styles}
-                       onChange={this.handleChange}
-                       ref={(el) => {
+                    value={value}
+                    clearable={clearable}
+                    styles={styles}
+                    onChange={this.handleChange}
+                    ref={(el) => {
                            var inputNode = ReactDOM.findDOMNode(el);
                            this.input = inputNode && (inputNode.getElementsByTagName("input")[0] || inputNode.getElementsByTagName("textarea")[0]);
                        }}
@@ -79,6 +79,7 @@ DefaultTextInput.propTypes = {
     wrapperClassName: PropTypes.string,
     inputClassName: PropTypes.string,
     placeholderClassName: PropTypes.string,
+    placeholderWrapperClassName: PropTypes.string,
     styles: PropTypes.object
 };
 
