@@ -97,6 +97,7 @@ class TextInput extends PureComponent {
                 "height": height
             },
             type: "text",
+            ["data-ft-id"]: "text-input",
             className: inputClassNames,
             onChange: this._handleOnChange,
             onInput: this._handleOnChange, // todo: поправить после отказа от IE9 - оставить 2 разных евента
@@ -106,7 +107,7 @@ class TextInput extends PureComponent {
         delete inputProps.validateFunction;
 
         const hasTooltip = ((tooltipType !== TooltipTypes.validation || isInvalid)) && tooltipCaption != null;
-        const ftId = inputProps["data-ft-id"];
+        const ftId = others["data-ft-id"];
 
         return (
             <div data-ft-id={ftId ? `${ftId}-wrapper` : null}>
