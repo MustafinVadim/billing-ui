@@ -60,7 +60,7 @@ class ReadComment extends PureComponent {
     };
 
     render() {
-        const { value, isCollapsed } = this.props;
+        const { value, isCollapsed, title, date } = this.props;
         const { hasOverflow } = this.state;
 
         const toggleButtonText = isCollapsed ? "показать полностью" : "скрыть";
@@ -76,6 +76,12 @@ class ReadComment extends PureComponent {
 
         return (
             <div className={styles.wrapper}>
+                {(title || date) && (
+                    <div className={styles.header}>
+                        <div className={styles.title}>{title}</div>
+                        <div className={styles.date}>{date}</div>
+                    </div>
+                )}
                 <div
                     className={textClassNames}
                     ref={elem => { this._textBlock = elem }}
@@ -95,6 +101,8 @@ class ReadComment extends PureComponent {
 
 ReadComment.propTypes = {
     value: PropTypes.string,
+    title: PropTypes.string,
+    date: PropTypes.string,
     isCollapsed: PropTypes.bool,
 
     onCollapseToggle: PropTypes.func

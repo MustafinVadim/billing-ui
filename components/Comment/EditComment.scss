@@ -3,8 +3,33 @@
 @import "../../styles/placeholders";
 
 :local {
+    $dateWidth: 120px;
+    $titleLeftIndent: 6px;
+
     .wrapper {
         margin: -4px 0 0 18px;
+    }
+
+    .header {
+        display: flex;
+
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .title {
+        @extend %fading-text;
+
+        min-width: calc(100% - #{($dateWidth + $titleLeftIndent)});
+        margin-left: $titleLeftIndent;
+
+        font-weight: bold;
+        line-height: $lineHeightRegular;
+        white-space: nowrap;
+    }
+
+    .date {
+        color: $textSecondaryColor;
     }
 
     .textarea {
@@ -58,5 +83,9 @@
 
     .delete {
         float: right;
+    }
+
+    :global(.global_comment.global-is-editable) .title:before {
+        background: linear-gradient(to right, $bgElementActiveLightColor 20%, $bgElementActiveLightColor 75%);
     }
 }

@@ -104,7 +104,7 @@ class EditComment extends PureComponent {
     };
 
     render() {
-        const { savedComment, maxLength, onCancel, unsavedText } = this.props;
+        const { savedComment, maxLength, onCancel, unsavedText, title, date } = this.props;
 
         const saveStyles = cx(
             styles.save,
@@ -116,7 +116,14 @@ class EditComment extends PureComponent {
         const decodedUnsavedText = safeDecodeURI(unsavedText);
 
         return (
-            <div className={styles.wrapper}>
+            <div>
+                {(title || date) && (
+                    <div className={styles.header}>
+                        <div className={styles.title}>{title}</div>
+                        <div className={styles.date}>{date}</div>
+                    </div>
+                )}
+                <div className={styles.wrapper}>
                 <TextArea placeholder="Написать комментарий"
                           wrapperClassName={styles.textarea}
                           inputClassName={styles.input}
@@ -128,16 +135,17 @@ class EditComment extends PureComponent {
                           onChange={this._handleTextChange}
                           data-ft-id="comment-textarea" />
 
-                <div className={styles.controls}>
-                    <Link className={saveStyles} onClick={this._handleSave} data-ft-id="comment-save">Сохранить</Link>
-                    <Link onClick={onCancel} data-ft-id="comment-cancel">Отменить</Link>
+                    <div className={styles.controls}>
+                        <Link className={saveStyles} onClick={this._handleSave} data-ft-id="comment-save">Сохранить</Link>
+                        <Link onClick={onCancel} data-ft-id="comment-cancel">Отменить</Link>
 
-                    {savedComment && (
-                        <Link className={styles.delete} onClick={this._handleDelete} data-ft-id="comment-delete">
-                            <Icon type={IconTypes.Trash} />
-                            Удалить
-                        </Link>
-                    )}
+                        {savedComment && (
+                            <Link className={styles.delete} onClick={this._handleDelete} data-ft-id="comment-delete">
+                                <Icon type={IconTypes.Trash} />
+                                Удалить
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </div>
         );
@@ -148,6 +156,9 @@ EditComment.propTypes = {
     unsavedText: PropTypes.string,
     savedComment: PropTypes.string,
     maxLength: PropTypes.number.isRequired,
+
+    title: PropTypes.string,
+    date: PropTypes.string,
 
     saveUrl: PropTypes.string.isRequired,
     deleteUrl: PropTypes.string.isRequired,

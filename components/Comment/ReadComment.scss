@@ -3,9 +3,34 @@
 @import "../../styles/placeholders";
 
 :local {
+    $dateWidth: 120px;
+    $titleLeftIndent: 6px;
+
     .wrapper {
         white-space: pre-wrap;
         word-wrap: break-word;
+    }
+
+    .header {
+        display: flex;
+
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .title {
+        @extend %fading-text;
+
+        min-width: calc(100% - #{($dateWidth + $titleLeftIndent)});
+        margin-left: $titleLeftIndent;
+
+        font-weight: bold;
+        line-height: $lineHeightRegular;
+        white-space: nowrap;
+    }
+
+    .date {
+        color: $textSecondaryColor;
     }
 
     .text {
@@ -48,5 +73,9 @@
 
     :global(.global_comment:hover) .text.collapsed ~ .toggle {
         color: $linkActiveColor;
+    }
+
+    :global(.global_comment:hover) .title:before {
+        background: linear-gradient(to right, $bgElementActiveLightColor 20%, $bgElementActiveLightColor 75%);
     }
 }

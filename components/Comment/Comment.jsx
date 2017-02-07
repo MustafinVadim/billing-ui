@@ -3,6 +3,7 @@ import onClickOutside from "react-onclickoutside";
 import cx from "classnames";
 
 import { safeDecodeURI } from "../../helpers/EncodeHelpers";
+import { formatDateWithTime } from "../../libs/moment";
 import Icon, { IconTypes } from "billing-ui/components/Icon";
 import ReadComment from "./ReadComment.jsx";
 import EditComment from "./EditComment.jsx";
@@ -88,10 +89,11 @@ class Comment extends PureComponent {
     _getDecodedValue = () => safeDecodeURI(this.props.value);
 
     render() {
-        const { maxLength, saveUrl, deleteUrl, requestData, commentClassName, wrapperClassName, onError } = this.props;
+        const { maxLength, saveUrl, deleteUrl, requestData, commentClassName, wrapperClassName, onError, title, date } = this.props;
         const { isEditable, isCollapsed } = this.state;
 
         const decodedValue = this._getDecodedValue();
+        const formattedDate = date ? formatDateWithTime(date) : null;
 
         const wrapperClassNames = cx(
             styles.wrapper,
@@ -104,6 +106,7 @@ class Comment extends PureComponent {
             commentClassName,
             {
                 [styles["editable"]]: isEditable,
+                "global-is-editable": isEditable,
                 [styles["empty"]]: !decodedValue
             }
         );
@@ -116,6 +119,8 @@ class Comment extends PureComponent {
                     {isEditable ? (
                         <EditComment unsavedText={this.state.unsavedText}
                                      savedComment={decodedValue}
+                                     title={title}
+                                     date={formattedDate}
                                      saveUrl={saveUrl}
                                      deleteUrl={deleteUrl}
                                      requestData={requestData}
@@ -127,7 +132,11 @@ class Comment extends PureComponent {
                                      maxLength={maxLength}
                         />
                     ) : (
-                        <ReadComment value={decodedValue} isCollapsed={isCollapsed} onCollapseToggle={this._toggleCollapse}
+                        <ReadComment value={decodedValue}
+                                     title={title}
+                                     date={formattedDate}
+                                     isCollapsed={isCollapsed}
+                                     onCollapseToggle={this._toggleCollapse}
                                      ref={c => { this._readComment = c }} />
                     )}
                 </div>
@@ -138,6 +147,8 @@ class Comment extends PureComponent {
 
 Comment.propTypes = {
     value: PropTypes.string,
+    title: PropTypes.string,
+    date: PropTypes.string,
     readOnly: PropTypes.bool,
     maxLength: PropTypes.number,
 
