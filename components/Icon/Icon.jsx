@@ -5,7 +5,7 @@ import styles from "./Icon.scss";
 
 class Icon extends PureComponent {
     render() {
-        const { type, className, onClick, isStrikeout } = this.props;
+        const { type, className, onClick, isStrikeout, ...otherProps } = this.props;
 
         const iconClass = classnames(
             "iconic base-unselectable",
@@ -17,7 +17,7 @@ class Icon extends PureComponent {
         );
 
         return (
-            <span className={iconClass} unselectable="on" onClick={onClick}>
+            <span className={iconClass} unselectable="on" onClick={onClick} { ...otherProps }>
                 {type}
             </span>
         );
