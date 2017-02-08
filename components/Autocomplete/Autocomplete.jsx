@@ -31,8 +31,13 @@ class Autocomplete extends PureComponent {
     }
 
     componentWillReceiveProps(props) {
-        if (props.value !== undefined) {
-            this.setState({ value: props.value });
+        const { value, defaultValue } = props;
+
+        if (value !== undefined || (defaultValue !== this.props.defaultValue)) {
+            this.setState({
+                value: value ? value : defaultValue,
+                defaultValue,
+            });
         }
     }
 
@@ -216,11 +221,11 @@ class Autocomplete extends PureComponent {
 
         return (
             <div key={index}
-                 className={rootClass}
-                 data-ft-id={`autocomplete-item-${index}`}
-                 onMouseDown={(e) => this.handleItemClick(e, index)}
-                 onMouseEnter={(e) => this.setState({ selected: index })}
-                 onMouseLeave={(e) => this.setState({ selected: -1 })}>
+                className={rootClass}
+                data-ft-id={`autocomplete-item-${index}`}
+                onMouseDown={(e) => this.handleItemClick(e, index)}
+                onMouseEnter={(e) => this.setState({ selected: index })}
+                onMouseLeave={(e) => this.setState({ selected: -1 })}>
                 {renderItem
                     ? renderItem(optionData, this.state.value)
                     : (<div>
