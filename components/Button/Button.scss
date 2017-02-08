@@ -3,46 +3,46 @@
 
 :local {
     .default {
-        $backgroundShadow: darken($bgButtonColor, 15%);
+        $shadowColor: darken($bgButtonColor, 15%);
 
         @include stylized-button-base($bgButtonColor, $textBaseColor);
 
         &.size-small {
-            box-shadow: 0 2px 0 $backgroundShadow;
+            box-shadow: 0 2px 0 $shadowColor;
 
             &:hover,
             &:focus {
-                box-shadow: 0 3px 0 $backgroundShadow;
+                box-shadow: 0 3px 0 $shadowColor;
             }
         }
     }
 
     .important {
-        $backgroundShadow: darken($bgImportantButtonColor, 15%);
+        $shadowColor: darken($bgImportantButtonColor, 15%);
 
         @include stylized-button-base($bgImportantButtonColor, $textWhiteColor);
 
         &.size-small {
-            box-shadow: 0 2px 0 $backgroundShadow;
+            box-shadow: 0 2px 0 $shadowColor;
 
             &:hover,
             &:focus {
-                box-shadow: 0 3px 0 $backgroundShadow;
+                box-shadow: 0 3px 0 $shadowColor;
             }
         }
     }
 
     .delete {
-        $backgroundShadow: #9e4643;
+        $shadowColor: #9e4643;
 
-        @include stylized-button-base($bgDeleteColor, $textWhiteColor, $backgroundShadow);
+        @include stylized-button-base($bgDeleteColor, $textWhiteColor, $shadowColor);
 
         &.size-small {
-            box-shadow: 0 2px 0 $backgroundShadow;
+            box-shadow: 0 2px 0 $shadowColor;
 
             &:hover,
             &:focus {
-                box-shadow: 0 3px 0 $backgroundShadow;
+                box-shadow: 0 3px 0 $shadowColor;
             }
         }
     }
@@ -50,6 +50,10 @@
     .button {
         &.size-small {
             padding: 4px 23px;
+        }
+
+        &.size-big {
+            padding: 15px 10px;
         }
     }
 }
