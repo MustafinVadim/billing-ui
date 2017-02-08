@@ -2,18 +2,22 @@
 @import "../../styles/mixins/buttons";
 
 :local {
+    @mixin is-small($shadowColor) {
+        box-shadow: 0 2px 0 $shadowColor;
+
+        &:hover,
+        &:focus {
+            box-shadow: 0 3px 0 $shadowColor;
+        }
+    }
+
     .default {
         $shadowColor: darken($bgButtonColor, 15%);
 
         @include stylized-button-base($bgButtonColor, $textBaseColor);
 
         &.size-small {
-            box-shadow: 0 2px 0 $shadowColor;
-
-            &:hover,
-            &:focus {
-                box-shadow: 0 3px 0 $shadowColor;
-            }
+            @include is-small($shadowColor);
         }
     }
 
@@ -23,12 +27,7 @@
         @include stylized-button-base($bgImportantButtonColor, $textWhiteColor);
 
         &.size-small {
-            box-shadow: 0 2px 0 $shadowColor;
-
-            &:hover,
-            &:focus {
-                box-shadow: 0 3px 0 $shadowColor;
-            }
+            @include is-small($shadowColor);
         }
     }
 
@@ -38,12 +37,7 @@
         @include stylized-button-base($bgDeleteColor, $textWhiteColor, $shadowColor);
 
         &.size-small {
-            box-shadow: 0 2px 0 $shadowColor;
-
-            &:hover,
-            &:focus {
-                box-shadow: 0 3px 0 $shadowColor;
-            }
+            @include is-small($shadowColor);
         }
     }
 
