@@ -47,9 +47,9 @@ class DefaultTextInput extends PureComponent {
                     styles={styles}
                     onChange={this.handleChange}
                     ref={(el) => {
-                           var inputNode = ReactDOM.findDOMNode(el);
-                           this.input = inputNode && (inputNode.getElementsByTagName("input")[0] || inputNode.getElementsByTagName("textarea")[0]);
-                       }}
+                        var inputNode = ReactDOM.findDOMNode(el);
+                        this.input = inputNode && (inputNode.getElementsByTagName("input")[0] || inputNode.getElementsByTagName("textarea")[0]);
+                    }}
                 />
                 {(clearable && value) && <Clear className={styles.clear} onClick={this.handleClearClick} />}
             </span>

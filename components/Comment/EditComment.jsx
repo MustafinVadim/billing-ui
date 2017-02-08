@@ -124,7 +124,7 @@ class EditComment extends PureComponent {
                     </div>
                 )}
                 <div className={styles.wrapper}>
-                <TextArea placeholder="Написать комментарий"
+                    <TextArea placeholder="Написать комментарий"
                           wrapperClassName={styles.textarea}
                           inputClassName={styles.input}
                           maxLength={maxLength}
