@@ -36,7 +36,7 @@ class Autocomplete extends PureComponent {
         if (value !== undefined || (defaultValue !== this.props.defaultValue)) {
             this.setState({
                 value: value ? value : defaultValue,
-                defaultValue,
+                defaultValue
             });
         }
     }
