@@ -83,7 +83,7 @@ class Picker extends Component {
         const { date } = this.state;
         const { minYear, maxYear } = this.props;
         return (
-            <div className={styles.root}>
+            <div className={styles.root} data-ft-id="calendar-picker">
 
                 <div className={styles.header}>
                     <div>
