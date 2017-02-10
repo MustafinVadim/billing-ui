@@ -1,0 +1,17 @@
+﻿@import "../../styles/bourbon";
+@import "../../styles/variables";
+@import "../Tooltip/Tooltip";
+
+:local {
+    .icon {
+        @include position(absolute, 0 2px null null);
+
+        color: $textDarkColor;
+
+        cursor: pointer;
+
+        &:hover {
+            color: $linkActiveColor;
+        }
+    }
+}

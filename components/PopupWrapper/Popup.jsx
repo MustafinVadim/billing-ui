@@ -1,3 +1,7 @@
+/**
+ * @deprecated since v1.37. Use Popup component instead.
+ */
+
 import { Component, PropTypes } from "react";
 
 import ReactDOM from "react-dom";
