@@ -7,18 +7,10 @@ import PositionType from "./PositionType";
 import TriggerType from "./TriggerType";
 import TooltipType from "./TooltipType";
 import { calcPosition, adjustPositionType } from "./PositionHandler";
+import { findContainer } from "../../helpers/NodeHelper";
 
 import cx from "classnames";
 import styles from "./Tooltip.scss";
-
-const findContainer = (node) => {
-    let container = node;
-    while (container.parentElement.tagName !== document.body.tagName) {
-        container = container.parentElement;
-    }
-
-    return container;
-};
 
 class Tooltip extends PureComponent {
     constructor(props) {
@@ -195,14 +187,16 @@ class Tooltip extends PureComponent {
 }
 
 Tooltip.propTypes = {
-    isOpen: PropTypes.bool,
     getTarget: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool,
+
     trigger: PropTypes.oneOf(Object.keys(TriggerType).map((key) => TriggerType[key])),
     positionType: PropTypes.oneOf(Object.keys(PositionType).map((key) => PositionType[key])),
+    type: PropTypes.oneOf(Object.keys(TooltipType).map((key) => TooltipType[key])),
+
     offsetPosition: PropTypes.object,
     className: PropTypes.string,
     wrapper: PropTypes.node,
-    type: PropTypes.oneOf(Object.keys(TooltipType).map((key) => TooltipType[key])),
     children: PropTypes.node
 };
 

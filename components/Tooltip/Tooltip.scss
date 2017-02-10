@@ -28,10 +28,6 @@ $validationBorder: $validationBorderWidth solid $borderErrorColor;
             line-height: $lineHeightRegular;
         }
 
-        .ie-lt9 & {
-            border: 1px solid $borderBaseColor;
-        }
-
         &.as-open {
             visibility: visible;
 
