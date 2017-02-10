@@ -26,10 +26,6 @@
         color: $textBaseColor;
     }
 
-    .ie-lt9 & {
-        display: inline-block;
-    }
-
     &:disabled,
     &:disabled ~ %stylized-checkBox-label {
         opacity: .5;
@@ -64,15 +60,6 @@
         color: $textBaseColor;
 
         cursor: pointer;
-    }
-
-    .ie-lt9 &:after,
-    .ie-lt9 &:before {
-        display: none;
-    }
-
-    .ie-lt9 & {
-        color: $textBaseColor;
     }
 
     &:before {

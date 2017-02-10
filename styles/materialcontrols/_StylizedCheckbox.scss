@@ -2,14 +2,6 @@
 @import "../placeholders";
 
 @mixin stylized-checkbox {
-    .ie-lt9 .stylized-checkBox {
-        display: inline-block;
-    }
-
-    .ie-lt9 .stylized-checkBox-label {
-        color: $textBaseColor;
-    }
-
     .stylized-checkBox {
         @extend %as-hidden;
 
@@ -48,11 +40,6 @@
             color: $textBaseColor;
 
             cursor: pointer;
-        }
-
-        .ie-lt9 &:after,
-        .ie-lt9 &:before {
-            display: none;
         }
 
         &:before {

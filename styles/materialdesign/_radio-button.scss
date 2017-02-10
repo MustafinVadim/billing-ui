@@ -4,10 +4,6 @@
 %stylized-radio {
     @extend %as-hidden;
 
-    .ie-lt9 & {
-        display: inline-block;
-    }
-
     &:checked ~ %stylized-radio-label {
         color: $textBaseColor;
 
@@ -67,10 +63,6 @@
     &:after,
     &:before {
         content: "";
-
-        .ie-lt9 & {
-            @extend %as-hidden;
-        }
     }
 
     &:before {
@@ -106,9 +98,5 @@
         transition: all .1s ease-out;
 
         background: url("/ContentBase/img/Shared/check.png") 0 0 no-repeat;
-    }
-
-    .ie-lt9 & {
-        color: $textBaseColor;
     }
 }

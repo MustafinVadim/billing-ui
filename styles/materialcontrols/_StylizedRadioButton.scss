@@ -1,10 +1,6 @@
 ﻿@import "../variables";
 
 @mixin stylized-radio-button {
-    .ie-lt9 .stylized-radio {
-        display: inline-block;
-    }
-
     .stylized-radio {
         display: none;
     }
@@ -21,11 +17,6 @@
         color: #4a4a4a;
 
         cursor: pointer;
-    }
-
-    .ie-lt9 .stylized-radio-label:after,
-    .ie-lt9 .stylized-radio-label:before {
-        display: none;
     }
 
     .stylized-radio-label:before {
