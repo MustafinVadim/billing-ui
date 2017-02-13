@@ -4,23 +4,23 @@
 
 @mixin action-bar {
     .actionsBar {
+        display: flex;
         margin: 30px -30px -20px;
         padding: 15px 30px;
 
         background: $bgLightColor;
+
+        align-items: baseline;
     }
 
     .actionSubmit {
         @extend %stylized-button;
-        @extend %as-inline-block;
     }
 
     .actionCancel {
-        @extend %as-inline-block;
         @extend %as-link;
 
-        margin: 8px 0 0 10px;
-        padding: 2px;
+        margin-left: 10px;
 
         font-size: 16px;
 
