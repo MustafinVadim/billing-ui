@@ -125,7 +125,7 @@ Popup.propTypes = {
     offsetPosition: PropTypes.object,
     className: PropTypes.string,
 
-    disableOnClickOutside: PropTypes.bool, // onClickOutside API
+    disableOnClickOutside: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]), // onClickOutside API
 
     wrapper: PropTypes.node,
     children: PropTypes.node
