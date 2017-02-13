@@ -60,7 +60,7 @@ class Autocomplete extends PureComponent {
         this.showNewOptions(value);
 
         if (onChange) {
-            onChange(value);
+            onChange(value, { sours: "TextInput" });
         }
     };
 
@@ -176,7 +176,7 @@ class Autocomplete extends PureComponent {
         this.closeOptions();
 
         if (onChange) {
-            onChange(value);
+            onChange(value, { source: "AutocompleteOption" });
         }
         this.fireSelect(index);
     }
