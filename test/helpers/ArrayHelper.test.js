@@ -158,7 +158,7 @@ describe("ArrayHelper", () => {
             expect(newState).to.deep.equal(expectedState);
         });
 
-        it("должен ... по индексу", () => {
+        it("should modify array by index", () => {
             const expectedState = freeze([1, 2, "b", 4, 5]);
 
             const newState = arrayReduceHelper(
