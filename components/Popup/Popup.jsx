@@ -100,6 +100,7 @@ class Popup extends PureComponent {
         const popupClassNames = cx(
             className,
             styles.tooltip,
+            styles.popup,
             styles[tooltipPos],
             styles[`arrow-${arrowPos}`],
             styles[this._defaultType],
