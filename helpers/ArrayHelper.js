@@ -51,6 +51,10 @@ export const arrayReduceHelper = (elementPredicate, elementReducer, state, actio
     let index;
     let entityState;
 
+    if (elementPredicate === null) {
+        return state.map(entryState => elementReducer(entryState, action));
+    }
+
     if (typeof elementPredicate === "function") {
         [index, entityState] = findIndexAndEntity(elementPredicate, state);
     } else {

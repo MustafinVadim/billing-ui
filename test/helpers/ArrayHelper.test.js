@@ -170,5 +170,20 @@ describe("ArrayHelper", () => {
 
             expect(newState).to.deep.equal(expectedState);
         });
+
+        it("should modify all array", () => {
+            const expectedState = freeze([2, 3, "a1", 5, 6]);
+
+            const newState = arrayReduceHelper(
+                null,
+                state => {
+                    return state + 1;
+                },
+                initArr,
+                action
+            );
+
+            expect(newState).to.deep.equal(expectedState);
+        });
     });
 });
