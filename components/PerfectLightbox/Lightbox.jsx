@@ -11,7 +11,7 @@ class Lightbox extends PureComponent {
     };
 
     render() {
-        const { children, className, positionType, width } = this.props;
+        const { children, className, positionType, width, ftId } = this.props;
 
         const lightboxClassNames = cx(
             styles.lightbox,
@@ -23,7 +23,7 @@ class Lightbox extends PureComponent {
             width
         };
         return (
-            <div className={ lightboxClassNames } style={lightboxStyle}>
+            <div className={ lightboxClassNames } style={lightboxStyle} data-ft-id={ftId}>
                 <button className={styles["close-button"]} onClick={this._handleCloseClick} data-ft-id="lightbox-close-button" />
                 {children}
             </div>
@@ -38,6 +38,7 @@ Lightbox.propTypes = {
     beforeClose: PropTypes.func,
     closeClick: PropTypes.func,
     closePortal: PropTypes.func, // передаётся сюда из Portal
-    width: PropTypes.number
+    width: PropTypes.number,
+    ftId: PropTypes.string
 };
 export default Lightbox

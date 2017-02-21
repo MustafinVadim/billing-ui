@@ -20,7 +20,7 @@ class LightboxWrapper extends PureComponent {
     };
 
     render() {
-        const { children, overlayClassName, lightboxClassName, positionType, width } = this.props;
+        const { children, overlayClassName, lightboxClassName, positionType, width, ftId } = this.props;
 
         const portalClassNames = cx(
             styles.overlay,
@@ -37,14 +37,18 @@ class LightboxWrapper extends PureComponent {
         delete portalProps.lightboxClassName;
         delete portalProps.positionType;
         delete portalProps.width;
+        delete portalProps.ftId;
 
         return (
             <Portal { ...portalProps } className={ portalClassNames }>
                 <Lightbox
+                    ftId={ftId}
                     className={lightboxClassName}
                     positionType={positionType}
                     width={width}
-                    ref={(elm) => { this._lightbox = ReactDOM.findDOMNode(elm) }}>
+                    ref={(elm) => {
+                        this._lightbox = ReactDOM.findDOMNode(elm)
+                    }}>
                     {children}
                 </Lightbox>
             </Portal>
@@ -61,6 +65,7 @@ LightboxWrapper.propTypes = {
     onOpen: PropTypes.func,
     beforeClose: PropTypes.func,
     onClose: PropTypes.func,
+    ftId: PropTypes.string,
 
     overlayClassName: PropTypes.string,
     lightboxClassName: PropTypes.string,
