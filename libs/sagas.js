@@ -39,11 +39,17 @@ export function* fetchData({
         } : response.data;
 
         yield put(onSuccess(responseData));
-    } catch (e) {
-        Informer.showError(DEFAULT_ERROR_MESSAGE);
-        Logger.error(generateAjaxErrorMessage({ url, requestMethod, data, errorMessage: e.message }));
+    } catch (xhr) {
+        let errorMessage = DEFAULT_ERROR_MESSAGE;
+        try {
+            errorMessage = JSON.parse(xhr.responseText).message;
+        }
+        catch(e) {}
+
+        Informer.showError(errorMessage);
+        Logger.error(generateAjaxErrorMessage({ url, requestMethod, data, errorMessage: xhr.message }));
         if (onError) {
-            const errorData = additionalResponseData ? { ...additionalResponseData, error: e } : e;
+            const errorData = additionalResponseData ? { ...additionalResponseData, error: xhr } : xhr;
             yield put(onError(errorData));
         }
     }
