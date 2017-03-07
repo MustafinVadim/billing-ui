@@ -53,8 +53,7 @@ export function* fetchData({
         let errorMessage = DEFAULT_ERROR_MESSAGE;
         try {
             errorMessage = JSON.parse(xhr.responseText).message;
-        }
-        catch (e) {
+        } catch (e) {
         }
 
         Informer.showError(errorMessage);
