@@ -17,6 +17,16 @@ export const httpMethod = {
 
 export const DEFAULT_ERROR_MESSAGE = "Ошибка сервера. Попробуйте чуть позже.";
 
+function* createPutEffects(actionCreators, payload) {
+    if (Array.isArray(actionCreators)) {
+        yield actionCreators.map(action => put(action(payload)));
+    }
+
+    if (typeof actionCreators === "function") {
+        yield put(actionCreators(payload));
+    }
+}
+
 export function* fetchData({
     url,
     data = null,
@@ -27,7 +37,7 @@ export function* fetchData({
     additionalResponseData = null
 }) {
     if (onBegin) {
-        yield put(onBegin(additionalResponseData));
+        yield* createPutEffects(onBegin, additionalResponseData);
     }
 
     try {
@@ -38,19 +48,20 @@ export function* fetchData({
             ...additionalResponseData
         } : response.data;
 
-        yield put(onSuccess(responseData));
+        yield* createPutEffects(onSuccess, responseData);
     } catch (xhr) {
         let errorMessage = DEFAULT_ERROR_MESSAGE;
         try {
             errorMessage = JSON.parse(xhr.responseText).message;
         }
-        catch(e) {}
+        catch (e) {
+        }
 
         Informer.showError(errorMessage);
         Logger.error(generateAjaxErrorMessage({ url, requestMethod, data, errorMessage: xhr.message }));
         if (onError) {
             const errorData = additionalResponseData ? { ...additionalResponseData, error: xhr } : xhr;
-            yield put(onError(errorData));
+            yield* createPutEffects(onError, errorData);
         }
     }
 }
