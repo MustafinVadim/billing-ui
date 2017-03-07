@@ -24,10 +24,6 @@ $validationBorder: $validationBorderWidth solid $borderErrorColor;
 
         font-size: $fontSizeBig;
 
-        & * {
-            line-height: $lineHeightRegular;
-        }
-
         &.as-open {
             visibility: visible;
 

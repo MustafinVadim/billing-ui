@@ -6,6 +6,8 @@
     .icon {
         @include position(absolute, 0 2px null null);
 
+        z-index: $loaderZIndex + 1;
+
         color: $textDarkColor;
 
         cursor: pointer;
