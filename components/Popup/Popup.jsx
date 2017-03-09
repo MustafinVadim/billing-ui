@@ -3,6 +3,9 @@ import { findDOMNode } from "react-dom";
 import events from "add-event-listener";
 import onClickOutside from "react-onclickoutside";
 
+import Loader from "react-ui/Loader";
+import Spinner from "react-ui/Spinner";
+
 import { findContainer } from "../../helpers/NodeHelper";
 import { calcPosition, adjustPositionType } from "../Tooltip/PositionHandler";
 import { PositionTypes, TooltipTypes } from "../Tooltip";
@@ -93,7 +96,7 @@ class Popup extends PureComponent {
     }
 
     render() {
-        const { children, className, onClose, showCross } = this.props;
+        const { children, className, onClose, showCross, isLoading, spinnerType } = this.props;
         const { positionType } = this.state;
 
         const [tooltipPos, arrowPos] = positionType.split(" ");
@@ -109,8 +112,10 @@ class Popup extends PureComponent {
 
         return (
             <div className={popupClassNames} ref={component => component && (this._popup = component)} data-ft-id="popup">
-                {showCross && <Icon type={IconTypes.Delete} className={styles.icon} onClick={onClose} />}
-                {children}
+                <Loader active={isLoading} caption="" type={spinnerType} className={styles.loader}>
+                    {showCross && <Icon type={IconTypes.Delete} className={styles.icon} onClick={onClose} />}
+                    {children}
+                </Loader>
             </div>
         );
     }
@@ -119,6 +124,8 @@ class Popup extends PureComponent {
 Popup.propTypes = {
     getTarget: PropTypes.func.isRequired,
     showCross: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    spinnerType: PropTypes.oneOf(Object.values(Spinner.Types)),
 
     onClose: PropTypes.func.isRequired,
 
@@ -134,7 +141,9 @@ Popup.propTypes = {
 
 Popup.defaultProps = {
     positionType: PositionTypes.bottomCenter,
-    showCross: true
+    showCross: true,
+    isLoading: false,
+    spinnerType: Spinner.Types.normal
 };
 
 export default onClickOutside(Popup);
