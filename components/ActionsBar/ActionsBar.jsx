@@ -79,7 +79,7 @@ class ActionsBar extends PureComponent {
     render() {
         const {
             showSubmit, showCancel, barClassName, submitClassName, cancelClassName, submitText, cancelText, submitDisabled, cancelDisabled,
-            onSubmitClick, submitAttributes, cancelAttributes, children
+            onSubmitClick, submitAttributes, cancelAttributes, wrapperClassName, children
         } = this.props;
 
         const actionsBarClassNames = cx(styles.actionsBar, barClassName, {
@@ -91,24 +91,24 @@ class ActionsBar extends PureComponent {
         const ghostActionsBarStyle = this.state.fixed ? { height: this.state.heightActionsBar } : {};
 
         return (
-            <div className={styles["actionsBar-wrapper"]}>
+            <div className={cx(styles["actionsBar-wrapper"], wrapperClassName)}>
                 <div className={styles["ghost-actionsBar"]} style={ghostActionsBarStyle}></div>
                 <div className={actionsBarClassNames} style={actionsBarStyle} ref={el => { this._actionsBarNode = ReactDOM.findDOMNode(el) }}>
                     {showSubmit && (
                         <Button type={ButtonType.button}
-                            onClick={onSubmitClick}
-                            disabled={submitDisabled}
-                            className={cx(styles.actionSubmit, submitClassName, {[styles.disabled]: submitDisabled})}
-                            attributes={submitAttributes}
+                                onClick={onSubmitClick}
+                                disabled={submitDisabled}
+                                className={cx(styles.actionSubmit, submitClassName, {[styles.disabled]: submitDisabled})}
+                                attributes={submitAttributes}
                         >
                             {submitText}
                         </Button>
                     )}
                     {showCancel && (
                         <button type="button"
-                            onClick={this.handleCancelClick}
-                            className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
-                            { ...cancelAttributes }
+                                onClick={this.handleCancelClick}
+                                className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
+                                { ...cancelAttributes }
                         >
                             {cancelText}
                         </button>
@@ -127,6 +127,7 @@ ActionsBar.propTypes = {
     submitAttributes: PropTypes.object,
     cancelAttributes: PropTypes.object,
 
+    wrapperClassName: PropTypes.string,
     barClassName: PropTypes.string,
     submitClassName: PropTypes.string,
     cancelClassName: PropTypes.string,
