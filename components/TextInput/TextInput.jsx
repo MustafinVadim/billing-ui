@@ -67,12 +67,13 @@ class TextInput extends PureComponent {
             maxCounter,
             ...others
         } = this.props;
+        const value = others.value || "";
         const { wasTouched } = this.state;
 
         const isInvalid = (!isValid && wasTouched) || forceInvalid;
 
         const hasCounter = !!maxCounter;
-        const valueLength = others.value ? others.value.trim().length : 0;
+        const valueLength = value.trim().length;
         const counter = maxCounter - valueLength;
 
         const inputClassNames = classnames(styles.input, inputClassName, {
@@ -91,7 +92,8 @@ class TextInput extends PureComponent {
             ref: el => {
                 this._input = el
             },
-            title: others.value,
+            value,
+            title: value,
             style: {
                 "width": width,
                 "height": height
@@ -100,7 +102,7 @@ class TextInput extends PureComponent {
             ["data-ft-id"]: "text-input",
             className: inputClassNames,
             onChange: this._handleOnChange,
-            onInput: this._handleOnChange, // todo: поправить после отказа от IE9 - оставить 2 разных евента
+            onInput: this._handleOnChange, // todo: для вставки текста из контекстного меню в IE
             onFocus: this._handleOnFocus,
             onBlur: this._handleOnBlur
         };
