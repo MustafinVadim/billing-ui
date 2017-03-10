@@ -104,7 +104,7 @@ class EditComment extends PureComponent {
     };
 
     render() {
-        const { savedComment, maxLength, onCancel, unsavedText, title, date } = this.props;
+        const { savedComment, maxLength, onCancel, unsavedText, title, date, canDelete } = this.props;
 
         const saveStyles = cx(
             styles.save,
@@ -139,7 +139,7 @@ class EditComment extends PureComponent {
                         <Link className={saveStyles} onClick={this._handleSave} data-ft-id="comment-save">Сохранить</Link>
                         <Link onClick={onCancel} data-ft-id="comment-cancel">Отменить</Link>
 
-                        {savedComment && (
+                        {savedComment && canDelete && (
                             <Link className={styles.delete} onClick={this._handleDelete} data-ft-id="comment-delete">
                                 <Icon type={IconTypes.Trash} />
                                 Удалить
@@ -156,6 +156,7 @@ EditComment.propTypes = {
     unsavedText: PropTypes.string,
     savedComment: PropTypes.string,
     maxLength: PropTypes.number.isRequired,
+    canDelete: PropTypes.bool,
 
     title: PropTypes.string,
     date: PropTypes.string,

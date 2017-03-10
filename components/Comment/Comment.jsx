@@ -89,7 +89,7 @@ class Comment extends PureComponent {
     _getDecodedValue = () => safeDecodeURI(this.props.value);
 
     render() {
-        const { maxLength, saveUrl, deleteUrl, requestData, commentClassName, wrapperClassName, onError, title, date } = this.props;
+        const { maxLength, saveUrl, deleteUrl, requestData, commentClassName, wrapperClassName, onError, title, date, canDelete } = this.props;
         const { isEditable, isCollapsed } = this.state;
 
         const decodedValue = this._getDecodedValue();
@@ -124,6 +124,7 @@ class Comment extends PureComponent {
                                      saveUrl={saveUrl}
                                      deleteUrl={deleteUrl}
                                      requestData={requestData}
+                                     canDelete={canDelete}
                                      onSave={this._handleSave}
                                      onCancel={this._completeEditing}
                                      onDelete={this._handleDelete}
@@ -150,6 +151,7 @@ Comment.propTypes = {
     title: PropTypes.string,
     date: PropTypes.string,
     readOnly: PropTypes.bool,
+    canDelete: PropTypes.bool,
     maxLength: PropTypes.number,
 
     saveUrl: PropTypes.string,
@@ -170,6 +172,7 @@ Comment.propTypes = {
 Comment.defaultProps = {
     maxLength: 2000,
     readOnly: false,
+    canDelete: true,
     value: "",
     requestData: {}
 };
