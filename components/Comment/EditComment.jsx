@@ -65,7 +65,7 @@ class EditComment extends PureComponent {
 
         if (this._canSave()) {
             this._toggleIsSaving(true);
-            this._sendRequest(saveUrl, onSave, { comment: safeEncodeURI(unsavedText) }, { value: unsavedText })
+            this._sendRequest(saveUrl, onSave, { comment: safeEncodeURI(unsavedText) }, { value: unsavedText });
         }
     };
 
