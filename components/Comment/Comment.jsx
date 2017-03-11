@@ -15,7 +15,7 @@ class Comment extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            unsavedText: props.value,
+            unsavedText: safeDecodeURI(props.value),
             isCollapsed: true,
             isEditable: false
         };
