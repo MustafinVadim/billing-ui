@@ -112,9 +112,11 @@ class Popup extends PureComponent {
 
         return (
             <div className={popupClassNames} ref={component => component && (this._popup = component)} data-ft-id="popup">
-                <Loader active={isLoading} caption="" type={spinnerType} className={styles.loader}>
-                    {showCross && <Icon type={IconTypes.Delete} className={styles.icon} onClick={onClose} />}
-                    {children}
+                <Loader active={isLoading} caption="" type={spinnerType}>
+                    <div className={styles.container}>
+                        {showCross && <Icon type={IconTypes.Delete} className={styles.icon} onClick={onClose} />}
+                        {children}
+                    </div>
                 </Loader>
             </div>
         );
