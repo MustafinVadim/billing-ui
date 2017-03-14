@@ -1,7 +1,8 @@
-import {compose, createStore, applyMiddleware} from "redux";
+import { compose, createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import thunk from "redux-thunk";
 
+import { init } from "./actions";
 import analyticsMiddleware from "./analyticsMiddleware";
 const __DEV__ = process.env.NODE_ENV !== "production";
 
@@ -20,7 +21,7 @@ const includeDevTools = () => {
 
 const _createStore = (initialState, rootReducer, outerMiddleware = []) => {
     const middleware = [thunk, analyticsMiddleware].concat(outerMiddleware);
-    return createStore(
+    const store = createStore(
         rootReducer,
         initialState,
         compose(
@@ -28,6 +29,9 @@ const _createStore = (initialState, rootReducer, outerMiddleware = []) => {
             includeDevTools()
         )
     );
+    store.dispatch(init());
+
+    return store;
 };
 
 export const configureStore = (initialState, rootReducer, rootSaga = null) => {
