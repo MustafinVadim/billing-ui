@@ -55,6 +55,7 @@ class TextInput extends PureComponent {
             alwaysShowMask,
             styles,
             isValid,
+            validateOnMount,
             isTextArea,
             inputClassName,
             counterClassName,
@@ -70,7 +71,7 @@ class TextInput extends PureComponent {
         const value = others.value || "";
         const { wasTouched } = this.state;
 
-        const isInvalid = (!isValid && wasTouched) || forceInvalid;
+        const isInvalid = validateOnMount ? !isValid || forceInvalid : (!isValid && wasTouched) || forceInvalid;
 
         const hasCounter = !!maxCounter;
         const valueLength = value.trim().length;
@@ -159,6 +160,7 @@ TextInput.propTypes = {
     disabled: PropTypes.bool,
     isValid: PropTypes.bool,
     forceInvalid: PropTypes.bool,
+    validateOnMount: PropTypes.bool,
     validateFunction: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.func)]),
     isTextArea: PropTypes.bool,
     maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -181,7 +183,8 @@ TextInput.defaultProps = {
     tooltipType: TooltipTypes.validation,
     tooltipPosition: PositionTypes.rightMiddle,
     tooltipClassName: "",
-    forceInvalid: false
+    forceInvalid: false,
+    validateOnMount: false
 };
 
 export default TextInput;
