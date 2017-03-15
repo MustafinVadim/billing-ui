@@ -1,6 +1,7 @@
 import { PureComponent, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import events from "add-event-listener";
+import isEqual from "lodash/isEqual";
 
 import KeyCodes from "../../helpers/KeyCodes";
 import PositionType from "./PositionType";
@@ -9,8 +10,8 @@ import TooltipType from "./TooltipType";
 import { calcPosition, adjustPositionType } from "./PositionHandler";
 import { findContainer } from "../../helpers/NodeHelper";
 
-import cx from "classnames";
 import styles from "./Tooltip.scss";
+import cx from "classnames";
 
 class Tooltip extends PureComponent {
     constructor(props) {
@@ -18,6 +19,7 @@ class Tooltip extends PureComponent {
 
         this.state = {
             isOpen: props.isOpen,
+            position: {},
             positionType: props.positionType
         };
     }
@@ -41,9 +43,8 @@ class Tooltip extends PureComponent {
     _init() {
         this._target = ReactDOM.findDOMNode(this.props.getTarget());
         this._wrapper = this.props.wrapper || findContainer(this._target);
-        this._tryUpdatePositionType();
 
-        this._setPosition();
+        this._tryUpdatePosition();
         this._attachEventListeners();
     }
 
@@ -86,22 +87,13 @@ class Tooltip extends PureComponent {
         events.removeEventListener(this._wrapper, "scroll", this._redraw);
     }
 
-    _tryUpdatePositionType() {
+    _tryUpdatePosition() {
         const positionType = adjustPositionType(this.props.positionType, this._target, this._tooltip, this.props.type);
+        const position = calcPosition(positionType, this._target, this._tooltip, this.props.type, this.props.offsetPosition);
 
-        if (this.state.positionType !== positionType) {
-            this.setState({
-                positionType
-            });
+        if (!isEqual(this.state.position, position)) {
+            this.setState({ position, positionType });
         }
-    }
-
-    _setPosition() {
-        const position = calcPosition(this.state.positionType, this._target, this._tooltip, this.props.type, this.props.offsetPosition);
-
-        Object.keys(position).map(property => {
-            this._tooltip.style[property] = position[property]
-        });
     }
 
     _redraw = () => {
@@ -110,7 +102,7 @@ class Tooltip extends PureComponent {
         }
 
         this._timer = setTimeout(() => {
-            this._tryUpdatePositionType();
+            this._tryUpdatePosition();
             delete this._timer;
         }, 100);
     };
@@ -171,7 +163,7 @@ class Tooltip extends PureComponent {
 
     render() {
         const { className, children, type } = this.props;
-        const { isOpen, positionType } = this.state;
+        const { isOpen, positionType, position } = this.state;
 
         const [tooltipPos, arrowPos] = positionType.split(" ");
         const tooltipClassNames = cx(className, styles.tooltip, styles[tooltipPos], styles[`arrow-${arrowPos}`], styles[type], {
@@ -179,7 +171,7 @@ class Tooltip extends PureComponent {
         });
 
         return (
-            <div className={tooltipClassNames} ref={(el) => el && (this._tooltip = el)} data-ft-id={`${type}-tooltip`}>
+            <div className={tooltipClassNames} ref={(el) => el && (this._tooltip = el)} data-ft-id={`${type}-tooltip`} style={{...position}}>
                 {children}
             </div>
         )

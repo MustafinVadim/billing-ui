@@ -22,8 +22,8 @@ export const getTopPosition = (positionType, positionTarget, tooltip, type, { bo
 
     switch (arrowPos) {
         case "middle": {
-            const arrowPoints = type === tooltipType.validation ? positionTarget.height : positionTarget.height / 2;
-            return arrowPoints - tooltip.offsetHeight / 2 + top;
+            const arrowPoints = type === tooltipType.validation ? positionTarget.height : Math.floor(positionTarget.height / 2);
+            return arrowPoints - Math.floor(tooltip.offsetHeight / 2) + top;
         }
         case "top": {
             const arrowPoints = type === tooltipType.validation ? positionTarget.height - ARROW_HEIGHT : 0;
@@ -49,7 +49,7 @@ export const getLeftPosition = (positionType, positionTarget, tooltip, type, { r
 
     switch (arrowPos) {
         case "center":
-            return positionTarget.width / 2 - tooltip.offsetWidth / 2 + left;
+            return Math.floor(positionTarget.width / 2) - Math.floor(tooltip.offsetWidth / 2) + left;
         case "left":
             return type === tooltipType.validation ? 0 : -ARROW_LEFT_MARGIN + left;
         case "right":

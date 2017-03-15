@@ -2,6 +2,7 @@ import { PureComponent, PropTypes } from "react";
 import { findDOMNode } from "react-dom";
 import events from "add-event-listener";
 import onClickOutside from "react-onclickoutside";
+import isEqual from "lodash/isEqual";
 
 import Loader from "react-ui/Loader";
 import Spinner from "react-ui/Spinner";
@@ -10,17 +11,19 @@ import { findContainer } from "../../helpers/NodeHelper";
 import { calcPosition, adjustPositionType } from "../Tooltip/PositionHandler";
 import { PositionTypes, TooltipTypes } from "../Tooltip";
 import Icon, { IconTypes } from "../Icon";
+
 import styles from "./Popup.scss";
 import cx from "classnames";
 
 class Popup extends PureComponent {
-    _target = null;
-    _defaultType = TooltipTypes.tip;
-
     constructor(props) {
-        super();
+        super(props);
+
+        this._target = null;
+        this._defaultType = TooltipTypes.tip;
 
         this.state = {
+            position: {},
             positionType: props.positionType
         };
     }
@@ -51,8 +54,7 @@ class Popup extends PureComponent {
         this._target = findDOMNode(getTarget());
         this._wrapper = wrapper || findContainer(this._target);
 
-        this._tryUpdatePositionType();
-        this._setPositionToStyle();
+        this._tryUpdatePosition();
         this._attachEventListeners();
     }
 
@@ -68,52 +70,50 @@ class Popup extends PureComponent {
         events.removeEventListener(this._wrapper, "scroll", this._redraw);
     }
 
-    _setPositionToStyle() {
-        const position = calcPosition(this.state.positionType, this._target, this._popup, this._defaultType, this.props.offsetPosition);
-
-        Object.keys(position).map(property => {
-            this._popup.style[property] = position[property]
-        });
-    }
-
     _redraw = () => {
         if (this._timer) {
             clearTimeout(this._timer);
         }
 
         this._timer = setTimeout(() => {
-            this._tryUpdatePositionType();
+            this._tryUpdatePosition();
             delete this._timer;
         }, 100);
     };
 
-    _tryUpdatePositionType() {
-        const positionType = adjustPositionType(this.props.positionType, this._target, this._popup, this._defaultType);
+    _tryUpdatePosition() {
+        const positionType = adjustPositionType(this.props.positionType, this._target, this._popup, this._defaultType, this._wrapper);
+        const position = calcPosition(positionType, this._target, this._popup, this._defaultType, this.props.offsetPosition);
 
-        if (this.state.positionType !== positionType) {
-            this.setState({ positionType });
+        if (!isEqual(this.state.position, position)) {
+            this.setState({ position, positionType });
         }
     }
 
     render() {
-        const { children, className, onClose, showCross, isLoading, spinnerType } = this.props;
-        const { positionType } = this.state;
+        const { children, className, onClose, showCross, isLoading, spinnerType, isOpened } = this.props;
+        const { positionType, position } = this.state;
 
         const [tooltipPos, arrowPos] = positionType.split(" ");
-        const popupClassNames = cx(
-            className,
+        const wrapperClassNames = cx(
+            styles.wrapper,
             styles.tooltip,
-            styles.popup,
             styles[tooltipPos],
             styles[`arrow-${arrowPos}`],
-            styles[this._defaultType],
-            styles["as-open"]
+            styles[this._defaultType], {
+                [styles["as-open"]]: isOpened
+            }
+        );
+
+        const popupClassNames = cx(
+            className,
+            styles.popup
         );
 
         return (
-            <div className={popupClassNames} ref={component => component && (this._popup = component)} data-ft-id="popup">
+            <div className={wrapperClassNames} ref={component => component && (this._popup = component)} data-ft-id="popup" style={{...position}}>
                 <Loader active={isLoading} caption="" type={spinnerType}>
-                    <div className={styles.container}>
+                    <div className={popupClassNames}>
                         {showCross && <Icon type={IconTypes.Delete} className={styles.icon} onClick={onClose} />}
                         {children}
                     </div>
@@ -124,6 +124,7 @@ class Popup extends PureComponent {
 }
 
 Popup.propTypes = {
+    isOpened: PropTypes.bool,
     getTarget: PropTypes.func.isRequired,
     showCross: PropTypes.bool,
     isLoading: PropTypes.bool,
@@ -142,6 +143,7 @@ Popup.propTypes = {
 };
 
 Popup.defaultProps = {
+    isOpened: true,
     positionType: PositionTypes.bottomCenter,
     showCross: true,
     isLoading: false,

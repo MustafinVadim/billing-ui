@@ -8,7 +8,7 @@ import isEqual from "lodash/isEqual";
 import Button, { ButtonType } from "../Button";
 import NavigatorResolver from "../../helpers/NavigatorResolver";
 import { containerNodeSelector } from "./StickyActionBarContainer";
-import { findContainer, getAbsoluteHeight } from "../../helpers/NodeHelper";
+import { findContainer, findContainerBySelector, getAbsoluteHeight } from "../../helpers/NodeHelper";
 
 import styles from "./ActionsBar.scss";
 
@@ -40,7 +40,7 @@ class ActionsBar extends PureComponent {
     }
 
     _renderStickyActionsBar() {
-        this._containerNode = findContainer(this._actionsBarNode, containerNodeSelector);
+        this._containerNode = findContainerBySelector(this._actionsBarNode, containerNodeSelector);
         this._mainWrapperNode = this._containerNode && findContainer(this._containerNode);
 
         if (!this._containerNode) {
