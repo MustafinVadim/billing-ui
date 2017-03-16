@@ -18,14 +18,14 @@ export const calcPosition = (positionType, target, tooltip, type, offsetPosition
 };
 
 export const adjustPositionType = (positionType, target, tooltip, type, mainWrapper, container) => {
-    mainWrapper = mainWrapper || findContainer(target);
-    container = container || findContainerWithOverflowHidden(target);
+    const foundMainWrapper = mainWrapper || findContainer(target);
+    const foundContainer = container || findContainerWithOverflowHidden(target);
     const positionTarget = getPositionNode(target);
-    const positionContainer = container ? getPositionNode(container) : null;
+    const positionContainer = foundContainer ? getPositionNode(foundContainer) : null;
     const [tooltipPos, arrowPos] = positionType.split(" ");
 
     return [
-        getTooltipPositionType(tooltipPos, positionTarget, tooltip, type, mainWrapper, positionContainer),
-        getArrowPositionType(arrowPos, positionTarget, tooltip, type, mainWrapper, positionContainer)
+        getTooltipPositionType(tooltipPos, positionTarget, tooltip, type, foundMainWrapper, positionContainer),
+        getArrowPositionType(arrowPos, positionTarget, tooltip, type, foundMainWrapper, positionContainer)
     ].join(" ");
 };

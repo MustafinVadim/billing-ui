@@ -8,27 +8,32 @@ export const findContainerWithOverflowHidden = (node) => {
 
 export const findContainer = (node, predicate) => {
     let container = node;
-    predicate = predicate || (parent => container.parentElement.tagName === document.body.tagName);
 
-    while (container && !predicate(container)) {
-        container = container.parentElement;
+    if (predicate) {
+        while (container && !predicate(container)) {
+            container = container.parentElement;
+        }
+    } else {
+        while (container && container.parentElement.tagName !== document.body.tagName) {
+            container = container.parentElement;
+        }
     }
 
     return container;
 };
 
 export const getMarginTop = node => {
-    var styles = window.getComputedStyle(node);
+    const styles = window.getComputedStyle(node);
     return Math.ceil(parseFloat(styles.marginTop));
 };
 
 export const getMarginBottom = node => {
-    var styles = window.getComputedStyle(node);
+    const styles = window.getComputedStyle(node);
     return Math.ceil(parseFloat(styles.marginBottom));
 };
 
 export const getAbsoluteHeight = node => {
-    var margin = getMarginTop(node) + getMarginBottom(node);
+    const margin = getMarginTop(node) + getMarginBottom(node);
 
     return Math.ceil(node.offsetHeight + margin);
 };
