@@ -60,7 +60,7 @@ export const getArrowPositionType = (arrowPos, positionTarget, tooltip, type, ma
                 (tooltipRightBorder < mainWrapper.clientWidth && tooltipRightBorder < containerRightBorder)
                 && (tooltipLeftBorder >= 0 && tooltipLeftBorder >= containerLeftBorder)
                     ? arrowPos
-                    : tooltipRightBorder > mainWrapper.clientWidth && tooltipRightBorder > containerRightBorder
+                    : tooltipRightBorder > mainWrapper.clientWidth || tooltipRightBorder > containerRightBorder
                     ? "right"
                     : "left"
             )
@@ -98,7 +98,7 @@ export const getArrowPositionType = (arrowPos, positionTarget, tooltip, type, ma
                 (tooltipBottomBorder <= mainWrapper.clientHeight && tooltipBottomBorder <= containerBottomBorder)
                 && (tooltipTopBorder >= 0 && tooltipTopBorder >= containerTopBorder)
                     ? "middle"
-                    : tooltipBottomBorder > mainWrapper.clientHeight && tooltipBottomBorder > containerBottomBorder
+                    : tooltipBottomBorder > mainWrapper.clientHeight || tooltipBottomBorder > containerBottomBorder
                     ? "bottom"
                     : "top"
             )
