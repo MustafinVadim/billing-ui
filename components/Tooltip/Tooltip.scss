@@ -7,6 +7,7 @@ $triangleWidth: 2 * $triangleHeight;
 $borderWidth: 1px;
 $validationBorderWidth: 2px;
 $validationBorder: $validationBorderWidth solid $borderErrorColor;
+$crossBorderColor: #d9d9d9;
 
 :local {
     .tooltip {
@@ -54,7 +55,7 @@ $validationBorder: $validationBorderWidth solid $borderErrorColor;
             }
 
             &:before {
-                @include triangle($triangleWidth, #dcdada, up);
+                @include triangle($triangleWidth, $crossBorderColor, up);
 
                 top: -$triangleHeight;
             }
@@ -86,7 +87,7 @@ $validationBorder: $validationBorderWidth solid $borderErrorColor;
             }
 
             &:before {
-                @include triangle($triangleWidth, #dcdada, down);
+                @include triangle($triangleWidth, $crossBorderColor, down);
 
                 bottom: -$triangleHeight;
             }
@@ -106,7 +107,7 @@ $validationBorder: $validationBorderWidth solid $borderErrorColor;
             }
 
             &:before {
-                @include triangle($triangleWidth, #dcdada, right);
+                @include triangle($triangleWidth, $crossBorderColor, right);
 
                 right: -$triangleHeight;
             }
@@ -138,7 +139,7 @@ $validationBorder: $validationBorderWidth solid $borderErrorColor;
             }
 
             &:before {
-                @include triangle($triangleWidth, #dcdada, left);
+                @include triangle($triangleWidth, $crossBorderColor, left);
 
                 left: -$triangleHeight;
             }

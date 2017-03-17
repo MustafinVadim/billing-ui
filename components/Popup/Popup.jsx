@@ -114,7 +114,7 @@ class Popup extends PureComponent {
             <div className={wrapperClassNames} ref={component => component && (this._popup = component)} data-ft-id="popup" style={{...position}}>
                 <Loader active={isLoading} caption="" type={spinnerType}>
                     <div className={popupClassNames}>
-                        {showCross && <Icon type={IconTypes.Delete} className={styles.icon} onClick={onClose} />}
+                        {showCross && <div className={styles.close} onClick={onClose} />}
                         {children}
                     </div>
                 </Loader>
