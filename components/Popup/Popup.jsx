@@ -10,7 +10,6 @@ import Spinner from "react-ui/Spinner";
 import { findContainer } from "../../helpers/NodeHelper";
 import { calcPosition, adjustPositionType } from "../Tooltip/PositionHandler";
 import { PositionTypes, TooltipTypes } from "../Tooltip";
-import Icon, { IconTypes } from "../Icon";
 
 import styles from "./Popup.scss";
 import cx from "classnames";
