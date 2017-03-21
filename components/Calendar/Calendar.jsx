@@ -1,5 +1,5 @@
 import { Component, PropTypes } from "react";
-import moment from "../../libs/moment";
+import moment, { formatDate } from "../../libs/moment";
 import TimeConstants from "../../helpers/TimeConstants";
 
 import cx from "classnames";
@@ -177,7 +177,7 @@ class Calendar extends Component {
                 [styles.holy]: date.day() === 0 || date.day() === 6
             });
             cells.push((
-                <span key={cur} className={cellClassNames} style={style}>
+                <span key={cur} className={cellClassNames} style={style} data-ft-id={`calendar-day_${formatDate(date)}`}>
                     <span className={styles["cell-inner"]}>{date.date()}</span>
                 </span>
             ));
@@ -202,6 +202,7 @@ class Calendar extends Component {
                 {cells}
                 {months}
                 <div className={styles.mask}
+                    data-ft-id="calendar-days_overlay"
                     onMouseMove={this.handleMouseMove}
                     onMouseLeave={this.handleMouseLeave}
                     onMouseDown={this.handleMouseDown}

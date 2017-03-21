@@ -348,7 +348,7 @@ class CalendarWrapper extends Component {
                 <TextInput {...inputProps} ref={(el) => {
                     this._textInput = el
                 }} />
-                <span className={openButtonClassNames} onClick={this.open}>
+                <span className={openButtonClassNames} onClick={this.open} data-ft-id="calendar-open-button">
                     <Icon className={styles.icon} type={IconTypes.Calendar} />
                 </span>
                 {picker}

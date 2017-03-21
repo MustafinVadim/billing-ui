@@ -215,9 +215,11 @@ class DateSelect extends Component {
                 [styles.active]: i === current,
                 [styles.selected]: i === 0
             });
+            const item = this.getItem(i);
+
             items.push(
-                <div key={i} className={itemClassNames}>
-                    {this.getItem(i)}
+                <div key={i} className={itemClassNames} data-ft-id={`date-select-menu-item-${item}`}>
+                    {item}
                 </div>
             );
         }
@@ -237,13 +239,14 @@ class DateSelect extends Component {
         });
 
         return (
-            <div className={holderClassNames} style={style} onKeyDown={this.handleKey} ref={(c) => { this._holder = c }}>
+            <div className={holderClassNames} style={style} onKeyDown={this.handleKey} ref={(c) => { this._holder = c }} data-ft-id="date-select-menu">
                 {!topCapped && (
                     <div className={styles.up} onMouseDown={this.handleUp} />
                 )}
                 <div className={styles.items} style={{height}}>
                     <div style={shiftStyle}>{items}</div>
                     <div className={styles.overlay}
+                        data-ft-id="date-select-menu_overlay"
                         onMouseDown={this.handleItemClick}
                         onMouseMove={this.handleMouseMove}
                         onMouseLeave={this.handleMouseLeave}
@@ -258,7 +261,7 @@ class DateSelect extends Component {
     }
 
     render() {
-        const { width } = this.props;
+        const { type, width } = this.props;
         const rootProps = {
             className: styles.root,
             style: { width },
@@ -269,7 +272,7 @@ class DateSelect extends Component {
 
         return (
             <div {...rootProps}>
-                <div className={styles.caption} onClick={this.open}>
+                <div className={styles.caption} onClick={this.open} data-ft-id={`date-select-${type}-button`}>
                     {this.getItem(0)}
                     <div className={styles.arrow} />
                 </div>
