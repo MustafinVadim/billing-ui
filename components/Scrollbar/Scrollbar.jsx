@@ -27,7 +27,7 @@ class Scrollbar extends PureComponent {
             height: null
         };
 
-        return <div { ...props } style={resetStyle} className={cx(styles.track, styles["is-horizontal"])} />;
+        return <div { ...props } style={resetStyle} className={cx(styles.track, styles["is-horizontal"], {[styles.invisible]: !this.props.isVisible})} />;
     };
 
     _renderTrackVertical = props => {
@@ -36,7 +36,7 @@ class Scrollbar extends PureComponent {
             width: null
         };
 
-        return <div { ...props } style={resetStyle} className={cx(styles.track, styles["is-vertical"])} />;
+        return <div { ...props } style={resetStyle} className={cx(styles.track, styles["is-vertical"], {[styles.invisible]: !this.props.isVisible})} />;
     };
 
     _renderThumbHorizontal = props => {
@@ -69,6 +69,8 @@ class Scrollbar extends PureComponent {
             height: null
         };
 
+        delete scrollbarProps.isVisible;
+
         return (
             <ReactScrollbar
                 className={cx(styles.container, containerClassName)}
@@ -90,9 +92,14 @@ class Scrollbar extends PureComponent {
 
 Scrollbar.propTypes = {
     containerClassName: PropTypes.string,
+    isVisible: PropTypes.bool,
 
     children: PropTypes.node.isRequired
     // Так же можно передать остальные props ReactScrollbar
+};
+
+Scrollbar.defaultProps = {
+    isVisible: true
 };
 
 export default Scrollbar;

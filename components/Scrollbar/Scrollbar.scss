@@ -29,6 +29,10 @@
 
         border-radius: $borderRadius;
 
+        &.invisible {
+            visibility: hidden;
+        }
+
         &.is-vertical {
             @include position(absolute, 2px 2px 2px null);
 
