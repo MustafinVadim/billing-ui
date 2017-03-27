@@ -1,12 +1,13 @@
-@import "./../../styles/variables";
+﻿@import "./../../styles/variables";
 
 :local {
     .wrapper {
     }
 
     .header {
-        box-shadow:0 1px 0 0 rgba(0,0,0,0.06), 0 3px 3px 0 rgba(207,204,198,0.50);
         padding: 0 30px;
+
+        box-shadow: 0 1px 0 0 rgba(0, 0, 0, .06), 0 3px 3px 0 rgba(207, 204, 198, .5);
 
         font-size: 16px;
         text-align: justify;
@@ -23,6 +24,7 @@
         box-sizing: border-box;
 
         letter-spacing: 1px;
+
         cursor: pointer;
 
         &,
