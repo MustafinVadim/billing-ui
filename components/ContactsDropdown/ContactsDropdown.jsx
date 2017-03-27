@@ -22,7 +22,7 @@ export class ContactsDropdown extends PureComponent {
     render() {
         const { contacts, idFieldName, nameFieldName, postFieldName, isDirectorFieldName, optionWrapperClassName } = this.props;
         const hasDirectorContacts = contacts.some(contact => contact[isDirectorFieldName]);
-        const directorIcon = <Icon type={IconTypes.Crown} className={styles["director-icon"]} />;
+        const directorIcon = <Icon type={IconTypes.Crown} className={styles["director-icon"]} data-ft-id="contact__crown-icon"/>;
 
         return (
             <Dropdown { ...this._getDropdownProps() }>
