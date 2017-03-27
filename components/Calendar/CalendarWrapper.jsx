@@ -15,7 +15,7 @@ import { filterObjectKeys } from "./../../helpers/ArrayHelper";
 
 import styles from "./CalendarWrapper.scss";
 
-const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable"];
+const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName"];
 
 class CalendarWrapper extends Component {
     _selectionRanges = [{ start: 0, end: 2, type: "days" }, { start: 3, end: 5, type: "months" }, { start: 6, end: 10, type: "years" }];
@@ -28,7 +28,7 @@ class CalendarWrapper extends Component {
 
         this.state = {
             height: null,
-            opened: false
+            opened: props.isOpened
         };
     }
 
@@ -304,10 +304,10 @@ class CalendarWrapper extends Component {
             return;
         }
 
-        const { value, minYear, maxYear } = this.props;
+        const { value, minYear, maxYear, pickerClassName } = this.props;
 
         return (
-            <div className={styles.picker} onKeyDown={this.handlePickerKey}>
+            <div className={cx(styles.picker, pickerClassName)} onKeyDown={this.handlePickerKey}>
                 <Picker value={convertISOString(value)}
                         verticalShift={this.state.height}
                         minYear={minYear}
@@ -358,6 +358,7 @@ class CalendarWrapper extends Component {
 }
 
 CalendarWrapper.propTypes = {
+    isOpened: PropTypes.bool,
     isValid: PropTypes.bool,
     forceInvalid: PropTypes.bool,
     onChange: PropTypes.func,
@@ -370,15 +371,18 @@ CalendarWrapper.propTypes = {
     isNullable: PropTypes.bool,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,
+    pickerClassName: PropTypes.string,
     type: PropTypes.string
 };
 
 CalendarWrapper.defaultProps = {
+    isOpened: false,
     value: moment(),
     width: 115,
     minYear: 1900,
     maxYear: 2100,
     className: "",
+    pickerClassName: "",
     disabled: false,
     isValid: true,
     isNullable: false
