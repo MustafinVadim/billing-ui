@@ -99,7 +99,10 @@ class ActionsBar extends PureComponent {
                                 onClick={onSubmitClick}
                                 disabled={submitDisabled}
                                 className={cx(styles.actionSubmit, submitClassName, {[styles.disabled]: submitDisabled})}
-                                attributes={submitAttributes}
+                                attributes={{
+                                    "data-ft-id": "submit-button",
+                                    ...submitAttributes
+                                }}
                         >
                             {submitText}
                         </Button>
@@ -108,6 +111,7 @@ class ActionsBar extends PureComponent {
                         <button type="button"
                                 onClick={this.handleCancelClick}
                                 className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
+                                data-ft-id="cancel-button"
                                 { ...cancelAttributes }
                         >
                             {cancelText}
