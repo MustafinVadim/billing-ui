@@ -276,7 +276,7 @@ describe("Position handler", () => {
             expect(positionType).to.equal(PositionType.bottomLeft);
 
             positionTarget.left = tooltip.offsetWidth / 2 - positionTarget.width / 2 - 1;
-            positionType = adjustPositionType(PositionType.bottomCenter, target, tooltip, TooltipType.tip, mainWrapper,container);
+            positionType = adjustPositionType(PositionType.bottomCenter, target, tooltip, TooltipType.tip, mainWrapper, container);
             expect(positionType).to.equal(PositionType.bottomLeft);
         });
 

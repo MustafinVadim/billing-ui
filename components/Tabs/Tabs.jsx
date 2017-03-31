@@ -27,7 +27,7 @@ class Tabs extends PureComponent {
         const { wrapperClassNames, tabs, tabClassNames, headerClassNames, activeTab, ftId } = this.props;
 
         return (
-            <div className={cx(styles.wrapper, wrapperClassNames)} data-ft-id={ftId}>
+            <div className={wrapperClassNames} data-ft-id={ftId}>
                 <div className={cx(styles.header, headerClassNames)}>
                     {tabs.map(({ tab, title }) => (
                         <span className={cx(styles.tab, tabClassNames, { [styles.active]: activeTab === tab })}
@@ -58,6 +58,7 @@ Tabs.propTypes = {
         tab: PropTypes.string,
         title: PropTypes.string
     })),
+    onChange: PropTypes.func,
     children: CustomPropTypes.children(Tab)
 };
 
