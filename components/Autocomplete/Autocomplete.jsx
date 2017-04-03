@@ -250,7 +250,7 @@ class Autocomplete extends PureComponent {
     }
 
     renderOptionsList() {
-        const { menuWidth } = this.props;
+        const { menuWidth, notFoundText } = this.props;
 
         if (!this.state.opened || !this.state.value) {
             return null;
@@ -262,7 +262,7 @@ class Autocomplete extends PureComponent {
             <div className={styles.menuHolder}>
                 <div className={styles.menu} style={{ width: menuWidth }} data-ft-id="autocomplete-menu">
                     {options.length === 0
-                        ? <div className={styles.empty}>ничего не найдено</div>
+                        ? <div className={styles.empty} data-ft-id="autocomplete-empty-result">{notFoundText}</div>
                         : options
                     }
                 </div>
@@ -309,6 +309,7 @@ class Autocomplete extends PureComponent {
 Autocomplete.propTypes = {
     value: PropTypes.string,
     defaultValue: PropTypes.string,
+    notFoundText: PropTypes.string,
     source: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.func
@@ -339,6 +340,7 @@ Autocomplete.propTypes = {
 Autocomplete.defaultProps = {
     requestData: {},
     defaultValue: "",
+    notFoundText: "ничего не найдено",
     shouldBeEmpty: false,
     valueCreator: (searchItem) => searchItem.Text
 };
