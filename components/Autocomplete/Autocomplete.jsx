@@ -9,7 +9,7 @@ import { updateImmutableArrayByKey } from "../../helpers/ArrayHelper";
 import { switchToRusLanguage, switchToEngLanguage } from "../../helpers/StringHelpers";
 
 import Icon, { IconTypes } from "../Icon";
-import TextInput, { TooltipTypes } from "../TextInput";
+import TextInput from "../TextInput";
 
 import styles from "./Autocomplete.scss";
 
