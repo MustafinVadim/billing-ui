@@ -8,7 +8,9 @@ import keyCodes from "../../helpers/KeyCodes";
 import { updateImmutableArrayByKey } from "../../helpers/ArrayHelper";
 import { switchToRusLanguage, switchToEngLanguage } from "../../helpers/StringHelpers";
 
-import TextInput from "../TextInput";
+import Icon, { IconTypes } from "../Icon";
+import TextInput, { TooltipTypes } from "../TextInput";
+
 import styles from "./Autocomplete.scss";
 
 class Autocomplete extends PureComponent {
@@ -279,6 +281,7 @@ class Autocomplete extends PureComponent {
             onKeyDown: this.handleKey,
             onChange: this.handleChange
         };
+        const { hasSearchIcon } = this.props;
         const { errorMessage } = this.state;
 
         delete inputProps.url;
@@ -292,10 +295,14 @@ class Autocomplete extends PureComponent {
         delete inputProps.optionClassName;
         delete inputProps.valueCreator;
         delete inputProps.renderItem;
+        delete inputProps.hasSearchIcon;
 
         return (
             <span className={cx(styles.root, this.props.autocompleteWrapperClassName)}>
+                {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
+                    inputClassName={styles.input}
+                    placeholderClassName={styles.placeholder}
                     isValid={!errorMessage}
                     tooltipCaption={errorMessage}
                 />
@@ -308,6 +315,7 @@ class Autocomplete extends PureComponent {
 
 Autocomplete.propTypes = {
     value: PropTypes.string,
+    hasSearchIcon: PropTypes.bool,
     defaultValue: PropTypes.string,
     notFoundText: PropTypes.string,
     source: PropTypes.oneOfType([
@@ -339,6 +347,7 @@ Autocomplete.propTypes = {
 
 Autocomplete.defaultProps = {
     requestData: {},
+    hasSearchIcon: false,
     defaultValue: "",
     notFoundText: "ничего не найдено",
     shouldBeEmpty: false,

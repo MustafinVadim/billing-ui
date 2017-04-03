@@ -6,6 +6,22 @@ $sidePadding: 3px;
 :local {
     .root {
         @extend %as-inline-block;
+
+        position: relative;
+    }
+
+    .input {
+        padding-left: 20px;
+    }
+
+    .placeholder {
+        padding-left: 16px;
+    }
+
+    .search {
+        @include position(absolute, 5px null null 2px);
+
+        color: $textSecondaryColor;
     }
 
     .menuHolder {
