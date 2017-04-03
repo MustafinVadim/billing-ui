@@ -23,6 +23,7 @@ class Autocomplete extends PureComponent {
         this.state = {
             searchResult: [],
             selected: -1,
+            errorMessage: null,
             value: value ? value : defaultValue,
             opened: false
         };
@@ -133,21 +134,23 @@ class Autocomplete extends PureComponent {
         }
 
         this.search(pattern)
-            .then((newSearchResult) => {
-                if (this.state.value === value) {
-                    let selected = -1;
+            .then(({ Options, ErrorMessage }) => {
+                    if (this.state.value === value) {
+                        let selected = -1;
 
-                    if (newSearchResult.length === 1) {
-                        selected = 0;
+                        if (Options.length === 1) {
+                            selected = 0;
+                        }
+
+                        this.setState({
+                            searchResult: updateImmutableArrayByKey(this.state.searchResult, Options, "Value"),
+                            opened: true,
+                            errorMessage: ErrorMessage,
+                            selected
+                        });
                     }
-
-                    this.setState({
-                        searchResult: updateImmutableArrayByKey(this.state.searchResult, newSearchResult, "Value"),
-                        opened: true,
-                        selected
-                    });
                 }
-            });
+            );
     }
 
     search(value) {
@@ -276,6 +279,8 @@ class Autocomplete extends PureComponent {
             onKeyDown: this.handleKey,
             onChange: this.handleChange
         };
+        const { errorMessage } = this.state;
+
         delete inputProps.url;
         delete inputProps.requestData;
         delete inputProps.onSelect;
@@ -290,8 +295,12 @@ class Autocomplete extends PureComponent {
 
         return (
             <span className={cx(styles.root, this.props.autocompleteWrapperClassName)}>
-                <TextInput {...inputProps} />
-                {this.renderOptionsList()}
+                <TextInput {...inputProps}
+                    isValid={!errorMessage}
+                    tooltipCaption={errorMessage}
+                />
+
+                {!errorMessage && this.renderOptionsList()}
             </span>
         );
     }
