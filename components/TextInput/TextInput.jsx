@@ -109,7 +109,7 @@ class TextInput extends PureComponent {
         };
         delete inputProps.validateFunction;
 
-        const hasTooltip = ((tooltipType !== TooltipTypes.validation || isInvalid)) && tooltipCaption != null;
+        const hasTooltip = ((tooltipType !== TooltipTypes.validation || isInvalid)) && !!tooltipCaption;
         const ftId = others["data-ft-id"];
 
         return (
