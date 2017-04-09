@@ -11,15 +11,19 @@ $sidePadding: 3px;
     }
 
     .input {
-        padding-left: 20px;
+        &.with-icon {
+            padding-left: 20px;
+        }
     }
 
     .placeholder {
-        padding-left: 16px;
+        &.with-icon {
+            padding-left: 16px;
+        }
     }
 
     .search {
-        @include position(absolute, 5px null null 2px);
+        @include position(absolute, 8px null null 2px);
 
         color: $textSecondaryColor;
     }

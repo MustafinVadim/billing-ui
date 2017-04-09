@@ -1,6 +1,6 @@
 ﻿import { PureComponent, PropTypes } from "react";
 import debounce from "lodash/debounce";
-import cx from "classnames";
+import omit from "lodash/omit";
 import axios from "../../libs/axios";
 
 import Highlighter from "../Highlighter";
@@ -12,6 +12,7 @@ import Icon, { IconTypes } from "../Icon";
 import TextInput from "../TextInput";
 
 import styles from "./Autocomplete.scss";
+import cx from "classnames";
 
 class Autocomplete extends PureComponent {
     _valueCreator = null;
@@ -57,7 +58,10 @@ class Autocomplete extends PureComponent {
         const { onChange } = this.props;
 
         if (!this.props.value) {
-            this.setState({ value });
+            this.setState({
+                value,
+                errorMessage: ""
+            });
         }
 
         this.showNewOptions(value);
@@ -165,17 +169,15 @@ class Autocomplete extends PureComponent {
                     value
                 }
             })
-            .then(({ data }) => data.Options);
+            .then(({ data }) => data);
     }
 
     choose(index) {
-        const { onChange, shouldBeEmpty } = this.props;
+        const { onChange, clearOnSelect } = this.props;
         const value = this._valueCreator(this.state.searchResult[index]);
 
-        if (!this.props.value && !shouldBeEmpty) {
-            this.setState({
-                value: value
-            });
+        if (clearOnSelect) {
+            this.setState({ value: "" });
         }
 
         this.closeOptions();
@@ -273,37 +275,28 @@ class Autocomplete extends PureComponent {
     }
 
     render() {
-        const inputProps = {
+        const fieldsToOmit = ["url", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect",
+            "autocompleteWrapperClassName", "optionItemClassName", "menuWidth", "optionClassName", "valueCreator", "renderItem"];
+
+        const inputProps = omit({
             ...this.props,
             value: this.state.value,
             onBlur: this.handleBlur,
             onFocus: this.handleFocus,
             onKeyDown: this.handleKey,
             onChange: this.handleChange
-        };
+        }, fieldsToOmit);
+
         const { hasSearchIcon } = this.props;
         const { errorMessage } = this.state;
-
-        delete inputProps.url;
-        delete inputProps.requestData;
-        delete inputProps.onSelect;
-        delete inputProps.defaultValue;
-        delete inputProps.autocompleteWrapperClassName;
-        delete inputProps.shouldBeEmpty;
-        delete inputProps.optionItemClassName;
-        delete inputProps.menuWidth;
-        delete inputProps.optionClassName;
-        delete inputProps.valueCreator;
-        delete inputProps.renderItem;
-        delete inputProps.hasSearchIcon;
 
         return (
             <span className={cx(styles.root, this.props.autocompleteWrapperClassName)}>
                 {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
-                    inputClassName={styles.input}
-                    placeholderClassName={styles.placeholder}
-                    isValid={!errorMessage}
+                    inputClassName={cx(styles.input, {[styles["with-icon"]]: hasSearchIcon})}
+                    placeholderClassName={cx(styles.placeholder, {[styles["with-icon"]]: hasSearchIcon})}
+                    isValid={!errorMessage || !inputProps.value}
                     tooltipCaption={errorMessage}
                 />
 
@@ -316,6 +309,7 @@ class Autocomplete extends PureComponent {
 Autocomplete.propTypes = {
     value: PropTypes.string,
     hasSearchIcon: PropTypes.bool,
+    clearOnSelect: PropTypes.bool,
     defaultValue: PropTypes.string,
     notFoundText: PropTypes.string,
     source: PropTypes.oneOfType([
@@ -335,7 +329,6 @@ Autocomplete.propTypes = {
     onSelect: PropTypes.func,
     onChange: PropTypes.func,
 
-    shouldBeEmpty: PropTypes.bool,
     url: PropTypes.string.isRequired,
     requestData: PropTypes.object,
     valueCreator: PropTypes.func,
@@ -348,9 +341,9 @@ Autocomplete.propTypes = {
 Autocomplete.defaultProps = {
     requestData: {},
     hasSearchIcon: false,
+    clearOnSelect: false,
     defaultValue: "",
     notFoundText: "ничего не найдено",
-    shouldBeEmpty: false,
     valueCreator: (searchItem) => searchItem.Text
 };
 
