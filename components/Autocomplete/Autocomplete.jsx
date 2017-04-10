@@ -141,22 +141,21 @@ class Autocomplete extends PureComponent {
 
         this.search(pattern)
             .then(({ Options, ErrorMessage }) => {
-                    if (this.state.value === value) {
-                        let selected = -1;
+                if (this.state.value === value) {
+                    let selected = -1;
 
-                        if (Options.length === 1) {
-                            selected = 0;
-                        }
-
-                        this.setState({
-                            searchResult: updateImmutableArrayByKey(this.state.searchResult, Options, "Value"),
-                            opened: true,
-                            errorMessage: ErrorMessage,
-                            selected
-                        });
+                    if (Options.length === 1) {
+                        selected = 0;
                     }
+
+                    this.setState({
+                        searchResult: updateImmutableArrayByKey(this.state.searchResult, Options, "Value"),
+                        opened: true,
+                        errorMessage: ErrorMessage,
+                        selected
+                    });
                 }
-            );
+            });
     }
 
     search(value) {
@@ -294,8 +293,8 @@ class Autocomplete extends PureComponent {
             <span className={cx(styles.root, this.props.autocompleteWrapperClassName)}>
                 {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
-                    inputClassName={cx(styles.input, {[styles["with-icon"]]: hasSearchIcon})}
-                    placeholderClassName={cx(styles.placeholder, {[styles["with-icon"]]: hasSearchIcon})}
+                    inputClassName={cx(styles.input, { [styles["with-icon"]]: hasSearchIcon })}
+                    placeholderClassName={cx(styles.placeholder, { [styles["with-icon"]]: hasSearchIcon })}
                     isValid={!errorMessage || !inputProps.value}
                     tooltipCaption={errorMessage}
                 />
