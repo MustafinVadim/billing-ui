@@ -9,6 +9,15 @@
         &:focus {
             box-shadow: 0 3px 0 $shadowColor;
         }
+
+        &.disabled,
+        &.disabled:hover,
+        &.disabled:focus,
+        &.button-disabled,
+        &.button-disabled:hover,
+        &.button-disabled:focus {
+            box-shadow: none;
+        }
     }
 
     .default {
