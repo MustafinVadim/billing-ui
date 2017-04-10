@@ -3,7 +3,7 @@
     const _amount = Math.abs(amount);
 
     const integralPart = Math.floor(_amount);
-    let fractionalPart = Math.floor((_amount * 100) - (integralPart * 100));
+    let fractionalPart = Math.floor(Math.round(_amount * 1000)/10 - (integralPart * 100));
 
     let integralNumberString = integralPart.toString();
     const integralFormat = [];
