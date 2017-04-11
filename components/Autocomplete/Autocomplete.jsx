@@ -290,7 +290,7 @@ class Autocomplete extends PureComponent {
         const { errorMessage } = this.state;
 
         return (
-            <span className={cx(styles.root, this.props.autocompleteWrapperClassName)} ftId={ftId}>
+            <span className={cx(styles.root, this.props.autocompleteWrapperClassName)} data-ft-id={ftId}>
                 {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
                     inputClassName={cx(styles.input, { [styles["with-icon"]]: hasSearchIcon })}
