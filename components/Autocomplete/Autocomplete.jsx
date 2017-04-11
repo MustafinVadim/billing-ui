@@ -274,7 +274,7 @@ class Autocomplete extends PureComponent {
     }
 
     render() {
-        const fieldsToOmit = ["url", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect",
+        const fieldsToOmit = ["url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect",
             "autocompleteWrapperClassName", "optionItemClassName", "menuWidth", "optionClassName", "valueCreator", "renderItem"];
 
         const inputProps = omit({
@@ -286,11 +286,11 @@ class Autocomplete extends PureComponent {
             onChange: this.handleChange
         }, fieldsToOmit);
 
-        const { hasSearchIcon } = this.props;
+        const { hasSearchIcon, ftId } = this.props;
         const { errorMessage } = this.state;
 
         return (
-            <span className={cx(styles.root, this.props.autocompleteWrapperClassName)}>
+            <span className={cx(styles.root, this.props.autocompleteWrapperClassName)} ftId={ftId}>
                 {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
                     inputClassName={cx(styles.input, { [styles["with-icon"]]: hasSearchIcon })}
@@ -306,6 +306,7 @@ class Autocomplete extends PureComponent {
 }
 
 Autocomplete.propTypes = {
+    ftId: PropTypes.string,
     value: PropTypes.string,
     hasSearchIcon: PropTypes.bool,
     clearOnSelect: PropTypes.bool,
