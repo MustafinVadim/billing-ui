@@ -63,13 +63,23 @@ class TextInput extends PureComponent {
             tooltipType,
             tooltipPosition,
             tooltipClassName,
+            tooltipProps,
             clearable,
             forceInvalid,
             maxCounter,
             ...others
         } = this.props;
+
         const value = others.value || "";
         const { wasTouched } = this.state;
+
+        // todo: выкинуть после рефакторинга и отказа от tooltipPosition и других тултипных пропсов
+        const tooltipProperties = {
+            positionType: tooltipPosition,
+            type: tooltipType,
+            className: tooltipClassName,
+            ...tooltipProps
+        };
 
         const isInvalid = validateOnMount ? !isValid || forceInvalid : (!isValid && wasTouched) || forceInvalid;
 
@@ -138,9 +148,8 @@ class TextInput extends PureComponent {
                     <Tooltip
                         getTarget={() => this._input}
                         trigger={TriggerTypes.focus}
-                        positionType={tooltipPosition}
-                        type={tooltipType}
-                        className={tooltipClassName}>
+                        { ...tooltipProperties }
+                    >
                         {tooltipCaption}
                     </Tooltip>
                 )}
@@ -174,6 +183,9 @@ TextInput.propTypes = {
     counterClassName: PropTypes.string,
     styles: PropTypes.object,
     tooltipCaption: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.element]),
+    tooltipProps: PropTypes.object,
+
+    // todo: deprecated! вынести в tooltipProps
     tooltipClassName: PropTypes.string,
     tooltipType: PropTypes.oneOf(Object.keys(TooltipTypes).map((key) => TooltipTypes[key])),
     tooltipPosition: PropTypes.oneOf(Object.keys(PositionTypes).map((key) => PositionTypes[key]))
@@ -184,7 +196,8 @@ TextInput.defaultProps = {
     tooltipPosition: PositionTypes.rightMiddle,
     tooltipClassName: "",
     forceInvalid: false,
-    validateOnMount: false
+    validateOnMount: false,
+    tooltipProps: {}
 };
 
 export default TextInput;

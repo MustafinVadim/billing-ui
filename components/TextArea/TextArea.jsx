@@ -1,9 +1,9 @@
 import { Component, PropTypes } from "react";
+import omit from "lodash/omit";
 import cx from "classnames";
 
 import TextInput from "../TextInput";
 import TextInputType from "../TextInput/TextInputType";
-import {PositionTypes} from "../Tooltip";
 import calculateHeight from "./calculateHeight";
 import styles from "./TextArea.scss";
 
@@ -80,10 +80,10 @@ class TextArea extends Component {
     }
 
     render() {
+        const fieldsToOmit = ["minHeight", "inputClassName"];
+
         const { height } = this.state;
-        const textInputProps = { ...this.props };
-        delete textInputProps.minHeight;
-        delete textInputProps.inputClassName;
+        const textInputProps = omit(this.props, fieldsToOmit);
 
         return (
             <TextInput isTextArea={true}
@@ -91,7 +91,7 @@ class TextArea extends Component {
                        height={height}
                        {...textInputProps}
                        onChange={this.handleChange}
-                       ref={ (el) => { this._textArea = el }} />
+                       ref={ el => { this._textArea = el }} />
         );
     }
 }
@@ -110,7 +110,7 @@ TextArea.propTypes = {
     forceInvalid: PropTypes.bool,
     validate: PropTypes.oneOf([PropTypes.func, PropTypes.arrayOf(PropTypes.func)]),
     tooltipCaption: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.element]),
-    tooltipPosition: PropTypes.oneOf(Object.keys(PositionTypes).map((key) => PositionTypes[key])),
+    tooltipProps: PropTypes.object,
     maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
