@@ -279,6 +279,10 @@ class Autocomplete extends PureComponent {
 
         const inputProps = omit({
             ...this.props,
+            tooltipProps: {
+                isOpen: true,
+                ...this.props.tooltipProps
+            },
             value: this.state.value,
             onBlur: this.handleBlur,
             onFocus: this.handleFocus,
