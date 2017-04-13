@@ -1,6 +1,7 @@
 import { PureComponent, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import cx from "classnames";
+import omit from "lodash/omit";
 
 import Portal from "../Portal";
 import Lightbox from "./Lightbox";
@@ -27,17 +28,12 @@ class LightboxWrapper extends PureComponent {
             overlayClassName
         );
 
+        const fieldsToOmit = ["children", "overlayClassName", "lightboxClassName", "positionType", "width", "ftId"];
+
         const portalProps = {
-            ...this.props,
+            ...omit(this.props, fieldsToOmit),
             beforeClose: this._beforeClose
         };
-
-        delete portalProps.children;
-        delete portalProps.overlayClassName;
-        delete portalProps.lightboxClassName;
-        delete portalProps.positionType;
-        delete portalProps.width;
-        delete portalProps.ftId;
 
         return (
             <Portal { ...portalProps } className={ portalClassNames }>
@@ -74,7 +70,8 @@ LightboxWrapper.propTypes = {
 };
 
 LightboxWrapper.defaultProps = {
-    positionType: positionTypes.top
+    positionType: positionTypes.top,
+    closeOnEsc: true
 };
 
 export default LightboxWrapper
