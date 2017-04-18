@@ -28,6 +28,8 @@ class ActionsBar extends PureComponent {
         this._handleResize = debounce(this._renderStickyActionsBar.bind(this), 100);
         this._handleRender = debounce(this._renderStickyActionsBar.bind(this), 50);
 
+        this._autoUpdateInterval = setInterval(this._renderStickyActionsBar.bind(this), 60);
+
         this._handleRender();
         events.addEventListener(window, "resize", this._handleResize);
     }
@@ -38,6 +40,7 @@ class ActionsBar extends PureComponent {
 
     componentWillUnmount() {
         events.removeEventListener(window, "resize", this._handleResize);
+        clearInterval(this._autoUpdateInterval);
     }
 
     _renderStickyActionsBar() {
@@ -79,8 +82,8 @@ class ActionsBar extends PureComponent {
 
     render() {
         const {
-            showSubmit, showCancel, barClassName, submitClassName, cancelClassName, submitText, cancelText, submitDisabled, cancelDisabled,
-            onSubmitClick, submitAttributes, cancelAttributes, wrapperClassName, children
+            showSubmit, showCancel, submitClassName, cancelClassName, submitText, cancelText, submitDisabled, cancelDisabled,
+            onSubmitClick, submitAttributes, cancelAttributes, wrapperClassName, barClassName, contentClassName, children
         } = this.props;
 
         const actionsBarClassNames = cx(styles.actionsBar, barClassName, {
@@ -95,30 +98,32 @@ class ActionsBar extends PureComponent {
             <div className={cx(styles["actionsBar-wrapper"], wrapperClassName)}>
                 <div className={styles["ghost-actionsBar"]} style={ghostActionsBarStyle}></div>
                 <div className={actionsBarClassNames} style={actionsBarStyle} ref={el => { this._actionsBarNode = ReactDOM.findDOMNode(el) }}>
-                    {showSubmit && (
-                        <Button type={ButtonType.button}
-                                onClick={onSubmitClick}
-                                disabled={submitDisabled}
-                                className={cx(styles.actionSubmit, submitClassName, {[styles.disabled]: submitDisabled})}
+                    <div className={contentClassName}>
+                        {showSubmit && (
+                            <Button type={ButtonType.button}
+                                    onClick={onSubmitClick}
+                                    disabled={submitDisabled}
+                                    className={cx(styles.actionSubmit, submitClassName, {[styles.disabled]: submitDisabled})}
                                 attributes={{
                                     "data-ft-id": "submit-button",
                                     ...submitAttributes
                                 }}
-                        >
-                            {submitText}
-                        </Button>
-                    )}
-                    {showCancel && (
-                        <button type="button"
-                                onClick={this.handleCancelClick}
-                                className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
+                            >
+                                {submitText}
+                            </Button>
+                        )}
+                        {showCancel && (
+                            <button type="button"
+                                    onClick={this.handleCancelClick}
+                                    className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
                                 data-ft-id="cancel-button"
-                                { ...cancelAttributes }
-                        >
-                            {cancelText}
-                        </button>
-                    )}
-                    {children}
+                                    { ...cancelAttributes }
+                            >
+                                {cancelText}
+                            </button>
+                        )}
+                        {children}
+                    </div>
                 </div>
             </div>
         );
@@ -134,16 +139,17 @@ ActionsBar.propTypes = {
 
     wrapperClassName: PropTypes.string,
     barClassName: PropTypes.string,
+    contentClassName: PropTypes.string,
     submitClassName: PropTypes.string,
     cancelClassName: PropTypes.string,
 
-    submitText: PropTypes.string.isRequired,
+    submitText: PropTypes.string,
     cancelText: PropTypes.string,
 
-    submitDisabled: PropTypes.bool.isRequired,
+    submitDisabled: PropTypes.bool,
     cancelDisabled: PropTypes.bool,
 
-    onSubmitClick: PropTypes.func.isRequired,
+    onSubmitClick: PropTypes.func,
     onCancelClick: PropTypes.func,
 
     children: PropTypes.node
