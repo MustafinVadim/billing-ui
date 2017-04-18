@@ -1,15 +1,13 @@
+import { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { Component } from "react";
 import AppearanceType from "./AppearanceType";
 import ButtonSize from "./ButtonSize";
 import ButtonType from "./ButtonType";
 import Link from "../Link";
 import classnames from "classnames";
 import buttonStyles from "./Button.scss";
-import shouldComponentUpdate from "react-pure-render/function";
 
-class Button extends Component {
-    shouldComponentUpdate = shouldComponentUpdate;
+class Button extends PureComponent {
 
     constructor(props) {
         super(props);

@@ -1,12 +1,9 @@
-﻿import react from "react";
+﻿import { PureComponent } from "react";
 import TweenLite from "gsap";
 import { findDOMNode } from "react-dom";
-import shouldPureComponentUpdate from "react-pure-render/function";
 
 const slideToggle = (Component, options = { duration: 0.2, slideOnWillAppear: false }) => {
-    return class SlideToggle extends react.Component {
-        shouldPureComponentUpdate = shouldPureComponentUpdate;
-
+    return class SlideToggle extends PureComponent {
         _onComplete(callback, node) {
             node.style["height"] = "auto";
             callback();
