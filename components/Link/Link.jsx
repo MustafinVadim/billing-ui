@@ -7,7 +7,7 @@ import styles from "./Link.scss";
 
 class Link extends PureComponent {
     render() {
-        const { href, children, className, disabledClassName, disabled, ftId } = this.props;
+        const { href, children, className, disabledClassName, disabled } = this.props;
 
         const fieldsToOmit = ["disabledClassName", "ftId"];
         const tagProps = omit(this.props, fieldsToOmit);
@@ -16,7 +16,7 @@ class Link extends PureComponent {
             const disabledClassNames = classnames(className, disabledClassName, styles.disabled);
 
             return (
-                <span { ...tagProps } className={disabledClassNames} data-ft-id={ftId}>{children}</span>
+                <span { ...tagProps } className={disabledClassNames}>{children}</span>
             );
         }
 
@@ -24,12 +24,12 @@ class Link extends PureComponent {
 
         if (href) {
             return (
-                <a { ...tagProps } className={linkClassNames} data-ft-id={ftId}>{children}</a>
+                <a { ...tagProps } className={linkClassNames}>{children}</a>
             );
         }
 
         return (
-            <span { ...tagProps } className={linkClassNames} data-ft-id={ftId}>{children}</span>
+            <span { ...tagProps } className={linkClassNames}>{children}</span>
         );
     }
 }
@@ -37,7 +37,6 @@ class Link extends PureComponent {
 Link.propTypes = {
     href: PropTypes.string,
     children: PropTypes.node,
-    ftId: PropTypes.string,
 
     className: PropTypes.string,
     disabledClassName: PropTypes.string,
