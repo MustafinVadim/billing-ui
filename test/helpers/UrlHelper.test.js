@@ -30,4 +30,12 @@ describe("generate url with query parameters", () => {
         const actual = getUrlWithQuery(initUrl);
         expect(actual).to.deep.equal(initUrl);
     });
+
+    it("мержит параментры из урла и переданные params", () => {
+        const initUrl = "/prospectivesalelist/forcalendar?date=28.03.2017&managerType=All&pageNumber=5";
+        const expectedUrl = "/prospectivesalelist/forcalendar?date=28.03.2017&managerType=All&pageNumber=4";
+
+        const actual = getUrlWithQuery(initUrl, { pageNumber: 4 });
+        expect(actual).to.deep.equal(expectedUrl);
+    });
 });
