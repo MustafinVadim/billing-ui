@@ -9,7 +9,7 @@ class Link extends PureComponent {
     render() {
         const { href, children, className, disabledClassName, disabled } = this.props;
 
-        const fieldsToOmit = ["disabledClassName", "ftId"];
+        const fieldsToOmit = ["disabledClassName"];
         const tagProps = omit(this.props, fieldsToOmit);
 
         if (disabled) {
