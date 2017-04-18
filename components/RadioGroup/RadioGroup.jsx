@@ -1,4 +1,5 @@
-import { Component, PropTypes, Children, cloneElement } from "react";
+import PropTypes from "prop-types";
+import { Component, Children, cloneElement } from "react";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
 import RadioButton from "../RadioButton";
 import radioGroupStyles from "./RadioGroup.scss";

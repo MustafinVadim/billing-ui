@@ -1,4 +1,5 @@
-import { Component, PropTypes } from "react";
+import PropTypes from "prop-types";
+import { Component } from "react";
 import moment, { formatDate } from "../../libs/moment";
 import TimeConstants from "../../helpers/TimeConstants";
 

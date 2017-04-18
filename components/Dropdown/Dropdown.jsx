@@ -1,4 +1,5 @@
-import { Component, PropTypes, Children, cloneElement } from "react";
+import PropTypes from "prop-types";
+import { Component, Children, cloneElement } from "react";
 import ReactDOM from "react-dom";
 import events from "add-event-listener";
 import classnames from "classnames";

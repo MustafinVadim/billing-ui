@@ -1,4 +1,4 @@
-import { PropTypes } from "react";
+import PropTypes from "prop-types";
 import Icon, { IconTypes } from "../Icon";
 
 const Clear = ({ className, onClick }) => (

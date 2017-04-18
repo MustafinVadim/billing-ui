@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes, Children, cloneElement } from "react";
+import PropTypes from "prop-types";
+import { PureComponent, Children, cloneElement } from "react";
 import events from "add-event-listener";
 import { throttle } from "underscore";
 

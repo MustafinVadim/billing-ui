@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes } from "react";
+import PropTypes from "prop-types";
+import { PureComponent } from "react";
 import ReactDOM from "react-dom";
 import DefaultTextInput from "./DefaultTextInput";
 import CompactTextInput from "./CompactTextInput";

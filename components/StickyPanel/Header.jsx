@@ -1,4 +1,5 @@
-import { PropTypes, PureComponent } from "react";
+import PropTypes from "prop-types";
+import { PureComponent } from "react";
 import events from "add-event-listener";
 import { throttle } from "underscore";
 

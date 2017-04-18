@@ -1,4 +1,4 @@
-import { PropTypes } from "react";
+import PropTypes from "prop-types";
 import iconType from "../Icon";
 import specialCharacters from "../SpecialCharacters";
 import { priceFormatHelper } from "../../helpers/PriceHelper";

@@ -2,7 +2,8 @@
  * @deprecated since v1.37. Use Popup component instead.
  */
 
-import { Component, PropTypes } from "react";
+import { Component } from "react";
+import PropTypes from "prop-types";
 
 import ReactDOM from "react-dom";
 import popup from "exports?Popup!ContentBase/scripts/Popup/Popup";

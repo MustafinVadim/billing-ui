@@ -1,4 +1,5 @@
-import { Component, PropTypes } from "react";
+import PropTypes from "prop-types";
+import { Component } from "react";
 import Icon from "../Icon";
 import Link from "../Link";
 import styles from "./Actions.scss";

@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes } from "react";
+import PropTypes from "prop-types";
+import { PureComponent } from "react";
 import { validate } from "../../helpers/ValidationHelpers";
 import BankAutocompleteOptionTypes from "./BankAutocompleteOptionTypes";
 import Autocomplete from "./Autocomplete";

@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes, Children, cloneElement } from "react";
+import PropTypes from "prop-types";
+import { PureComponent, Children, cloneElement } from "react";
 
 import CustomPropTypes from "billing-ui/helpers/CustomPropTypes";
 import Tab from "./Tab";

@@ -1,4 +1,5 @@
-﻿import { PureComponent, PropTypes } from "react";
+﻿import PropTypes from "prop-types";
+import { PureComponent } from "react";
 import debounce from "lodash/debounce";
 import omit from "lodash/omit";
 import axios from "../../libs/axios";
@@ -326,6 +327,7 @@ Autocomplete.propTypes = {
         PropTypes.string,
         PropTypes.number
     ]),
+    tooltipProps: PropTypes.object,
 
     onKeyDown: PropTypes.func,
     onBlur: PropTypes.func,

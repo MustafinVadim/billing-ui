@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes } from "react";
+import PropTypes from "prop-types";
+import { PureComponent } from "react";
 import { findDOMNode } from "react-dom";
 import events from "add-event-listener";
 import onClickOutside from "react-onclickoutside";

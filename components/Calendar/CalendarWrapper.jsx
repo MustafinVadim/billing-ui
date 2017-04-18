@@ -1,4 +1,5 @@
-import { Component, PropTypes } from "react";
+import PropTypes from "prop-types";
+import { Component } from "react";
 import ReactDOM from "react-dom";
 import cx from "classnames";
 import moment, { formatDate, convertString, convertISOString } from "../../libs/moment";

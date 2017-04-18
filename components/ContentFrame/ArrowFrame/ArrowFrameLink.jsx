@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes } from "react";
+import PropTypes from "prop-types";
+import { PureComponent } from "react";
 import RouteLink from "react-router/lib/Link";
 import Icon, { IconTypes } from "../../Icon";
 

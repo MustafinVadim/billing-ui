@@ -1,4 +1,5 @@
-﻿import { PureComponent, PropTypes } from "react";
+import PropTypes from "prop-types";
+import { PureComponent } from "react";
 import cx from "classnames";
 import axios from "../../libs/axios";
 import Informer from "Informer";

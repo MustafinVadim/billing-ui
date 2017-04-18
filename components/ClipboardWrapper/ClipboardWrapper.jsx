@@ -1,4 +1,5 @@
-import { Component, PropTypes } from "react";
+import PropTypes from "prop-types";
+import { Component } from "react";
 import { copyCommandSupportChecker } from "../../helpers/QueryCommandSupportChecker";
 
 let Clipboard = null;

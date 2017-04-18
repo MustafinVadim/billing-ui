@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes, Children, cloneElement } from "react";
+import PropTypes from "prop-types";
+import { PureComponent, Children, cloneElement } from "react";
 
 import StepType from "./utils/StepType";
 import Step from "./Step";

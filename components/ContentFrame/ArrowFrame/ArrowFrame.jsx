@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes } from "react";
+import PropTypes from "prop-types";
+import { PureComponent } from "react";
 import ArrowFrameLink from "./ArrowFrameLink.jsx";
 import arrowFrameStyles from "./ArrowFrame.scss";
 

@@ -1,4 +1,5 @@
-import { PureComponent, PropTypes, cloneElement } from "react";
+import PropTypes from "prop-types";
+import { PureComponent, cloneElement } from "react";
 import ReactDOM, { findDOMNode } from "react-dom";
 import KeyCodes from "../../helpers/KeyCodes";
 
