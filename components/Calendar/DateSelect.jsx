@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import dateSelectType from "./DateSelectType";
 import keyCodes from "../../helpers/KeyCodes";
 import { fixYPopupPosition } from "./PopupPositionHelper";
@@ -10,7 +10,7 @@ import styles from "./DateSelect.scss";
 const HEIGHT = 30;
 const MONTHS = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
 
-class DateSelect extends Component {
+class DateSelect extends PureComponent {
     constructor(props, context) {
         super(props, context);
 

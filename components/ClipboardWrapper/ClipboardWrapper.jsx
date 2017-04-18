@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import { copyCommandSupportChecker } from "../../helpers/QueryCommandSupportChecker";
 
 let Clipboard = null;
@@ -16,7 +16,7 @@ const clipboardUploaded = new Promise((resolve, reject) => {
     });
 });
 
-class ClipboardWrapper extends Component {
+class ClipboardWrapper extends PureComponent {
     _clipboardTarget = null;
     state = { copyToClipboardAvailable: false };
 

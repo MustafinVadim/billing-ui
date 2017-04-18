@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import checkboxStyles from "./Checkbox.scss";
 import classnames from "classnames";
 
-class Checkbox extends Component {
+class Checkbox extends PureComponent {
     handleChange = (evt) => {
         const { checked, onChange } = this.props;
 

@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import MessageType from "./MessageType";
 import cx from "classnames";
 
 import styles from "./WarningMessage.scss";
 
-class WarningMessage extends Component {
+class WarningMessage extends PureComponent {
     render() {
         const { children, type, className, hidden, animated, attributes } = this.props;
 

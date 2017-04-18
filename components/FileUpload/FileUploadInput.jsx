@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import styles from "./FileUpload.scss";
 
-class FileUploadInput extends Component {
+class FileUploadInput extends PureComponent {
     static uid = 0;
     _uid = FileUploadInput.uid++;
 

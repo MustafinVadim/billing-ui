@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import classnames from "classnames";
 import optionStyles from "./Option.scss";
 
-class Option extends Component {
+class Option extends PureComponent {
     _optionNode = null;
 
     handleClick() {

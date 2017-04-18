@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import classnames from "classnames";
 import { range } from "underscore";
 
@@ -7,7 +7,7 @@ import PageSizeSwitcher from "./PageSizeSwitcher";
 import Themes from "./Themes";
 import resolveTheme from "./themeResolver";
 
-class Paging extends Component {
+class Paging extends PureComponent {
     constructor(props) {
         super(props);
 

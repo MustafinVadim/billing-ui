@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import omit from "lodash/omit";
 import cx from "classnames";
 
@@ -8,7 +8,7 @@ import TextInputType from "../TextInput/TextInputType";
 import calculateHeight from "./calculateHeight";
 import styles from "./TextArea.scss";
 
-class TextArea extends Component {
+class TextArea extends PureComponent {
     _textArea = null;
 
     state = {

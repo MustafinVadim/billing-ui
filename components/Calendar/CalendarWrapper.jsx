@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import ReactDOM from "react-dom";
 import cx from "classnames";
 import moment, { formatDate, convertString, convertISOString } from "../../libs/moment";
@@ -18,7 +18,7 @@ import styles from "./CalendarWrapper.scss";
 
 const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName"];
 
-class CalendarWrapper extends Component {
+class CalendarWrapper extends PureComponent {
     _selectionRanges = [{ start: 0, end: 2, type: "days" }, { start: 3, end: 5, type: "months" }, { start: 6, end: 10, type: "years" }];
     _selectedBlock = null;
     _focused = false;

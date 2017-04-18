@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import moment, { formatDate } from "../../libs/moment";
 import TimeConstants from "../../helpers/TimeConstants";
 
@@ -40,7 +40,7 @@ const posToDate = pos => {
     return moment(Math.floor(pos / DAY_HEIGHT + 2) * WEEK - FIRST_WEEK_SHIFT);
 };
 
-class Calendar extends Component {
+class Calendar extends PureComponent {
     constructor(props, context) {
         super(props, context);
 

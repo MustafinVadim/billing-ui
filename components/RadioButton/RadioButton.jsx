@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import radioStyles from "./RadioButton.scss";
 import classnames from "classnames";
 
-class RadioButton extends Component {
+class RadioButton extends PureComponent {
     render() {
         const { checked, value, onChange, radioClassName, labelClassName, wrapperClassName,
                 styles, children, disabled, readonly, labelAttributes, ...radioProps } = this.props;

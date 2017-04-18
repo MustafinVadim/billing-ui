@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import ReactDOM from "react-dom";
 
 /**
  * @deprecated
  */
 
-class Lightbox extends Component {
+class Lightbox extends PureComponent {
     componentDidMount() {
         const { isOpen } = this.props;
         this.initLightbox();

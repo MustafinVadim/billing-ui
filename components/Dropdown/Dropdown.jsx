@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Component, Children, cloneElement } from "react";
+import { PureComponent, Children, cloneElement } from "react";
 import ReactDOM from "react-dom";
 import events from "add-event-listener";
 import classnames from "classnames";
@@ -9,7 +9,7 @@ import Option from "./Option.jsx";
 import dropdownStyles from "./Dropdown.scss";
 import { getScrollTopMenu, getSiblingOptions } from "./DropdownHelpers";
 
-class Dropdown extends Component {
+class Dropdown extends PureComponent {
     state = {
         activeOption: null,
         isOpened: false

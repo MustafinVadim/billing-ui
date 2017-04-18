@@ -2,7 +2,7 @@
  * @deprecated since v1.37. Use Popup component instead.
  */
 
-import { Component } from "react";
+import { PureComponent } from "react";
 import PropTypes from "prop-types";
 
 import ReactDOM from "react-dom";
@@ -10,7 +10,7 @@ import popup from "exports?Popup!ContentBase/scripts/Popup/Popup";
 import styles from "./Popup.scss";
 import classnames from "classnames";
 
-class Popup extends Component {
+class Popup extends PureComponent {
     _popupItemHtml = null;
 
     componentDidMount() {

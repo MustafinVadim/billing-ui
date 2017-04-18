@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import reactDOM from "react-dom";
 import cx from "classnames";
 
@@ -21,7 +21,7 @@ const filterPropEvents = (propTypes, props) => {
         .map(key => key);
 };
 
-class FileUploadForm extends Component {
+class FileUploadForm extends PureComponent {
     _fileId = createGuid();
 
     componentDidMount() {

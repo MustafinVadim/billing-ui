@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import { Component, Children, cloneElement } from "react";
+import { PureComponent, Children, cloneElement } from "react";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
 import RadioButton from "../RadioButton";
 import radioGroupStyles from "./RadioGroup.scss";
 import classnames from "classnames";
 
-class RadioGroup extends Component {
+class RadioGroup extends PureComponent {
     renderItems() {
         const { value, onChange, children } = this.props;
 

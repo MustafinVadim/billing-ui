@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import ReactDOM from "react-dom";
 import events from "add-event-listener";
 import moment from "../../libs/moment";
@@ -24,7 +24,7 @@ const isDetached = element => {
 };
 
 
-class Picker extends Component {
+class Picker extends PureComponent {
     _handleDocClick = this.handleDocClick.bind(this);
 
     constructor(props, context) {
