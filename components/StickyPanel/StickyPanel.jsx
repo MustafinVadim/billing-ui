@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { PureComponent, Children, cloneElement } from "react";
 import events from "add-event-listener";
-import { throttle } from "underscore";
+import throttle from "lodash/throttle";
 
 import Header from "./Header";
 import Body from "./Body";

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import classnames from "classnames";
-import { range } from "underscore";
+import range from "lodash/range";
 
 import PageSizeSwitcher from "./PageSizeSwitcher";
 import Themes from "./Themes";
