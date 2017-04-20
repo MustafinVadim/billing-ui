@@ -24,12 +24,10 @@ describe("handleActions", () => {
     it("should throw an error when defaultState is not defined for combinedActions", () => {
         expect(() => {
             handleActions({
-                [
-                    combineActions(
-                        "INCREMENT",
-                        "DECREMENT"
-                    )
-                    ]: ({ counter }, { type, payload: amount }) => ({
+                [combineActions(
+                    "INCREMENT",
+                    "DECREMENT"
+                )]: ({ counter }, { type, payload: amount }) => ({
                     counter: counter + (type === "INCREMENT" ? +1 : -1) * amount
                 })
             });
@@ -51,13 +49,9 @@ describe("handleActions", () => {
         }, defaultState);
 
         expect(reducer({ counter: 3 }, { type: "INCREMENT", payload: 7 }))
-            .to.deep.equal({
-            counter: 10
-        });
+            .to.deep.equal({ counter: 10 });
         expect(reducer({ counter: 10 }, { type: "DECREMENT", payload: 7 }))
-            .to.deep.equal({
-            counter: 3
-        });
+            .to.deep.equal({ counter: 3 });
     });
 
     it("works with symbol action types", () => {
@@ -70,9 +64,7 @@ describe("handleActions", () => {
         }, defaultState);
 
         expect(reducer({ counter: 3 }, { type: INCREMENT, payload: 7 }))
-            .to.deep.equal({
-            counter: 10
-        });
+            .to.deep.equal({ counter: 10 });
     });
 
     it("accepts a default state used when previous state is undefined", () => {
@@ -87,9 +79,7 @@ describe("handleActions", () => {
         }, { counter: 3 });
 
         expect(reducer(undefined, { type: "INCREMENT", payload: 7 }))
-            .to.deep.equal({
-            counter: 10
-        });
+            .to.deep.equal({ counter: 10 });
     });
 
     it("accepts action function as action type", () => {
@@ -101,9 +91,7 @@ describe("handleActions", () => {
         }, defaultState);
 
         expect(reducer({ counter: 3 }, incrementAction(7)))
-            .to.deep.equal({
-            counter: 10
-        });
+            .to.deep.equal({ counter: 10 });
     });
 
     it("should accept combined actions as action types in single reducer form", () => {
@@ -176,13 +164,9 @@ describe("handleActions", () => {
         }, defaultState);
 
         expect(reducer({ counter: 3 }, increment(2)))
-            .to.deep.equal({
-            counter: 5
-        });
+            .to.deep.equal({ counter: 5 });
         expect(reducer({ counter: 10 }, decrement(3)))
-            .to.deep.equal({
-            counter: 7
-        });
+            .to.deep.equal({ counter: 7 });
     });
 
     it("should work with namespaced actions", () => {

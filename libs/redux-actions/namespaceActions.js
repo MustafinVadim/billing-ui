@@ -27,9 +27,7 @@ function flattenActionMap(actionMap,
 }
 
 function unflattenActionCreators(flatActionCreators, namespace = defaultNamespace) {
-    function unflatten(flatActionType,
-                       partialNestedActionCreators = {},
-                       partialFlatActionTypePath = [],) {
+    function unflatten(flatActionType, partialNestedActionCreators = {}, partialFlatActionTypePath = []) {
         const nextNamespace = camelCase(partialFlatActionTypePath.shift());
         if (partialFlatActionTypePath.length) {
             if (!partialNestedActionCreators[nextNamespace]) {
