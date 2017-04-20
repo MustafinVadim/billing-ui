@@ -22,12 +22,17 @@ export default function handleAction(type, reducer = identity, defaultState) {
         ? [reducer, reducer]
         : [reducer.next, reducer.throw].map(aReducer => (isNil(aReducer) ? identity : aReducer));
 
-    return (state = defaultState, action) => {
+    return (state = {}, action) => {
         const { type: actionType } = action;
+        const newState = {
+            ...defaultState,
+            ...state
+        };
+
         if (!actionType || !includes(types, actionType.toString())) {
-            return state;
+            return newState;
         }
 
-        return (action.error === true ? throwReducer : nextReducer)(state, action);
+        return (action.error === true ? throwReducer : nextReducer)(newState, action);
     };
 }
