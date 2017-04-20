@@ -1,5 +1,5 @@
 import events from "add-event-listener";
-import { throttle } from "underscore";
+import throttle from "lodash/throttle";
 
 const copyCommandSupported = new Promise((resolve, reject) => {
     const copyToClipboardAvailableCheck = throttle(() => {
