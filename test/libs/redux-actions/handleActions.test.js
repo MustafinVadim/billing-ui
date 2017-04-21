@@ -110,7 +110,7 @@ describe("handleActions", () => {
 
         expect(reducer(initialState, increment(5))).to.deep.equal({ counter: 15 });
         expect(reducer(initialState, decrement(5))).to.deep.equal({ counter: 5 });
-        expect(reducer(initialState, { type: "NOT_TYPE", payload: 1000 })).to.equal(initialState);
+        expect(reducer(initialState, { type: "NOT_TYPE", payload: 1000 })).to.deep.equal(initialState);
         expect(reducer(undefined, increment(5))).to.deep.equal({ counter: 5 });
     });
 
@@ -138,7 +138,7 @@ describe("handleActions", () => {
         // non-errors
         expect(reducer(initialState, increment(5))).to.deep.equal({ counter: 15 });
         expect(reducer(initialState, decrement(5))).to.deep.equal({ counter: 5 });
-        expect(reducer(initialState, { type: "NOT_TYPE", payload: 1000 })).to.equal(initialState);
+        expect(reducer(initialState, { type: "NOT_TYPE", payload: 1000 })).to.deep.equal(initialState);
         expect(reducer(undefined, increment(5))).to.deep.equal({ counter: 5 });
 
         // errors
