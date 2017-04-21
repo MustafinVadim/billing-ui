@@ -45,9 +45,7 @@ describe("handleAction()", () => {
             it("returns default state if type does not match", () => {
                 const reducer = handleAction("NOTTYPE", () => null, { counter: 7 });
                 expect(reducer(undefined, { type }))
-                    .to.deep.equal({
-                    counter: 7
-                });
+                    .to.deep.equal({ counter: 7 });
             });
 
             it("accepts single function as handler", () => {
@@ -55,9 +53,7 @@ describe("handleAction()", () => {
                     counter: state.counter + action.payload
                 }), defaultState);
                 expect(reducer(prevState, { type, payload: 7 }))
-                    .to.deep.equal({
-                    counter: 10
-                });
+                    .to.deep.equal({ counter: 10 });
             });
 
             it("accepts action function as action type", () => {
@@ -67,9 +63,7 @@ describe("handleAction()", () => {
                 }), defaultState);
 
                 expect(reducer(prevState, incrementAction(7)))
-                    .to.deep.equal({
-                    counter: 10
-                });
+                    .to.deep.equal({ counter: 10 });
             });
 
             it("accepts a default state used when the previous state is undefined", () => {
@@ -78,9 +72,7 @@ describe("handleAction()", () => {
                 }), { counter: 3 });
 
                 expect(reducer(undefined, { type, payload: 7 }))
-                    .to.deep.equal({
-                    counter: 10
-                });
+                    .to.deep.equal({ counter: 10 });
             });
 
             it("should work with createActions action creators", () => {
@@ -91,9 +83,7 @@ describe("handleAction()", () => {
                 }), defaultState);
 
                 expect(reducer(undefined, increment(7)))
-                    .to.deep.equal({
-                    counter: 7
-                });
+                    .to.deep.equal({ counter: 7 });
             });
 
             it("should not throw and return state when action is non-FSA", () => {
@@ -136,9 +126,7 @@ describe("handleAction()", () => {
                     })
                 }, defaultState);
                 expect(reducer(prevState, { type, payload: 7 }))
-                    .to.deep.equal({
-                    counter: 10
-                });
+                    .to.deep.equal({ counter: 10 });
             });
 
             it("uses `throw()` if action represents an error", () => {
@@ -149,9 +137,7 @@ describe("handleAction()", () => {
                 }, defaultState);
 
                 expect(reducer(prevState, { type, payload: 7, error: true }))
-                    .to.deep.equal({
-                    counter: 10
-                });
+                    .to.deep.equal({ counter: 10 });
             });
 
             it("returns previous state if matching handler is not function", () => {
@@ -209,11 +195,11 @@ describe("handleAction()", () => {
             const error = new Error;
 
             expect(reducer({ number: 0 }, action1(error)))
-                .to.deep.equal({ ...defaultState, number: 0, threw: true});
+                .to.deep.equal({ ...defaultState, number: 0, threw: true });
             expect(reducer({ number: 0 }, { type: "ACTION_2", payload: error, error: true }))
-                .to.deep.equal({ ...defaultState, number: 0, threw: true});
+                .to.deep.equal({ ...defaultState, number: 0, threw: true });
             expect(reducer({ number: 0 }, { type: "ACTION_3", payload: error, error: true }))
-                .to.deep.equal({ ...defaultState, number: 0, threw: true});
+                .to.deep.equal({ ...defaultState, number: 0, threw: true });
         });
 
         it("should return previous state if action is not one of the combined actions", () => {
