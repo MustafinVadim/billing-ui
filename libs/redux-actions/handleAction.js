@@ -22,12 +22,23 @@ export default function handleAction(type, reducer = identity, defaultState) {
         ? [reducer, reducer]
         : [reducer.next, reducer.throw].map(aReducer => (isNil(aReducer) ? identity : aReducer));
 
-    return (state = {}, action) => {
+    return (state = defaultState, action) => {
         const { type: actionType } = action;
-        const newState = {
-            ...defaultState,
-            ...state
-        };
+        let newState;
+
+        if (Array.isArray(defaultState)) {
+            newState = [
+                ...defaultState,
+                ...state
+            ];
+        } else if (isPlainObject(defaultState)) {
+            newState = {
+                ...defaultState,
+                ...state
+            };
+        } else {
+            newState = state;
+        }
 
         if (!actionType || !includes(types, actionType.toString())) {
             return newState;
