@@ -1,6 +1,13 @@
 ﻿@import "../variables";
 @import "../placeholders";
 
+%with-tick {
+    width: 14px;
+    height: 13px;
+
+    background-size: contain;
+}
+
 %stylized-checkBox {
     @extend %as-hidden;
 
@@ -11,11 +18,13 @@
     }
 
     &:checked ~ %stylized-checkBox-label:after {
+        @extend %with-tick;
+
         opacity: 1;
 
         transition: all .3s ease-out;
 
-        background: url("/ContentBase/img/Shared/checkBlack.png") 0 0 no-repeat;
+        background: url("../../svg/tick_black.svg") 0 0 no-repeat;
     }
 
     &:checked ~ %stylized-checkBox-label:before {
@@ -93,10 +102,12 @@
     }
 
     &:hover:after {
+        @extend %with-tick;
+
         opacity: 1;
 
         transition: all .1s ease-out;
 
-        background: url("/ContentBase/img/Shared/check.png") 0 0 no-repeat;
+        background: url("../../svg/tick_grey.svg") 0 0 no-repeat;
     }
 }
