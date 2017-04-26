@@ -1,0 +1,11 @@
+﻿@import "./options";
+
+:local {
+    .wrapper {
+        @extend %menu-content;
+    }
+
+    .link-wrapper {
+        margin-top: 10px;
+    }
+}

@@ -1,0 +1,7 @@
+﻿@import "./options";
+
+:local {
+    .empty {
+        @extend %menu-content;
+    }
+}

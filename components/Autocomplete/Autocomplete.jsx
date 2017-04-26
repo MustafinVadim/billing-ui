@@ -1,13 +1,14 @@
-﻿import PropTypes from "prop-types";
-import { PureComponent } from "react";
+﻿import { PureComponent } from "react";
+import PropTypes from "prop-types";
+import onClickOutside from "react-onclickoutside";
 import debounce from "lodash/debounce";
 import omit from "lodash/omit";
 import axios from "../../libs/axios";
 
-import Highlighter from "../Highlighter";
+import TryAgain from "./TryAgain";
+import OptionsList from "./OptionsList";
 import keyCodes from "../../helpers/KeyCodes";
 import { updateImmutableArrayByKey } from "../../helpers/ArrayHelper";
-import { switchToRusLanguage, switchToEngLanguage } from "../../helpers/StringHelpers";
 
 import Icon, { IconTypes } from "../Icon";
 import TextInput from "../TextInput";
@@ -26,10 +27,11 @@ class Autocomplete extends PureComponent {
 
         this.state = {
             searchResult: [],
-            selected: -1,
-            errorMessage: null,
+            selectedOptionIndex: -1,
+            tooltipErrorMessage: null,
             value: value ? value : defaultValue,
-            opened: false
+            isRequestFailed: false,
+            isMenuOpened: false
         };
 
         this.showNewOptions = debounce(this.showNewOptions, 200);
@@ -55,13 +57,14 @@ class Autocomplete extends PureComponent {
         this.choose(index);
     };
 
-    handleChange = (value) => {
+    handleChange = value => {
         const { onChange } = this.props;
 
         if (!this.props.value) {
             this.setState({
                 value,
-                errorMessage: ""
+                tooltipErrorMessage: "",
+                isRequestFailed: false
             });
         }
 
@@ -72,7 +75,7 @@ class Autocomplete extends PureComponent {
         }
     };
 
-    handleFocus = (evt) => {
+    handleFocus = evt => {
         const value = evt.target.value || "";
 
         this.showNewOptions(value);
@@ -82,7 +85,7 @@ class Autocomplete extends PureComponent {
         }
     };
 
-    handleBlur = (evt) => {
+    handleClickOutside = evt => {
         this.closeOptions();
 
         if (this.props.onBlur) {
@@ -90,9 +93,9 @@ class Autocomplete extends PureComponent {
         }
     };
 
-    handleKey = (evt) => {
+    handleKey = evt => {
         const { searchResult } = this.state;
-        const currentSelected = this.state.selected;
+        const currentSelected = this.state.selectedOptionIndex;
         const optionsCount = searchResult.length;
         let handled = false;
 
@@ -108,7 +111,7 @@ class Autocomplete extends PureComponent {
                 nextSelected = optionsCount - 1;
             }
             this.setState({
-                selected: nextSelected
+                selectedOptionIndex: nextSelected
             });
         } else if (evt.keyCode === keyCodes.enter) {
             if (optionsCount && searchResult[currentSelected]) {
@@ -120,7 +123,7 @@ class Autocomplete extends PureComponent {
                 this.closeOptions();
             }
         } else if (evt.keyCode === keyCodes.esc && optionsCount) {
-            evt.preventDefault(); // Escape clears the input on IE.
+            evt.preventDefault(); // Escape clears the input in IE
             handled = true;
 
             this.closeOptions();
@@ -129,6 +132,18 @@ class Autocomplete extends PureComponent {
         if (!handled && this.props.onKeyDown) {
             this.props.onKeyDown(evt);
         }
+    };
+
+    handleOptionHover = index => {
+        this.setState({
+            selectedOptionIndex: index
+        });
+    };
+
+    handleOptionHoverOut = () => {
+        this.setState({
+            selectedOptionIndex: -1
+        });
     };
 
     showNewOptions(text) {
@@ -143,17 +158,17 @@ class Autocomplete extends PureComponent {
         this.search(pattern)
             .then(({ Options, ErrorMessage }) => {
                 if (this.state.value === value) {
-                    let selected = -1;
+                    let selectedOptionIndex = -1;
 
                     if (Options.length === 1) {
-                        selected = 0;
+                        selectedOptionIndex = 0;
                     }
 
                     this.setState({
                         searchResult: updateImmutableArrayByKey(this.state.searchResult, Options, "Value"),
-                        opened: true,
-                        errorMessage: ErrorMessage,
-                        selected
+                        isMenuOpened: !ErrorMessage,
+                        tooltipErrorMessage: ErrorMessage,
+                        selectedOptionIndex
                     });
                 }
             });
@@ -169,7 +184,15 @@ class Autocomplete extends PureComponent {
                     value
                 }
             })
-            .then(({ data }) => data);
+            .then(({ data }) => data)
+            .catch(() => {
+                this.setState({
+                    isRequestFailed: true,
+                    isMenuOpened: true,
+                    searchResult: [],
+                    selectedOptionIndex: -1
+                });
+            });
     }
 
     choose(index) {
@@ -185,6 +208,7 @@ class Autocomplete extends PureComponent {
         if (onChange) {
             onChange(value, { source: "AutocompleteOption" });
         }
+
         this.fireSelect(index);
     }
 
@@ -201,78 +225,21 @@ class Autocomplete extends PureComponent {
         if (this.state.searchResult.length !== 0) {
             this.setState({
                 searchResult: [],
-                selected: -1
+                selectedOptionIndex: -1
             });
         }
 
-        if (this.state.opened) {
+        if (this.state.isMenuOpened) {
             this.setState({
-                opened: false
+                isMenuOpened: false
             })
         }
     }
 
-    renderOption(optionData, index) {
-        const { renderItem, optionItemClassName, optionClassName } = this.props;
-        const { value } = this.state;
-        const { Text, Description, AdditionalInfo } = optionData;
-        const rootClass = cx({
-            [styles.item]: true,
-            [styles.active]: this.state.selected === index,
-            [optionItemClassName]: optionItemClassName
-        });
-        const optionClass = cx(
-            styles.option,
-            optionClassName
-        );
-
-        return (
-            <div key={index}
-                className={rootClass}
-                data-ft-id={`autocomplete-item-${index}`}
-                onMouseDown={(e) => this.handleItemClick(e, index)}
-                onMouseEnter={(e) => this.setState({ selected: index })}
-                onMouseLeave={(e) => this.setState({ selected: -1 })}>
-                {renderItem
-                    ? renderItem(optionData, this.state.value)
-                    : (<div>
-                        <div className={styles["additional-info"]}>
-                            {AdditionalInfo}
-                        </div>
-                        <div className={optionClass}>
-                            <Highlighter
-                                textToHighlight={Text}
-                                searchWords={[value, switchToRusLanguage(value), switchToEngLanguage(value)]} />
-                        </div>
-                        <div className={styles.description}>
-                            {Description}
-                        </div>
-                    </div>
-                )}
-            </div>
-        );
-    }
-
-    renderOptionsList() {
-        const { menuWidth, notFoundText } = this.props;
-
-        if (!this.state.opened || !this.state.value) {
-            return null;
-        }
-
-        const options = this.state.searchResult.map((data, index) => this.renderOption(data, index));
-
-        return (
-            <div className={styles.menuHolder}>
-                <div className={styles.menu} style={{ width: menuWidth }} data-ft-id="autocomplete-menu">
-                    {options.length === 0
-                        ? <div className={styles.empty} data-ft-id="autocomplete-empty-result">{notFoundText}</div>
-                        : options
-                    }
-                </div>
-            </div>
-        );
-    }
+    onSearchAgain = () => {
+        this.showNewOptions(this.state.value);
+        this.closeOptions();
+    };
 
     render() {
         const fieldsToOmit = ["url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect",
@@ -285,27 +252,47 @@ class Autocomplete extends PureComponent {
                 ...this.props.tooltipProps
             },
             value: this.state.value,
-            onBlur: this.handleBlur,
+            // onBlur: this.handleBlur,
             onFocus: this.handleFocus,
             onKeyDown: this.handleKey,
             onChange: this.handleChange
         }, fieldsToOmit);
 
-        const { hasSearchIcon, ftId } = this.props;
-        const { errorMessage } = this.state;
+        const { hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionClassName } = this.props;
+        const { tooltipErrorMessage, isRequestFailed, isMenuOpened, value, searchResult, selectedOptionIndex } = this.state;
+
+        const isValid = !tooltipErrorMessage || !value;
+        const shouldRenderMenu = isMenuOpened && !!value;
 
         return (
-            <span className={cx(styles.root, this.props.autocompleteWrapperClassName)} data-ft-id={ftId}>
+            <div className={cx(styles.root, this.props.autocompleteWrapperClassName)} data-ft-id={ftId}>
                 {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
-                    inputClassName={cx(styles.input, { [styles["with-icon"]]: hasSearchIcon })}
-                    placeholderClassName={cx(styles.placeholder, { [styles["with-icon"]]: hasSearchIcon })}
-                    isValid={!errorMessage || !inputProps.value}
-                    tooltipCaption={errorMessage}
+                           inputClassName={cx(styles.input, { [styles["with-icon"]]: hasSearchIcon })}
+                           placeholderClassName={cx(styles.placeholder, { [styles["with-icon"]]: hasSearchIcon })}
+                           isValid={isValid}
+                           tooltipCaption={tooltipErrorMessage}
                 />
 
-                {!errorMessage && this.renderOptionsList()}
-            </span>
+                {shouldRenderMenu && (
+                    <div className={styles.menu} style={{ width: menuWidth }} data-ft-id="autocomplete-menu">
+                        {isRequestFailed && <TryAgain onRefresh={this.onSearchAgain} onClose={this.closeOptions} />}
+                        {!isRequestFailed && (
+                            <OptionsList
+                                options={searchResult}
+                                notFoundText={notFoundText}
+                                value={value}
+                                selectedIndex={selectedOptionIndex}
+                                optionItemClassName={optionItemClassName}
+                                optionClassName={optionClassName}
+                                onOptionClick={this.handleItemClick}
+                                onHover={this.handleOptionHover}
+                                onHoverOut={this.handleOptionHoverOut}
+                                renderItem={renderItem} />
+                        )}
+                    </div>
+                )}
+            </div>
         );
     }
 }
@@ -350,7 +337,7 @@ Autocomplete.defaultProps = {
     clearOnSelect: false,
     defaultValue: "",
     notFoundText: "ничего не найдено",
-    valueCreator: (searchItem) => searchItem.Text
+    valueCreator: searchItem => searchItem.Text
 };
 
-export default Autocomplete;
+export default onClickOutside(Autocomplete);
