@@ -63,9 +63,7 @@ class Autocomplete extends PureComponent {
 
         if (!this.props.value) {
             this.setState({
-                value,
-                tooltipErrorMessage: "",
-                isRequestFailed: false
+                value
             });
         }
 
@@ -171,6 +169,7 @@ class Autocomplete extends PureComponent {
                         searchResult: updateImmutableArrayByKey(this.state.searchResult, Options, "Value"),
                         isMenuOpened,
                         tooltipErrorMessage: ErrorMessage,
+                        isRequestFailed: false,
                         selectedOptionIndex
                     });
 
