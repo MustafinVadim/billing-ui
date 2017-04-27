@@ -21,8 +21,9 @@ class Autocomplete extends PureComponent {
 
     constructor(props, context) {
         super(props, context);
-        const { value, defaultValue } = props;
+        const { value, defaultValue, disableOnClickOutside } = props;
 
+        disableOnClickOutside();
         this._valueCreator = props.valueCreator;
 
         this.state = {
@@ -164,12 +165,18 @@ class Autocomplete extends PureComponent {
                         selectedOptionIndex = 0;
                     }
 
+                    const isMenuOpened = !ErrorMessage;
+
                     this.setState({
                         searchResult: updateImmutableArrayByKey(this.state.searchResult, Options, "Value"),
-                        isMenuOpened: !ErrorMessage,
+                        isMenuOpened,
                         tooltipErrorMessage: ErrorMessage,
                         selectedOptionIndex
                     });
+
+                    if (isMenuOpened) {
+                        this.props.enableOnClickOutside();
+                    }
                 }
             });
     }
@@ -186,6 +193,7 @@ class Autocomplete extends PureComponent {
             })
             .then(({ data }) => data)
             .catch(() => {
+                this.props.enableOnClickOutside();
                 this.setState({
                     isRequestFailed: true,
                     isMenuOpened: true,
@@ -234,6 +242,8 @@ class Autocomplete extends PureComponent {
                 isMenuOpened: false
             })
         }
+
+        this.props.disableOnClickOutside();
     }
 
     onSearchAgain = () => {
@@ -242,8 +252,10 @@ class Autocomplete extends PureComponent {
     };
 
     render() {
-        const fieldsToOmit = ["url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect",
-            "autocompleteWrapperClassName", "optionItemClassName", "menuWidth", "optionClassName", "valueCreator", "renderItem"];
+        const fieldsToOmit = [
+            "url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect", "enableOnClickOutside",
+            "autocompleteWrapperClassName", "optionItemClassName", "menuWidth", "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside"
+        ];
 
         const inputProps = omit({
             ...this.props,
@@ -252,7 +264,6 @@ class Autocomplete extends PureComponent {
                 ...this.props.tooltipProps
             },
             value: this.state.value,
-            // onBlur: this.handleBlur,
             onFocus: this.handleFocus,
             onKeyDown: this.handleKey,
             onChange: this.handleChange
@@ -328,7 +339,10 @@ Autocomplete.propTypes = {
 
     autocompleteWrapperClassName: PropTypes.string,
     optionItemClassName: PropTypes.string,
-    optionClassName: PropTypes.string
+    optionClassName: PropTypes.string,
+
+    enableOnClickOutside: PropTypes.func,
+    disableOnClickOutside: PropTypes.func
 };
 
 Autocomplete.defaultProps = {
