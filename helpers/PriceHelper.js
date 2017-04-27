@@ -15,7 +15,7 @@
     }
 
     const fractionalFormat = fractionalPart !== 0
-        ? `.${fractionalPart < 10 ? `0${fractionalPart}` : fractionalPart % 10 === 0 ? fractionalPart / 10 : fractionalPart}`
+        ? `.${fractionalPart < 10 ? `0${fractionalPart}` : fractionalPart}`
         : "";
 
     return (isNegative ? "-" : "") + integralFormat.join(" ") + fractionalFormat;
