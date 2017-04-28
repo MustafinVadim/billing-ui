@@ -23,6 +23,10 @@ class Dropdown extends PureComponent {
         this._initOptions(props);
     }
 
+    componentWillMount() {
+        this._mounted = true;
+    }
+
     componentDidMount() {
         events.addEventListener(document, "click", this.handleDocumentClick);
         events.addEventListener(document, "keydown", this.handleKeyDown);
@@ -37,6 +41,8 @@ class Dropdown extends PureComponent {
     }
 
     componentWillUnmount() {
+        this._mounted = false;
+
         events.removeEventListener(document, "click", this.handleDocumentClick);
         events.removeEventListener(document, "keydown", this.handleKeyDown);
     }
@@ -89,12 +95,20 @@ class Dropdown extends PureComponent {
     };
 
     handleDocumentClick = (evt) => {
+        if (!this._mounted) {
+            return;
+        }
+
         if (this.state.isOpened && !ReactDOM.findDOMNode(this).contains(evt.target)) {
             this.toggleOptions(false);
         }
     };
 
     handleKeyDown = (evt) => {
+        if (!this._mounted) {
+            return;
+        }
+
         const { activeOption, isOpened } = this.state;
 
         if (!isOpened || !this.optionValues) {
