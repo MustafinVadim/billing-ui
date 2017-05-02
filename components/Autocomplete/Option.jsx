@@ -40,7 +40,7 @@ class Option extends PureComponent {
                  onMouseEnter={this._handleMouseEnter}
                  onMouseLeave={onHoverOut}>
                 {renderItem
-                    ? renderItem(optionData, this.state.value)
+                    ? renderItem(optionData, value)
                     : (
                         <div>
                             <div className={styles["additional-info"]}>
