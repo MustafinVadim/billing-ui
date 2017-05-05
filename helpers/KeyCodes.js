@@ -5,6 +5,7 @@ const KeyCodes = {
     backspace: 8,
     delete: 46,
     del: 110,
+    ctrl: 17,
 
     left: 37,
     top: 38,
