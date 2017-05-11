@@ -23,6 +23,10 @@ class Link extends PureComponent {
         const linkClassNames = classnames(className, styles.link);
 
         if (href) {
+            if (tagProps.target === "_blank") {
+                tagProps.rel = "noreferrer noopener";
+            }
+
             return (
                 <a { ...tagProps } className={linkClassNames}>{children}</a>
             );
