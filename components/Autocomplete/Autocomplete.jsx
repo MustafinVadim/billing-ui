@@ -93,43 +93,45 @@ class Autocomplete extends PureComponent {
     };
 
     handleKey = evt => {
-        const { searchResult } = this.state;
-        const currentSelected = this.state.selectedOptionIndex;
+        const { searchResult, selectedOptionIndex } = this.state;
         const optionsCount = searchResult.length;
-        let handled = false;
 
-        if ((evt.keyCode === keyCodes.top || evt.keyCode === keyCodes.bottom) && optionsCount) {
-            evt.preventDefault();
-            handled = true;
+        switch (evt.keyCode) {
+            case keyCodes.top:
+                if (optionsCount > 0) {
+                    evt.preventDefault();
 
-            const step = evt.keyCode === keyCodes.top ? -1 : 1;
-            let nextSelected = currentSelected + step;
-            if (nextSelected >= optionsCount) {
-                nextSelected = -1;
-            } else if (nextSelected < -1) {
-                nextSelected = optionsCount - 1;
-            }
-            this.setState({
-                selectedOptionIndex: nextSelected
-            });
-        } else if (evt.keyCode === keyCodes.enter) {
-            if (optionsCount && searchResult[currentSelected]) {
-                evt.preventDefault();
-                handled = true;
+                    this._selectNextOption(-1, selectedOptionIndex, optionsCount);
+                }
+                break;
+            case keyCodes.bottom:
+                if (optionsCount > 0) {
+                    evt.preventDefault();
 
-                this.choose(currentSelected);
-            } else {
-                this.closeOptions();
-            }
-        } else if (evt.keyCode === keyCodes.esc && optionsCount) {
-            evt.preventDefault(); // Escape clears the input in IE
-            handled = true;
+                    this._selectNextOption(1, selectedOptionIndex, optionsCount);
+                }
+                break;
+            case keyCodes.esc:
+                if (optionsCount > 0 && this.state.isMenuOpened) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
 
-            this.closeOptions();
-        }
+                    this.closeOptions();
+                }
+                break;
+            case keyCodes.enter:
+                if (optionsCount > 0 && searchResult[selectedOptionIndex]) {
+                    evt.preventDefault();
 
-        if (!handled && this.props.onKeyDown) {
-            this.props.onKeyDown(evt);
+                    this.choose(selectedOptionIndex);
+                } else {
+                    this.closeOptions();
+                }
+                break;
+            default:
+                if (this.props.onKeyDown) {
+                    this.props.onKeyDown(evt);
+                }
         }
     };
 
@@ -142,6 +144,19 @@ class Autocomplete extends PureComponent {
     handleOptionHoverOut = () => {
         this.setState({
             selectedOptionIndex: -1
+        });
+    };
+
+    _selectNextOption = (step, currentIndex, optionsCount) => {
+        let nextSelectedIndex = currentIndex + step;
+        if (nextSelectedIndex >= optionsCount) {
+            nextSelectedIndex = -1;
+        } else if (nextSelectedIndex < -1) {
+            nextSelectedIndex = optionsCount - 1;
+        }
+
+        this.setState({
+            selectedOptionIndex: nextSelectedIndex
         });
     };
 
