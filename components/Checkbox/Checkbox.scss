@@ -1,5 +1,7 @@
 ﻿@import "./../../styles/materialdesign";
 @import "./../../styles/placeholders";
+@import "./../../styles/bourbon";
+$textStageDoneColor: #23d160;
 
 :local {
     .wrapper {
@@ -8,11 +10,128 @@
         position: relative;
     }
 
+    .strikethrough {
+        // todo: Тебе не хочется писать все настройки animation в global!
+        overflow: hidden;
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        & .label {
+            margin-right: 70px;
+            padding-right: 10px;
+        }
+
+        & .checkbox {
+            &:checked ~ .label {
+                transition: cubic-bezier(.6, .04, .98, .335) 3s;
+                animation-duration: 3s;
+                animation-delay: .4s;
+
+                animation-fill-mode: forwards;
+
+                :global {
+                    animation-name: text-highlight-on-check;
+                }
+
+                &:after {
+                    transition: cubic-bezier(.78, -1.22, .17, 1.89) .5s;
+                    animation-duration: 3s;
+                    animation-delay: .4s;
+
+                    animation-fill-mode: forwards;
+
+                    :global {
+                        animation-name: tick-highlight-on-check;
+                    }
+                }
+
+                & .line-through {
+                    width: 100%;
+
+                    transition: cubic-bezier(.78, -1.22, .17, 1.89) .5s;
+                    animation-duration: 3s;
+                    animation-delay: .5s;
+
+                    animation-fill-mode: forwards;
+
+                    :global {
+                        animation-name: line-highlight-on-check;
+                    }
+                }
+            }
+        }
+    }
+
     .checkbox {
         @extend %stylized-checkBox;
     }
 
     .label {
         @extend %stylized-checkBox-label;
+    }
+
+    .content {
+        position: relative;
+        top: -1px;
+    }
+
+    .line-through {
+        @include position(absolute, calc(50% + 2px) null null 0);
+
+        width: 0;
+        height: 1px;
+
+        transition: ease-out .2s;
+
+        background-color: $textBaseColor;
+    }
+}
+
+@keyframes text-highlight-on-check {
+    0% {
+        color: $textBaseColor;
+    }
+
+    10%,
+    60% {
+        color: $textStageDoneColor;
+    }
+
+    70%,
+    100% {
+        color: $textSecondaryColor;
+    }
+}
+
+@keyframes line-highlight-on-check {
+    0% {
+        background-color: $textBaseColor;
+    }
+
+    10%,
+    60% {
+        background-color: $textStageDoneColor;
+    }
+
+    70%,
+    100% {
+        background-color: $textSecondaryColor;
+    }
+}
+
+@keyframes tick-highlight-on-check {
+    0% {
+        background-image: url("../../svg/tick_black.svg");
+    }
+
+    10%,
+    60% {
+        background-image: url("../../svg/tick_green.svg");
+    }
+
+    70%,
+    100% {
+        background-image: url("../../svg/tick_grey.svg");
     }
 }

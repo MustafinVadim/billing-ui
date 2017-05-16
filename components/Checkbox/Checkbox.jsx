@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import checkboxStyles from "./Checkbox.scss";
-import classnames from "classnames";
+import cx from "classnames";
 
 class Checkbox extends PureComponent {
     handleChange = (evt) => {
@@ -15,11 +15,13 @@ class Checkbox extends PureComponent {
     render() {
         const {
             checked, checkboxClassName, labelClassName, wrapperClassName, styles,
-            children, disabled, readonly, ftId, ...checkboxProps
+            children, disabled, readonly, ftId, withLineStrikethrough, ...checkboxProps
         } = this.props;
-        const labelClassNames = classnames(styles.label, labelClassName);
-        const wrapperClassNames = classnames(styles.wrapper, wrapperClassName);
-        const checkboxClassNames = classnames(styles.checkbox, checkboxClassName, {
+        const labelClassNames = cx(styles.label, labelClassName);
+        const wrapperClassNames = cx(styles.wrapper, wrapperClassName, {
+            [styles.strikethrough]: withLineStrikethrough
+        });
+        const checkboxClassNames = cx(styles.checkbox, checkboxClassName, {
             "disabled": disabled,
             "readonly": readonly
         });
@@ -34,7 +36,8 @@ class Checkbox extends PureComponent {
                     type="checkbox"
                     onChange={this.handleChange} />
                 <span className={labelClassNames}>
-                    {children}
+                    <span className={styles.content}>{children}</span>
+                    {withLineStrikethrough && <span className={cx(styles["line-through"])}></span>}
                 </span>
             </label>
         );
@@ -45,6 +48,7 @@ Checkbox.propTypes = {
     onChange: PropTypes.func,
     checked: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
+    withLineStrikethrough: PropTypes.bool.isRequired,
     readonly: PropTypes.bool.isRequired,
     labelClassName: PropTypes.string,
     wrapperClassName: PropTypes.string,
@@ -62,6 +66,7 @@ Checkbox.defaultProps = {
     checked: false,
     disabled: false,
     readonly: false,
+    withLineStrikethrough: false,
     styles: checkboxStyles
 };
 
