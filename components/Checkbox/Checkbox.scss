@@ -43,9 +43,9 @@ $textStageDoneColor: #23d160;
                 transition: cubic-bezier(.6, .04, .98, .335) 3s;
                 animation-duration: 3s;
                 animation-delay: .4s;
-                color: $textBaseColor;
-
                 animation-fill-mode: forwards;
+
+                color: $textBaseColor;
 
                 :global {
                     animation-name: text-highlight-on-check;
@@ -55,9 +55,9 @@ $textStageDoneColor: #23d160;
                     transition: cubic-bezier(.78, -1.22, .17, 1.89) .5s;
                     animation-duration: 3s;
                     animation-delay: .4s;
-                    background-image: url("../../svg/tick_black.svg");
-
                     animation-fill-mode: forwards;
+
+                    background-image: url("../../svg/tick_black.svg");
 
                     :global {
                         animation-name: tick-highlight-on-check;
@@ -68,9 +68,9 @@ $textStageDoneColor: #23d160;
                     transition: cubic-bezier(.78, -1.22, .17, 1.89) .5s;
                     animation-duration: 3s;
                     animation-delay: .5s;
+                    animation-fill-mode: forwards;
 
                     background-color: $textBaseColor;
-                    animation-fill-mode: forwards;
 
                     :global {
                         animation-name: line-highlight-on-check;
