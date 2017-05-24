@@ -4,6 +4,16 @@ import checkboxStyles from "./Checkbox.scss";
 import cx from "classnames";
 
 class Checkbox extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        this._needAnimation = false;
+    }
+
+    componentDidMount() {
+        this._needAnimation = true;
+    }
+
     handleChange = (evt) => {
         const { checked, onChange } = this.props;
 
@@ -19,7 +29,8 @@ class Checkbox extends PureComponent {
         } = this.props;
         const labelClassNames = cx(styles.label, labelClassName);
         const wrapperClassNames = cx(styles.wrapper, wrapperClassName, {
-            [styles.strikethrough]: withLineStrikethrough
+            [styles.strikethrough]: withLineStrikethrough,
+            [styles["with-animation"]]: withLineStrikethrough && this._needAnimation
         });
         const checkboxClassNames = cx(styles.checkbox, checkboxClassName, {
             "disabled": disabled,

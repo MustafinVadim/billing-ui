@@ -24,9 +24,27 @@ $textStageDoneColor: #23d160;
 
         & .checkbox {
             &:checked ~ .label {
+                color: $textSecondaryColor;
+
+                &:after {
+                    background-image: url("../../svg/tick_grey.svg");
+                }
+
+                & .line-through {
+                    width: 100%;
+
+                    background-color: $textSecondaryColor;
+                }
+            }
+        }
+
+        &.with-animation .checkbox {
+            &:checked ~ .label {
                 transition: cubic-bezier(.6, .04, .98, .335) 3s;
                 animation-duration: 3s;
                 animation-delay: .4s;
+                color: $textBaseColor;
+
                 animation-fill-mode: forwards;
 
                 :global {
@@ -37,6 +55,8 @@ $textStageDoneColor: #23d160;
                     transition: cubic-bezier(.78, -1.22, .17, 1.89) .5s;
                     animation-duration: 3s;
                     animation-delay: .4s;
+                    background-image: url("../../svg/tick_black.svg");
+
                     animation-fill-mode: forwards;
 
                     :global {
@@ -45,11 +65,11 @@ $textStageDoneColor: #23d160;
                 }
 
                 & .line-through {
-                    width: 100%;
-
                     transition: cubic-bezier(.78, -1.22, .17, 1.89) .5s;
                     animation-duration: 3s;
                     animation-delay: .5s;
+
+                    background-color: $textBaseColor;
                     animation-fill-mode: forwards;
 
                     :global {

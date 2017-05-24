@@ -8,7 +8,6 @@ import classnames from "classnames";
 import buttonStyles from "./Button.scss";
 
 class Button extends PureComponent {
-
     constructor(props) {
         super(props);
         this._resolveOnClick = this._resolveOnClick.bind(this);
