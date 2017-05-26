@@ -11,7 +11,6 @@ $textStageDoneColor: #23d160;
     }
 
     .strikethrough {
-        // todo: Тебе не хочется писать все настройки animation в global!
         overflow: hidden;
 
         white-space: nowrap;
@@ -26,21 +25,21 @@ $textStageDoneColor: #23d160;
             &:checked ~ .label {
                 color: $textSecondaryColor;
 
-                &:after {
-                    background-image: url("../../svg/tick_grey.svg");
-                }
-
                 & .line-through {
                     width: 100%;
 
                     background-color: $textSecondaryColor;
+                }
+
+                &:after {
+                    border-color: $borderInputColor;
                 }
             }
         }
 
         &.with-animation .checkbox {
             &:checked ~ .label {
-                transition: cubic-bezier(.6, .04, .98, .335) 3s;
+                transition: color cubic-bezier(.6, .04, .98, .34) 3s;
                 animation-duration: 3s;
                 animation-delay: .4s;
                 animation-fill-mode: forwards;
@@ -57,15 +56,13 @@ $textStageDoneColor: #23d160;
                     animation-delay: .4s;
                     animation-fill-mode: forwards;
 
-                    background-image: url("../../svg/tick_black.svg");
-
                     :global {
                         animation-name: tick-highlight-on-check;
                     }
                 }
 
                 & .line-through {
-                    transition: cubic-bezier(.78, -1.22, .17, 1.89) .5s;
+                    transition: width cubic-bezier(.78, -1.22, .17, 1.89) .5s;
                     animation-duration: 3s;
                     animation-delay: .5s;
                     animation-fill-mode: forwards;
@@ -99,7 +96,7 @@ $textStageDoneColor: #23d160;
         width: 0;
         height: 1px;
 
-        transition: ease-out .2s;
+        transition: all ease-out .2s;
 
         background-color: $textBaseColor;
     }
@@ -139,16 +136,16 @@ $textStageDoneColor: #23d160;
 
 @keyframes tick-highlight-on-check {
     0% {
-        background-image: url("../../svg/tick_black.svg");
+        border-color: $textBaseColor;
     }
 
     10%,
     60% {
-        background-image: url("../../svg/tick_green.svg");
+        border-color: $textStageDoneColor;
     }
 
     70%,
     100% {
-        background-image: url("../../svg/tick_grey.svg");
+        border-color: $textInactiveColor;
     }
 }
