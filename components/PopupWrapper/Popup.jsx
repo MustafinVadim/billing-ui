@@ -6,7 +6,7 @@ import { PureComponent } from "react";
 import PropTypes from "prop-types";
 
 import ReactDOM from "react-dom";
-import popup from "exports?Popup!ContentBase/scripts/Popup/Popup";
+import popup from "exports-loader?Popup!ContentBase/scripts/Popup/Popup";
 import styles from "./Popup.scss";
 import classnames from "classnames";
 
