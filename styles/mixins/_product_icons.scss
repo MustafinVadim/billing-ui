@@ -1,3 +1,6 @@
+@import "../../styles/variables";
+@import "../../styles/bourbon";
+
 $productIconSpriteUrl: "/ContentBase/img/ProductIcons/product_icons_20x20.png";
 
 $transparentType: transparent;
@@ -89,14 +92,39 @@ $halfFilledIcons: (
     @return $filledIcons;
 }
 
+%product-unknown {
+    &:before {
+        @include position(absolute, 1px null null 0);
+        content: attr(data-product-name);
+        display: block;
+
+        padding: 2px 5px 3px;
+        box-sizing: border-box;
+
+        border-radius: 2px;
+        background: $bgElementActiveColor;
+
+        color: $textDarkColor;
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+}
+
 @mixin product-icons($type: $filledType) {
     $products: getProducts($type);
+
+    @extend %product-unknown;
 
     @each $product, $position in $products {
         &.#{$product} {
             background-image: url($productIconSpriteUrl);
             background-repeat: no-repeat;
             background-position: #{$position};
+
+            &:before {
+                display: none;
+            }
         }
     }
 }
@@ -104,11 +132,15 @@ $halfFilledIcons: (
 @mixin product-icon($product, $type: $filledType) {
     $products: getProducts($type);
 
+    @extend %product-unknown;
+
     @if map-has-key($products, $product) {
         background-image: url($productIconSpriteUrl);
         background-repeat: no-repeat;
         background-position: #{map-get($products, $product)};
-    } @else {
-        @warn "Unfortunately, no value could be retrieved from `#{$product}`. Please make sure it is defined in `$products` map.";
+
+        &:before {
+            display: none;
+        }
     }
 }
