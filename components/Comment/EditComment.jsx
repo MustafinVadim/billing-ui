@@ -91,8 +91,11 @@ class EditComment extends PureComponent {
                 url,
                 { ...data, ...requestData }
             )
-            .then(() => {
-                action({ ...actionData });
+            .then(response => {
+                action({
+                    ...actionData,
+                    response: response.data
+                });
             })
             .catch(e => {
                 this._toggleIsSaving(false);
@@ -126,15 +129,17 @@ class EditComment extends PureComponent {
                 )}
                 <div className={styles.wrapper}>
                     <TextArea placeholder="Написать комментарий"
-                          wrapperClassName={styles.textarea}
-                          inputClassName={styles.input}
-                          maxLength={maxLength}
-                          width="100%"
-                          value={decodedUnsavedText}
-                          ref={el => { this._textarea = el } }
-                          onKeyUp={this._handleKeyUp}
-                          onChange={this._handleTextChange}
-                          data-ft-id="comment-textarea" />
+                              wrapperClassName={styles.textarea}
+                              inputClassName={styles.input}
+                              maxLength={maxLength}
+                              width="100%"
+                              value={decodedUnsavedText}
+                              ref={el => {
+                                  this._textarea = el
+                              } }
+                              onKeyUp={this._handleKeyUp}
+                              onChange={this._handleTextChange}
+                              data-ft-id="comment-textarea" />
 
                     <div className={styles.controls}>
                         <Link className={saveStyles} onClick={this._handleSave} data-ft-id="comment-save">Сохранить</Link>

@@ -63,8 +63,8 @@ class Comment extends PureComponent {
         this.setState({ isCollapsed: !this.state.isCollapsed });
     };
 
-    _handleSave = ({ value }) => {
-        this.props.onSave({ value });
+    _handleSave = (data) => {
+        this.props.onSave(data);
         this._completeEditing();
     };
 
