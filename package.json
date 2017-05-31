@@ -1,22 +1,18 @@
 {
   "name": "billing-ui",
-  "version": "1.43.11",
+  "version": "1.44.0",
   "description": "KonturBilling UI components",
   "scripts": {
     "test:ci": "npm run eslint && npm run stylelint && npm test -- --reporter min",
     "test": "mocha ./test/**/*.test.js",
-
     "eslint": "eslint ./**/**.js --cache && eslint ./**/**.jsx --cache",
     "stylelint": "stylelint ./**/*.scss --color --syntax scss",
-
     "stylefmt": "stylefmt --recursive ./styles & stylefmt --recursive ./components",
     "comb": "gulp sass:comb",
     "prettier": "prettier --print-width 160 --tab-width 4 --write '{components,libs,helpers,test}/**/*.js*'",
-
     "precommit": "yarn comb",
     "preversion": "yarn eslint && yarn stylelint && yarn test",
     "postversion": "git push && git push --tags",
-
     "storybook": "cd ./docs && yarn && yarn storybook && cd .."
   },
   "repository": {
