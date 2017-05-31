@@ -1,4 +1,5 @@
 import moment from "moment";
+import "moment/locale/ru";
 moment.locale("ru");
 
 export const formatDate = (date, format = "L") => moment(date).format(format);
