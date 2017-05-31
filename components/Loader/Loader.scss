@@ -1,0 +1,46 @@
+﻿@import "../../styles/bourbon";
+@import "../../styles/variables";
+
+:local {
+    .loader {
+        position: relative;
+        z-index: inherit;
+
+        display: inline-block;
+        width: 100%;
+        box-sizing: border-box;
+
+        &.active:after {
+            @include position(absolute, 0 0 0 0);
+
+            content: " ";
+
+            z-index: 1000;
+        }
+    }
+
+    .spinnerContainerCenter {
+        @include position(fixed, 0 0 0 0);
+
+        z-index: 1001;
+
+        display: block;
+        margin: auto;
+
+        opacity: .8;
+
+        background: $bgWhiteColor;
+
+        text-align: center;
+
+        &:before {
+            content: " ";
+
+            display: inline-block;
+            height: 100%;
+            min-height: 100%;
+
+            vertical-align: middle;
+        }
+    }
+}
