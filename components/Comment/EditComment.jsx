@@ -9,7 +9,7 @@ import TextArea from "../TextArea";
 import Icon, { IconTypes } from "../Icon";
 import Link from "../Link";
 
-import { safeEncodeURI, safeDecodeURI } from "../../helpers/EncodeHelpers";
+import { safeDecodeURI } from "../../helpers/EncodeHelpers";
 
 import styles from "./EditComment.scss";
 
@@ -66,7 +66,7 @@ class EditComment extends PureComponent {
 
         if (this._canSave()) {
             this._toggleIsSaving(true);
-            this._sendRequest(saveUrl, onSave, { comment: safeEncodeURI(unsavedText) }, { value: unsavedText });
+            this._sendRequest(saveUrl, onSave, { comment: unsavedText }, { value: unsavedText });
         }
     };
 
