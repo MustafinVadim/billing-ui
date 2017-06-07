@@ -79,14 +79,16 @@ class ReadComment extends PureComponent {
             <div className={styles.wrapper}>
                 {(title || date) && (
                     <div className={styles.header}>
-                        <div className={styles.title}>{title}</div>
-                        <div className={styles.date}>{date}</div>
+                        <div className={styles.title} data-ft-id="comment-title">{title}</div>
+                        <div className={styles.date} data-ft-id="comment-date">{date}</div>
                     </div>
                 )}
                 <div
                     className={textClassNames}
                     ref={elem => { this._textBlock = elem }}
-                    style={{ height: textBlockHeight }}>
+                    style={{ height: textBlockHeight }}
+                    data-ft-id="comment-text"
+                >
                     {value || "Написать комментарий"}
                 </div>
 
