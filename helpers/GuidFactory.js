@@ -1,34 +1,34 @@
-const nullGuid = "00000000-0000-0000-0000-000000000000";
+import uuid from "uuid";
 
 const GuidFactory = {
+    _nullGuid: "00000000-0000-0000-0000-000000000000",
+
     create() {
-        return [this._gen(2), this._gen(1), this._gen(1), this._gen(1), this._gen(3)].join("-");
+        return uuid.v4();
+    },
+    empty() {
+        return this._nullGuid;
     },
     createList(count) {
-        var guids = [];
-        for (var index = 0; index < count; index++) {
-            guids.push(this.create());
+        let guidList = [];
+        for (let index = 0; index < count; index++) {
+            guidList.push(this.create());
         }
 
-        return guids;
+        return guidList;
     },
     isNullOrEmpty(guid) {
-        return !guid || guid === nullGuid
+        return !guid || guid === this._nullGuid
     },
-    _s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    },
-    _gen(times) {
-        var result = "";
-        for (var i = 0; i < times; ++i) {
-            result += this._s4();
-        }
-        return result;
+    isGuid(guid) {
+        return /^[{(]?[0-9A-F]{8}[-]?([0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$/ig.test(guid);
     }
 };
 
 export const createGuid = () => GuidFactory.create();
-export const isNullOrEmpty = (guid) => GuidFactory.isNullOrEmpty(guid);
+export const isNullOrEmpty = guid => GuidFactory.isNullOrEmpty(guid);
 export const createGuidList = (count = 0) => GuidFactory.createList(count);
+export const isGuid = guid => GuidFactory.isGuid(guid);
+export const emptyGuid = () => GuidFactory.empty();
+
+export default GuidFactory;
