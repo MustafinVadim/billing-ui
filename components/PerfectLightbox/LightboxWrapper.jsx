@@ -22,14 +22,14 @@ class LightboxWrapper extends PureComponent {
     };
 
     render() {
-        const { children, overlayClassName, lightboxClassName, positionType, width, ftId } = this.props;
+        const { children, overlayClassName, lightboxClassName, closeButtonClassName, positionType, width, ftId } = this.props;
 
         const portalClassNames = cx(
             styles.overlay,
             overlayClassName
         );
 
-        const fieldsToOmit = ["children", "overlayClassName", "lightboxClassName", "positionType", "width", "ftId"];
+        const fieldsToOmit = ["children", "overlayClassName", "lightboxClassName", "positionType", "width", "ftId", "closeButtonClassName"];
 
         const portalProps = {
             ...omit(this.props, fieldsToOmit),
@@ -41,6 +41,7 @@ class LightboxWrapper extends PureComponent {
                 <Lightbox
                     ftId={ftId}
                     className={lightboxClassName}
+                    closeButtonClassName={closeButtonClassName}
                     positionType={positionType}
                     width={width}
                     ref={(elm) => {
@@ -66,6 +67,7 @@ LightboxWrapper.propTypes = {
 
     overlayClassName: PropTypes.string,
     lightboxClassName: PropTypes.string,
+    closeButtonClassName: PropTypes.string,
     positionType: PropTypes.oneOf(Object.keys(positionTypes)),
     width: PropTypes.number
 };

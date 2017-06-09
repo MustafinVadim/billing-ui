@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
-import cx from "classnames";
 
 import positionTypes from "./LightboxPositionType";
 import styles from "./Lightbox.scss";
+import cx from "classnames";
 
 class Lightbox extends PureComponent {
     _handleCloseClick = () => {
@@ -12,7 +12,7 @@ class Lightbox extends PureComponent {
     };
 
     render() {
-        const { children, className, positionType, width, ftId } = this.props;
+        const { children, className, closeButtonClassName, positionType, width, ftId } = this.props;
 
         const lightboxClassNames = cx(
             styles.lightbox,
@@ -25,7 +25,7 @@ class Lightbox extends PureComponent {
         };
         return (
             <div className={ lightboxClassNames } style={lightboxStyle} data-ft-id={ftId}>
-                <button className={styles["close-button"]} onClick={this._handleCloseClick} data-ft-id="lightbox-close-button" />
+                <button className={cx(styles["close-button"], closeButtonClassName)} onClick={this._handleCloseClick} data-ft-id="lightbox-close-button" />
                 {children}
             </div>
         )
@@ -35,6 +35,7 @@ class Lightbox extends PureComponent {
 Lightbox.propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
+    closeButtonClassName: PropTypes.string,
     positionType: PropTypes.oneOf(Object.keys(positionTypes)),
     beforeClose: PropTypes.func,
     closeClick: PropTypes.func,
