@@ -1,0 +1,22 @@
+﻿@import "~billing-ui/styles/variables";
+
+%fixed {
+    position: fixed;
+    top: 0;
+
+    margin-top: 0;
+}
+
+:local {
+    .sticky {
+        &.fixed {
+            @extend %fixed;
+        }
+
+        &.ms-device-fixed {
+            @extend %fixed;
+
+            position: -ms-device-fixed;
+        }
+    }
+}
