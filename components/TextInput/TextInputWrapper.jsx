@@ -3,6 +3,7 @@ import { PureComponent } from "react";
 import ReactDOM from "react-dom";
 import DefaultTextInput from "./DefaultTextInput";
 import CompactTextInput from "./CompactTextInput";
+import CustomPropTypes from "../../helpers/CustomPropTypes";
 import TextInputType from "./TextInputType";
 import { TooltipTypes, PositionTypes } from "../Tooltip";
 import Validation, { validate } from "../../helpers/ValidationHelpers";
@@ -55,12 +56,22 @@ TextInputWrapper.propTypes = {
     validateOnMount: PropTypes.bool,
     validateFunction: PropTypes.oneOfType([PropTypes.func, PropTypes.arrayOf(PropTypes.func)]),
     tooltipCaption: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.element]),
+    // Tooltip.props
     tooltipProps: PropTypes.object,
 
-    // todo: deprecated! вынести в tooltipProps
-    tooltipClassName: PropTypes.string,
-    tooltipType: PropTypes.oneOf(Object.keys(TooltipTypes).map((key) => TooltipTypes[key])),
-    tooltipPosition: PropTypes.oneOf(Object.keys(PositionTypes).map((key) => PositionTypes[key])),
+    // deprecated! используй tooltipProps
+    tooltipClassName: CustomPropTypes.deprecated(
+        PropTypes.string,
+        "Use `tooltipProps: { className }` props instead"
+    ),
+    tooltipType: CustomPropTypes.deprecated(
+        PropTypes.oneOf(Object.keys(TooltipTypes).map((key) => TooltipTypes[key])),
+        "Use `tooltipProps: { type }` props instead"
+    ),
+    tooltipPosition: CustomPropTypes.deprecated(
+        PropTypes.oneOf(Object.keys(PositionTypes).map((key) => PositionTypes[key])),
+        "Use `tooltipProps: { positionType }` props instead"
+    ),
 
     maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     maxCounter: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

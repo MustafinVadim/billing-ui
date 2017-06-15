@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
+import PropTypes  from "prop-types";
 import { PureComponent } from "react";
 import MaskedInput from "react-input-mask";
-
+import CustomPropTypes from "../../helpers/CustomPropTypes";
 import Tooltip, { TriggerTypes, PositionTypes, TooltipTypes } from "../Tooltip";
 import { validate } from "../../helpers/ValidationHelpers";
 import classnames from "classnames";
@@ -74,7 +74,7 @@ class TextInput extends PureComponent {
         const value = others.value || "";
         const { wasTouched } = this.state;
 
-        // todo: выкинуть после рефакторинга и отказа от tooltipPosition и других тултипных пропсов
+        // для обратной совместимости (используй tooltipProps)
         const tooltipProperties = {
             positionType: tooltipPosition,
             type: tooltipType,
@@ -131,8 +131,8 @@ class TextInput extends PureComponent {
 
                 {!isTextArea && mask && (
                     <MaskedInput {...inputProps} mask={mask}
-                        maskChar={maskChar || "_"}
-                        alwaysShowMask={alwaysShowMask} />
+                                                 maskChar={maskChar || "_"}
+                                                 alwaysShowMask={alwaysShowMask} />
                 )}
 
                 {!isTextArea && !mask && (
@@ -184,12 +184,22 @@ TextInput.propTypes = {
     counterClassName: PropTypes.string,
     styles: PropTypes.object,
     tooltipCaption: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.element]),
+    // Tooltip.props
     tooltipProps: PropTypes.object,
 
-    // todo: deprecated! вынести в tooltipProps
-    tooltipClassName: PropTypes.string,
-    tooltipType: PropTypes.oneOf(Object.keys(TooltipTypes).map((key) => TooltipTypes[key])),
-    tooltipPosition: PropTypes.oneOf(Object.keys(PositionTypes).map((key) => PositionTypes[key]))
+    // deprecated! используй tooltipProps
+    tooltipClassName: CustomPropTypes.deprecated(
+        PropTypes.string,
+        "Use `tooltipProps: { className }` props instead"
+    ),
+    tooltipType: CustomPropTypes.deprecated(
+        PropTypes.oneOf(Object.keys(TooltipTypes).map((key) => TooltipTypes[key])),
+        "Use `tooltipProps: { type }` props instead"
+    ),
+    tooltipPosition: CustomPropTypes.deprecated(
+        PropTypes.oneOf(Object.keys(PositionTypes).map((key) => PositionTypes[key])),
+        "Use `tooltipProps: { positionType }` props instead"
+    )
 };
 
 TextInput.defaultProps = {

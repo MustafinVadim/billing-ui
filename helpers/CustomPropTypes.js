@@ -25,6 +25,12 @@ const CustomPropTypes = {
         if (date && !moment(date, moment.ISO_8601).isValid()) {
             throw Error(`Failed prop type: Invalid prop ${propName} supplied to ${componentName}. Prop ${propName} must be in ISO format.`);
         }
+    },
+
+    deprecated: (propType, explanation) => (props, propName, componentName, ...rest) => {
+        if (props[propName] != null) {
+            throw Error(`"${propName}" property of "${componentName}" has been deprecated.\n${explanation}`);
+        }
     }
 };
 
