@@ -1,4 +1,4 @@
-import PropTypes  from "prop-types";
+import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import MaskedInput from "react-input-mask";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
