@@ -20,7 +20,7 @@
     }
 
     .spinnerContainerCenter {
-        @include position(fixed, 0 0 0 0);
+        @include position(absolute, 0 0 0 0);
 
         z-index: 1001;
 

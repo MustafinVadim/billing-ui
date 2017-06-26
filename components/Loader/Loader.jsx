@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import Spinner from "./Spinner";
 import { SpinnerTypes } from "./SpinnerTypes";
 import styles from "./Loader.scss";
-import classnames from "classnames";
+import cx from "classnames";
 
 class Loader extends PureComponent {
     _renderSpinner() {
-        const { type, caption } = this.props;
+        const { type, caption, spinnerContainerClassName } = this.props;
 
         return (
-            <span className={styles.spinnerContainerCenter}>
+            <span className={cx(styles.spinnerContainerCenter, spinnerContainerClassName)}>
                 <Spinner type={type} caption={caption} />
             </span>
         );
@@ -19,7 +19,7 @@ class Loader extends PureComponent {
 
     render() {
         const { active, className, children } = this.props;
-        const loaderClassName = classnames(styles.loader, className, {
+        const loaderClassName = cx(styles.loader, className, {
             [styles.active]: active
         });
 
@@ -36,6 +36,7 @@ Loader.propTypes = {
     active: PropTypes.bool.isRequired,
     caption: PropTypes.string,
     className: PropTypes.string,
+    spinnerContainerClassName: PropTypes.string,
     type: PropTypes.oneOf(Object.keys(SpinnerTypes)),
     children: PropTypes.node
 };
