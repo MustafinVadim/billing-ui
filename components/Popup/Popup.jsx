@@ -5,8 +5,7 @@ import events from "add-event-listener";
 import onClickOutside from "react-onclickoutside";
 import isEqual from "lodash/isEqual";
 
-import Loader from "react-ui/Loader";
-import Spinner from "react-ui/Spinner";
+import Loader, { SpinnerTypes } from "../Loader";
 
 import { findContainer } from "../../helpers/NodeHelper";
 import { calcPosition, adjustPositionType } from "../Tooltip/PositionHandler";
@@ -128,7 +127,7 @@ Popup.propTypes = {
     getTarget: PropTypes.func.isRequired,
     showCross: PropTypes.bool,
     isLoading: PropTypes.bool,
-    spinnerType: PropTypes.oneOf(Object.values(Spinner.Types)),
+    spinnerType: PropTypes.oneOf(Object.values(SpinnerTypes)),
 
     onClose: PropTypes.func.isRequired,
 
@@ -147,7 +146,7 @@ Popup.defaultProps = {
     positionType: PositionTypes.bottomCenter,
     showCross: true,
     isLoading: false,
-    spinnerType: Spinner.Types.normal
+    spinnerType: SpinnerTypes.normal
 };
 
 export default onClickOutside(Popup);
