@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import MaskedInput from "react-input-mask";
-import CustomPropTypes from "../../helpers/CustomPropTypes";
 import Tooltip, { TriggerTypes, PositionTypes, TooltipTypes } from "../Tooltip";
 import { validate } from "../../helpers/ValidationHelpers";
 import classnames from "classnames";
