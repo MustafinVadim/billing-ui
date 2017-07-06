@@ -1,4 +1,23 @@
 ﻿@import "../../styles/variables";
+@import "../../styles/materialdesign";
 
 :local {
+    .wrapper {
+        @extend %material-input-text-big;
+
+        white-space: normal;
+        text-overflow: initial;
+    }
+
+    input[type="text"].input {
+        border-bottom: none;
+        font-size: $fontSizeBig;
+        text-overflow: initial;
+
+        &:focus {
+            outline: none;
+            border: none;
+            box-shadow: none;
+        }
+    }
 }

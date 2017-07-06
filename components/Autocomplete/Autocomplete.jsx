@@ -58,7 +58,7 @@ class Autocomplete extends PureComponent {
         this.choose(index);
     };
 
-    handleChange = value => {
+    handleChange = (value, evt) => {
         const { onChange } = this.props;
 
         if (!this.props.value) {
@@ -70,7 +70,7 @@ class Autocomplete extends PureComponent {
         this.showNewOptions(value);
 
         if (onChange) {
-            onChange(value, { sours: "TextInput" });
+            onChange(value, evt, { source: "TextInput" });
         }
     };
 
@@ -283,7 +283,7 @@ class Autocomplete extends PureComponent {
             onChange: this.handleChange
         }, fieldsToOmit);
 
-        const { hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionClassName } = this.props;
+        const { hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionClassName, inputClassNames } = this.props;
         const { tooltipErrorMessage, isRequestFailed, isMenuOpened, value, searchResult, selectedOptionIndex } = this.state;
 
         const isValid = !tooltipErrorMessage || !value;
@@ -293,7 +293,7 @@ class Autocomplete extends PureComponent {
             <div className={cx(styles.root, this.props.autocompleteWrapperClassName)} data-ft-id={ftId}>
                 {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
-                           inputClassName={cx(styles.input, { [styles["with-icon"]]: hasSearchIcon })}
+                           inputClassName={cx(styles.input, inputClassNames, { [styles["with-icon"]]: hasSearchIcon })}
                            placeholderClassName={cx(styles.placeholder, { [styles["with-icon"]]: hasSearchIcon })}
                            isValid={isValid}
                            tooltipCaption={tooltipErrorMessage}
@@ -354,6 +354,7 @@ Autocomplete.propTypes = {
     autocompleteWrapperClassName: PropTypes.string,
     optionItemClassName: PropTypes.string,
     optionClassName: PropTypes.string,
+    inputClassNames: PropTypes.string,
 
     enableOnClickOutside: PropTypes.func,
     disableOnClickOutside: PropTypes.func

@@ -67,6 +67,7 @@ class TextInput extends PureComponent {
             clearable,
             forceInvalid,
             maxCounter,
+            textInputRef,
             ...others
         } = this.props;
 
@@ -125,7 +126,7 @@ class TextInput extends PureComponent {
         return (
             <div data-ft-id={ftId ? `${ftId}-wrapper` : null}>
                 {isTextArea && (
-                    <textarea {...inputProps} />
+                    <textarea {...inputProps} ref={textInputRef} />
                 )}
 
                 {!isTextArea && mask && (
@@ -135,7 +136,7 @@ class TextInput extends PureComponent {
                 )}
 
                 {!isTextArea && !mask && (
-                    <input {...inputProps} />
+                    <input {...inputProps} ref={textInputRef} />
                 )}
 
                 {hasCounter && (
@@ -163,6 +164,7 @@ TextInput.propTypes = {
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
     onKeyDown: PropTypes.func,
+    textInputRef: PropTypes.func,
     value: PropTypes.string,
     clearable: PropTypes.bool,
     readonly: PropTypes.bool,

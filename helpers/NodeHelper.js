@@ -54,3 +54,68 @@ export const getPositionNode = (node) => {
         offsetLeft: node.offsetLeft
     }
 };
+
+export const getNodeStyling = node => {
+    const SIZING_STYLE = [
+        "letter-spacing",
+        "line-height",
+        "padding-top",
+        "padding-bottom",
+        "font-family",
+        "font-weight",
+        "font-size",
+        "text-rendering",
+        "text-transform",
+        "width",
+        "text-indent",
+        "padding-left",
+        "padding-right",
+        "border-width",
+        "box-sizing"
+    ];
+
+    let nodeAttrId = node.getAttribute("id");
+    let nodeAttrName = node.getAttribute("name");
+    let nodeAttrClass = node.getAttribute("class");
+    let nodeId = null;
+    let nodeStyleCache = {};
+
+    if (nodeAttrId || nodeAttrName || nodeAttrClass) {
+        nodeId = `${nodeAttrId}_${nodeAttrName}_${nodeAttrClass}`;
+    }
+
+    if (nodeStyleCache[nodeId]) {
+        return nodeStyleCache[nodeId];
+    }
+
+    const style = window.getComputedStyle(node);
+
+    const boxSizing = style.getPropertyValue("box-sizing");
+
+    const paddingSize = (
+        parseFloat(style.getPropertyValue("padding-bottom"))
+        + parseFloat(style.getPropertyValue("padding-top"))
+    );
+
+    const borderSize = (
+        parseFloat(style.getPropertyValue("border-bottom-width"))
+        + parseFloat(style.getPropertyValue("border-top-width"))
+    );
+
+    const sizingStyle = SIZING_STYLE
+        .map(name => `${name}:${style.getPropertyValue(name)}`)
+        .join(";");
+
+    const nodeInfo = {
+        sizingStyle,
+        paddingSize,
+        borderSize,
+        boxSizing
+    };
+
+    if (nodeId) {
+        nodeStyleCache[nodeId] = nodeInfo;
+    }
+
+    return nodeInfo;
+};

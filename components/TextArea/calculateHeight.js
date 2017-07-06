@@ -1,3 +1,5 @@
+import { getNodeStyling } from "../../helpers/NodeHelper";
+
 const HIDDEN_TEXTAREA_STYLE = `
   min-height:0 !important;
   max-height:none !important;
@@ -10,75 +12,9 @@ const HIDDEN_TEXTAREA_STYLE = `
   right:0 !important
 `;
 
-const SIZING_STYLE = [
-    "letter-spacing",
-    "line-height",
-    "padding-top",
-    "padding-bottom",
-    "font-family",
-    "font-weight",
-    "font-size",
-    "text-rendering",
-    "text-transform",
-    "width",
-    "text-indent",
-    "padding-left",
-    "padding-right",
-    "border-width",
-    "box-sizing"
-];
-
-let nodeStyleCache = {};
-let hiddenTextarea;
-
-const getNodeStyling = node => {
-    var nodeAttrId = node.getAttribute("id");
-    var nodeAttrName = node.getAttribute("name");
-    var nodeAttrClass = node.getAttribute("class");
-    let nodeId = null;
-
-    if (nodeAttrId || nodeAttrName || nodeAttrClass) {
-        nodeId = `${nodeAttrId}_${nodeAttrName}_${nodeAttrClass}`;
-    }
-
-    if (nodeStyleCache[nodeId]) {
-        return nodeStyleCache[nodeId];
-    }
-
-    const style = window.getComputedStyle(node);
-
-    const boxSizing = style.getPropertyValue("box-sizing");
-
-    const paddingSize = (
-        parseFloat(style.getPropertyValue("padding-bottom"))
-        + parseFloat(style.getPropertyValue("padding-top"))
-    );
-
-    const borderSize = (
-        parseFloat(style.getPropertyValue("border-bottom-width"))
-        + parseFloat(style.getPropertyValue("border-top-width"))
-    );
-
-    const sizingStyle = SIZING_STYLE
-        .map(name => `${name}:${style.getPropertyValue(name)}`)
-        .join(";");
-
-    const nodeInfo = {
-        sizingStyle,
-        paddingSize,
-        borderSize,
-        boxSizing
-    };
-
-    if (nodeId) {
-        nodeStyleCache[nodeId] = nodeInfo;
-    }
-
-    return nodeInfo;
-};
-
 export default node => {
     const emptyValue = "q";
+    let hiddenTextarea;
 
     if (!hiddenTextarea) {
         hiddenTextarea = document.createElement("textarea");
