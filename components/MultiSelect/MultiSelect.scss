@@ -2,21 +2,33 @@
 @import "../../styles/materialdesign";
 
 :local {
+    .autocompleteWrapper,
+    .inputWrapper {
+        position: initial;
+    }
+
     .wrapper {
         @extend %material-input-text-big;
 
+        position: relative;
+
         white-space: normal;
         text-overflow: initial;
+
+        &.focus {
+            @extend %input-base-focused;
+        }
     }
 
     input[type="text"].input {
         border-bottom: none;
+
         font-size: $fontSizeBig;
         text-overflow: initial;
 
         &:focus {
-            outline: none;
             border: none;
+            outline: none;
             box-shadow: none;
         }
     }
