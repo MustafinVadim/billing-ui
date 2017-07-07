@@ -53,13 +53,26 @@ class CompactTextInput extends PureComponent {
     };
 
     render() {
-        const { styles, wrapperClassName, labelClassName, placeholder, value, clearable, width, isTextArea, isFilled, ...inputProps } = this.props;
+        const {
+            styles,
+            wrapperClassName,
+            labelClassName,
+            inputHighlightClassName,
+            placeholder,
+            value,
+            clearable,
+            width,
+            isTextArea,
+            isFilled,
+            ...inputProps
+        } = this.props;
 
         const wrapperClassNames = classnames(styles.wrapper, wrapperClassName);
         const labelClassNames = classnames(styles.label, labelClassName, {
             [styles.filled]: value || this.state.isFocused || isFilled
         });
         const highlightClassNames = classnames(
+            inputHighlightClassName,
             styles.highlight,
             {
                 [styles["is-regular"]]: this.state.isFocused
@@ -113,6 +126,7 @@ CompactTextInput.propTypes = {
     wrapperClassName: PropTypes.string,
     inputClassName: PropTypes.string,
     labelClassName: PropTypes.string,
+    inputHighlightClassName: PropTypes.string,
     styles: PropTypes.object
 };
 

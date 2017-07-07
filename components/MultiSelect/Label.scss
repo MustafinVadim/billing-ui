@@ -3,12 +3,18 @@
 @import "../../styles/bourbon";
 
 :local {
-    .root {
+    .wrapper {
+        position: relative;
+
+        display: inline-block;
+        margin: 6px 17px 4px -7px;
+    }
+
+    .label {
         @extend %as-inline-block;
 
         position: relative;
 
-        margin: 6px 17px 4px -7px;
         padding: 0 25px 2px 10px;
 
         border-radius: 20px;

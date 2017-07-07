@@ -283,7 +283,7 @@ class Autocomplete extends PureComponent {
             onChange: this.handleChange
         }, fieldsToOmit);
 
-        const { hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionClassName, inputClassNames } = this.props;
+        const { hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionClassName, inputClassName } = this.props;
         const { tooltipErrorMessage, isRequestFailed, isMenuOpened, value, searchResult, selectedOptionIndex } = this.state;
 
         const isValid = !tooltipErrorMessage || !value;
@@ -293,7 +293,7 @@ class Autocomplete extends PureComponent {
             <div className={cx(styles.root, this.props.autocompleteWrapperClassName)} data-ft-id={ftId}>
                 {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
-                           inputClassName={cx(styles.input, inputClassNames, { [styles["with-icon"]]: hasSearchIcon })}
+                           inputClassName={cx(styles.input, inputClassName, { [styles["with-icon"]]: hasSearchIcon })}
                            placeholderClassName={cx(styles.placeholder, { [styles["with-icon"]]: hasSearchIcon })}
                            isValid={isValid}
                            tooltipCaption={tooltipErrorMessage}
@@ -354,7 +354,7 @@ Autocomplete.propTypes = {
     autocompleteWrapperClassName: PropTypes.string,
     optionItemClassName: PropTypes.string,
     optionClassName: PropTypes.string,
-    inputClassNames: PropTypes.string,
+    inputClassName: PropTypes.string,
 
     enableOnClickOutside: PropTypes.func,
     disableOnClickOutside: PropTypes.func

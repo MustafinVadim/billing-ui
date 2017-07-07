@@ -2,11 +2,6 @@
 @import "../../styles/materialdesign";
 
 :local {
-    .autocompleteWrapper,
-    .inputWrapper {
-        position: initial;
-    }
-
     .wrapper {
         @extend %material-input-text-big;
 
@@ -14,6 +9,8 @@
 
         white-space: normal;
         text-overflow: initial;
+
+        cursor: text;
 
         &.focus {
             @extend %input-base-focused;
@@ -31,5 +28,18 @@
             outline: none;
             box-shadow: none;
         }
+    }
+
+    .autocompleteWrapper,
+    .inputWrapper {
+        position: initial;
+    }
+
+    .inputHighlight {
+        top: initial;
+        bottom: 6px;
+        left: initial;
+
+        height: 15px;
     }
 }
