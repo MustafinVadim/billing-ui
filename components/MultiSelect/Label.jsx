@@ -9,8 +9,11 @@ import styles from "./Label.scss";
 class Label extends PureComponent {
     _tooltipTarget = null;
 
-    _handleClick = (evt) => {
-        this.props.onRemove(this.props.id, evt);
+    _handleClickRemove = (evt) => {
+        const { onRemove, id } = this.props;
+        if (onRemove) {
+            onRemove(id, evt);
+        }
     };
 
     render() {
@@ -22,7 +25,7 @@ class Label extends PureComponent {
                     this._tooltipTarget = el
                 }}>
                     {children}
-                    <Icon onClick={this._handleClick}
+                    <Icon onClick={this._handleClickRemove}
                           className={styles.icon}
                           type={IconTypes.Delete} />
                 </span>

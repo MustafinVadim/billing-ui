@@ -17,8 +17,15 @@
         }
     }
 
+    .content {
+        margin-right: -12px;
+        margin-left: -12px;
+    }
+
     input[type="text"].input {
-        border-bottom: none;
+        padding: 4px 5px 5px 15px;
+
+        border: none;
 
         font-size: $fontSizeBig;
         text-overflow: initial;
@@ -30,12 +37,28 @@
         }
     }
 
-    .autocompleteWrapper,
-    .inputWrapper {
+    .autocomplete {
+        margin-left: 5px;
+    }
+
+    .autocomplete-option {
+        @include baseFade($hoverColor: $bgElementActiveLightColor);
+
+        overflow: hidden;
+    }
+
+    .autocomplete-menu {
+        height: 320px;
+
+        overflow-y: scroll;
+    }
+
+    .autocomplete-wrapper,
+    .input-wrapper {
         position: initial;
     }
 
-    .inputHighlight {
+    .input-highlight {
         top: initial;
         bottom: 6px;
         left: initial;

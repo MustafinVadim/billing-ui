@@ -7,6 +7,7 @@ import { TextInputType } from "../TextInput";
 import calculateWidth from "./calculateInputWidth";
 import Autocomplete from "../Autocomplete";
 import Label from "./Label";
+import keyCodes from "../../helpers/KeyCodes";
 
 import styles from "./MultiSelect.scss";
 import cx from "classnames";
@@ -18,8 +19,9 @@ class MultiSelect extends PureComponent {
         super(props, context);
 
         this.state = {
-            inputWidth: this.props.minWidth,
-            isFocused: false
+            isFocused: false,
+            inputValue: "",
+            inputWidth: props.minWidth
         };
     }
 
@@ -27,8 +29,37 @@ class MultiSelect extends PureComponent {
         this._inputDOMNode && this._inputDOMNode.focus();
     };
 
-    _handleChange = (value, evt) => {
-        this._changeWidth(evt.target);
+    _handleChange = (value) => {
+        this.setState({
+            inputValue: value
+        });
+
+        this._changeWidth();
+    };
+
+    _handleSelect = (Value, Text, Data, optionData) => {
+        this._addLabel(optionData);
+    };
+
+    _handleKey = (evt) => {
+        const { onKeyDown, onRemoveLabel, labels } = this.props;
+        const { inputValue } = this.state;
+        switch (evt.keyCode) {
+            case keyCodes.space:
+                this._addLabel(null, inputValue);
+                evt.preventDefault();
+                break;
+            case keyCodes.backspace:
+                if (!inputValue) {
+                    const lastLabelKey = labels[labels.length - 1].key;
+                    onRemoveLabel(lastLabelKey)
+                }
+                break;
+            default:
+                if (onKeyDown) {
+                    onKeyDown(evt);
+                }
+        }
     };
 
     _handleFocus = () => {
@@ -47,17 +78,28 @@ class MultiSelect extends PureComponent {
         }
     };
 
+    _addLabel(autocompleteResult, inputValue) {
+        const { onAddLabel } = this.props;
+        onAddLabel(autocompleteResult, inputValue);
+        if (this.state.inputValue !== "") {
+            this.setState({
+                inputValue: ""
+            });
+        }
+        this._inputDOMNode && this._inputDOMNode.focus();
+    }
+
     _setInputDOMNode = (el) => {
         if (el) {
             this._inputDOMNode = findDOMNode(el);
         }
     };
 
-    _changeWidth(input) {
+    _changeWidth() {
         const { inputWidth } = this.state;
         const { minWidth, maxWidth } = this.props;
 
-        let newWidth = calculateWidth(input);
+        let newWidth = calculateWidth(this._inputDOMNode);
 
         if (newWidth < minWidth) {
             newWidth = minWidth;
@@ -74,44 +116,55 @@ class MultiSelect extends PureComponent {
     };
 
     _renderLabels = (labels) => {
-        const { tooltipClassName } = this.props;
+        const { tooltipClassName, onRemoveLabel } = this.props;
         return labels.map(label => (
             <Label
-                key={label.key}
+                id={label.id}
+                key={label.id}
                 tooltipContent={label.tooltipContent || null}
-                tooltipClassName={tooltipClassName}>
+                tooltipClassName={tooltipClassName}
+                onRemove={onRemoveLabel}>
                 {label.labelContent}
             </Label>
         ))
     };
 
     render() {
-        const { inputWidth, isFocused } = this.state;
+        const { inputValue, inputWidth, isFocused } = this.state;
         const { labels } = this.props;
 
         const autocompleteProps = omit(
             this.props,
-            ["minWidth", "maxWidth", "labels", "tooltipClassName"]
+            ["minWidth", "maxWidth", "labels", "tooltipClassName", "onAddLabel", "onRemoveLabel"]
         );
+
+        const isFilled = labels.length > 0 || inputValue;
 
         return (
             <div onClick={this._handleClick.bind(this)}
                  className={cx(styles.wrapper, { [styles["focus"]]: isFocused })}>
-                {this._renderLabels(labels)}
-                <Autocomplete
-                    {...autocompleteProps}
-                    onChange={ this._handleChange }
-                    autocompleteWrapperClassName={styles.autocompleteWrapper}
-                    wrapperClassName={styles.inputWrapper}
-                    inputClassName={styles.input}
-                    inputHighlightClassName={styles.inputHighlight}
-                    width={inputWidth}
-                    textInputRef={this._setInputDOMNode}
-                    onFocus={this._handleFocus}
-                    onBlur={this._handleBlur}
-                    type={TextInputType.compact}
-                    isFilled={true}
-                />
+                <div className={styles.content}>
+                    {this._renderLabels(labels)}
+                    <Autocomplete
+                        {...autocompleteProps}
+                        autocompleteWrapperClassName={styles["autocomplete-wrapper"]}
+                        wrapperClassName={styles["input-wrapper"]}
+                        inputClassName={styles.input}
+                        inputHighlightClassName={styles["input-highlight"]}
+                        optionItemClassName={styles["autocomplete-option"]}
+                        menuClassName={styles["autocomplete-menu"]}
+                        width={inputWidth}
+                        textInputRef={this._setInputDOMNode}
+                        onFocus={this._handleFocus}
+                        onBlur={this._handleBlur}
+                        onChange={this._handleChange}
+                        onSelect={this._handleSelect}
+                        onKeyDown={this._handleKey}
+                        type={TextInputType.compact}
+                        value={inputValue}
+                        isFilled={isFilled}
+                    />
+                </div>
             </div>
         );
     }
@@ -122,11 +175,15 @@ MultiSelect.propTypes = {
     maxWidth: PropTypes.number,
     labels: PropTypes.arrayOf(
         PropTypes.shape({
+            id: PropTypes.string.isRequired,
             labelContent: PropTypes.string.isRequired,
             tooltipContent: PropTypes.node
         })
     ),
-    tooltipClassName: PropTypes.string
+    tooltipClassName: PropTypes.string,
+    onRemoveLabel: PropTypes.func,
+    onAddLabel: PropTypes.func,
+    onKeyDown: PropTypes.func
 };
 
 MultiSelect.defaultProps = {

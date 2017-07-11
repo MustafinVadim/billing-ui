@@ -239,7 +239,7 @@ class Autocomplete extends PureComponent {
         const optionData = this.state.searchResult[index];
 
         if (optionData && onSelect) {
-            return onSelect(optionData.Value, optionData.Text, optionData.Data);
+            return onSelect(optionData.Value, optionData.Text, optionData.Data, optionData);
         }
     }
 
@@ -268,7 +268,8 @@ class Autocomplete extends PureComponent {
     render() {
         const fieldsToOmit = [
             "url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect", "enableOnClickOutside",
-            "autocompleteWrapperClassName", "optionItemClassName", "menuWidth", "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside"
+            "autocompleteWrapperClassName", "optionItemClassName", "menuClassName", "menuWidth", "optionClassName", "valueCreator", "renderItem",
+            "disableOnClickOutside"
         ];
 
         const inputProps = omit({
@@ -283,7 +284,7 @@ class Autocomplete extends PureComponent {
             onChange: this.handleChange
         }, fieldsToOmit);
 
-        const { hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionClassName, inputClassName } = this.props;
+        const { hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionClassName, inputClassName, menuClassName } = this.props;
         const { tooltipErrorMessage, isRequestFailed, isMenuOpened, value, searchResult, selectedOptionIndex } = this.state;
 
         const isValid = !tooltipErrorMessage || !value;
@@ -300,7 +301,7 @@ class Autocomplete extends PureComponent {
                 />
 
                 {shouldRenderMenu && (
-                    <div className={styles.menu} style={{ width: menuWidth }} data-ft-id="autocomplete-menu">
+                    <div className={cx(styles.menu, menuClassName)} style={{ width: menuWidth }} data-ft-id="autocomplete-menu">
                         {isRequestFailed && <TryAgain onRefresh={this.onSearchAgain} onClose={this.closeOptions} />}
                         {!isRequestFailed && (
                             <OptionsList
@@ -352,6 +353,7 @@ Autocomplete.propTypes = {
     valueCreator: PropTypes.func,
 
     autocompleteWrapperClassName: PropTypes.string,
+    menuClassName: PropTypes.string,
     optionItemClassName: PropTypes.string,
     optionClassName: PropTypes.string,
     inputClassName: PropTypes.string,
