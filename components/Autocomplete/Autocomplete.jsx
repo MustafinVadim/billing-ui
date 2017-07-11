@@ -268,8 +268,8 @@ class Autocomplete extends PureComponent {
     render() {
         const fieldsToOmit = [
             "url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect", "enableOnClickOutside",
-            "autocompleteWrapperClassName", "optionItemClassName", "optionActiveItemClassName", "menuClassName", "menuWidth", "optionClassName",
-            "valueCreator", "renderItem", "disableOnClickOutside"
+            "autocompleteWrapperClassName", "optionItemClassName", "optionActiveItemClassName", "menuClassName", "menuWidth", "maxMenuHeight",
+            "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside"
         ];
 
         const inputProps = omit({
@@ -285,8 +285,8 @@ class Autocomplete extends PureComponent {
         }, fieldsToOmit);
 
         const {
-            hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionActiveItemClassName, optionClassName, inputClassName,
-            menuClassName
+            hasSearchIcon, ftId, menuWidth, maxMenuHeight, notFoundText, renderItem, optionItemClassName, optionActiveItemClassName, optionClassName,
+            inputClassName, menuClassName
         } = this.props;
         const { tooltipErrorMessage, isRequestFailed, isMenuOpened, value, searchResult, selectedOptionIndex } = this.state;
 
@@ -304,7 +304,7 @@ class Autocomplete extends PureComponent {
                 />
 
                 {shouldRenderMenu && (
-                    <div className={cx(styles.menu, menuClassName)} style={{ width: menuWidth }} data-ft-id="autocomplete-menu">
+                    <div className={cx(styles.menu, menuClassName)} data-ft-id="autocomplete-menu">
                         {isRequestFailed && <TryAgain onRefresh={this.onSearchAgain} onClose={this.closeOptions} />}
                         {!isRequestFailed && (
                             <OptionsList
@@ -318,7 +318,9 @@ class Autocomplete extends PureComponent {
                                 onOptionClick={this.handleItemClick}
                                 onHover={this.handleOptionHover}
                                 onHoverOut={this.handleOptionHoverOut}
-                                renderItem={renderItem} />
+                                renderItem={renderItem}
+                                maxHeight={maxMenuHeight}
+                                width={menuWidth}/>
                         )}
                     </div>
                 )}
@@ -334,6 +336,7 @@ Autocomplete.propTypes = {
     clearOnSelect: PropTypes.bool,
     defaultValue: PropTypes.string,
     notFoundText: PropTypes.string,
+    maxMenuHeight: PropTypes.number,
     source: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.func

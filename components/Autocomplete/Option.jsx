@@ -19,12 +19,12 @@ class Option extends PureComponent {
     };
 
     render() {
-        const { optionData, renderItem, optionItemClassName, optionActiveItemClassName, optionClassName, value, index, selectedIndex, onHoverOut } = this.props;
+        const { optionData, renderItem, optionItemClassName, optionActiveItemClassName, optionClassName, value, index, isSelected, onHoverOut } = this.props;
         const { Text, Description, AdditionalInfo } = optionData;
         const rootClass = cx(
             styles.item,
             {
-                [cx(styles.active, optionActiveItemClassName)]: selectedIndex === index,
+                [cx(styles.active, optionActiveItemClassName)]: isSelected,
                 [optionItemClassName]: !!optionItemClassName
             }
         );
@@ -63,7 +63,7 @@ class Option extends PureComponent {
 
 Option.propTypes = {
     value: PropTypes.string,
-    selectedIndex: PropTypes.number,
+    isSelected: PropTypes.bool,
     renderItem: PropTypes.func,
     optionData: PropTypes.shape({
         Text: PropTypes.string,

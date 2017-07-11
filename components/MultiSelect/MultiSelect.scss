@@ -51,12 +51,6 @@
         @include baseFade($baseColor: $bgElementActiveLightColor);
     }
 
-    .autocomplete-menu {
-        height: 320px;
-
-        overflow-y: scroll;
-    }
-
     .autocomplete-wrapper,
     .input-wrapper {
         position: initial;
