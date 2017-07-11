@@ -51,7 +51,7 @@ class MultiSelect extends PureComponent {
                 break;
             case keyCodes.backspace:
                 if (!inputValue) {
-                    const lastLabelKey = labels[labels.length - 1].key;
+                    const lastLabelKey = labels[labels.length - 1].id;
                     onRemoveLabel(lastLabelKey)
                 }
                 break;
