@@ -131,18 +131,18 @@ class MultiSelect extends PureComponent {
 
     render() {
         const { inputValue, inputWidth, isFocused } = this.state;
-        const { labels } = this.props;
+        const { labels, wrapperClassName } = this.props;
 
         const autocompleteProps = omit(
             this.props,
-            ["minWidth", "maxWidth", "labels", "tooltipClassName", "onAddLabel", "onRemoveLabel"]
+            ["minWidth", "maxWidth", "labels", "tooltipClassName", "wrapperClassName", "onAddLabel", "onRemoveLabel"]
         );
 
         const isFilled = labels.length > 0 || inputValue;
 
         return (
             <div onClick={this._handleClick.bind(this)}
-                 className={cx(styles.wrapper, { [styles["focus"]]: isFocused })}>
+                 className={cx(styles.wrapper, wrapperClassName, { [styles["focus"]]: isFocused })}>
                 <div className={styles.content}>
                     {this._renderLabels(labels)}
                     <Autocomplete
@@ -183,7 +183,8 @@ MultiSelect.propTypes = {
     tooltipClassName: PropTypes.string,
     onRemoveLabel: PropTypes.func,
     onAddLabel: PropTypes.func,
-    onKeyDown: PropTypes.func
+    onKeyDown: PropTypes.func,
+    wrapperClassName: PropTypes.string
 };
 
 MultiSelect.defaultProps = {

@@ -7,16 +7,19 @@
         position: relative;
 
         display: inline-block;
-        margin: 5px 5px 4px;
+        max-width: 50%;
+        padding: 5px 5px 4px;
+        box-sizing: border-box;
     }
 
-    .label {
+    .content {
         @extend %as-inline-block;
 
         position: relative;
 
-        max-width: 187px;
+        max-width: 100%;
         padding: 0 25px 2px 10px;
+        box-sizing: border-box;
 
         overflow: hidden;
 

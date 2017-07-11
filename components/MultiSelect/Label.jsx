@@ -21,7 +21,7 @@ class Label extends PureComponent {
         const hasTooltip = !!tooltipContent;
         return (
             <span className={styles.wrapper}>
-                <span className={styles.label} ref={ el => {
+                <span className={styles.content} ref={ el => {
                     this._tooltipTarget = el
                 }}>
                     {children}
