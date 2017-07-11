@@ -42,9 +42,13 @@
     }
 
     .autocomplete-option {
-        @include baseFade($hoverColor: $bgElementActiveLightColor);
+        @include baseFade();
 
         overflow: hidden;
+    }
+
+    .autocomplete-active-option {
+        @include baseFade($baseColor: $bgElementActiveLightColor);
     }
 
     .autocomplete-menu {

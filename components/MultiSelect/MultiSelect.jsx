@@ -152,6 +152,7 @@ class MultiSelect extends PureComponent {
                         inputClassName={styles.input}
                         inputHighlightClassName={styles["input-highlight"]}
                         optionItemClassName={styles["autocomplete-option"]}
+                        optionActiveItemClassName={styles["autocomplete-active-option"]}
                         menuClassName={styles["autocomplete-menu"]}
                         width={inputWidth}
                         textInputRef={this._setInputDOMNode}

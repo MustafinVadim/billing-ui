@@ -268,8 +268,8 @@ class Autocomplete extends PureComponent {
     render() {
         const fieldsToOmit = [
             "url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect", "enableOnClickOutside",
-            "autocompleteWrapperClassName", "optionItemClassName", "menuClassName", "menuWidth", "optionClassName", "valueCreator", "renderItem",
-            "disableOnClickOutside"
+            "autocompleteWrapperClassName", "optionItemClassName", "optionActiveItemClassName", "menuClassName", "menuWidth", "optionClassName",
+            "valueCreator", "renderItem", "disableOnClickOutside"
         ];
 
         const inputProps = omit({
@@ -284,7 +284,10 @@ class Autocomplete extends PureComponent {
             onChange: this.handleChange
         }, fieldsToOmit);
 
-        const { hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionClassName, inputClassName, menuClassName } = this.props;
+        const {
+            hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionActiveItemClassName, optionClassName, inputClassName,
+            menuClassName
+        } = this.props;
         const { tooltipErrorMessage, isRequestFailed, isMenuOpened, value, searchResult, selectedOptionIndex } = this.state;
 
         const isValid = !tooltipErrorMessage || !value;
@@ -310,6 +313,7 @@ class Autocomplete extends PureComponent {
                                 value={value}
                                 selectedIndex={selectedOptionIndex}
                                 optionItemClassName={optionItemClassName}
+                                optionActiveItemClassName={optionActiveItemClassName}
                                 optionClassName={optionClassName}
                                 onOptionClick={this.handleItemClick}
                                 onHover={this.handleOptionHover}
@@ -355,6 +359,7 @@ Autocomplete.propTypes = {
     autocompleteWrapperClassName: PropTypes.string,
     menuClassName: PropTypes.string,
     optionItemClassName: PropTypes.string,
+    optionActiveItemClassName: PropTypes.string,
     optionClassName: PropTypes.string,
     inputClassName: PropTypes.string,
 
