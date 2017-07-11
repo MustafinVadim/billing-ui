@@ -14,7 +14,7 @@ const HIDDEN_STYLE = `
 `;
 
 export default node => {
-    const emptyValue = "q";
+    const defaultValue = "W";
     let hiddenElement;
 
     if (!hiddenElement) {
@@ -25,9 +25,9 @@ export default node => {
     const { paddingSize, borderSize, boxSizing, sizingStyle } = getNodeStyling(node);
 
     hiddenElement.setAttribute("style", sizingStyle + ";" + HIDDEN_STYLE);
-    hiddenElement.innerText = node.value || node.placeholder || emptyValue;
+    hiddenElement.innerText = (node.value || node.placeholder) + defaultValue;
 
-    let width = hiddenElement.clientWidth;
+    let width = hiddenElement.clientWidth + 2;
 
     if (boxSizing === "border-box") {
         width = width + borderSize;
