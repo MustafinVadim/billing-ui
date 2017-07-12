@@ -23,6 +23,7 @@
     }
 
     input[type="text"].input {
+        min-width: 40px;
         padding: 4px 5px 5px 15px;
 
         border: none;
@@ -54,6 +55,8 @@
     .autocomplete-wrapper,
     .input-wrapper {
         position: initial;
+
+        cursor: initial;
     }
 
     .input-highlight {

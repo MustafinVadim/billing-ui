@@ -25,11 +25,14 @@ class MultiSelect extends PureComponent {
         };
     }
 
-    _handleClick = () => {
+    _handleMouseDown = evt => {
         this._inputDOMNode && this._inputDOMNode.focus();
+        if (evt.target !== this._inputDOMNode) {
+            evt.preventDefault();
+        }
     };
 
-    _handleChange = (value) => {
+    _handleChange = value => {
         this.setState({
             inputValue: value
         });
@@ -41,7 +44,7 @@ class MultiSelect extends PureComponent {
         this._addLabel(optionData);
     };
 
-    _handleKey = (evt) => {
+    _handleKey = evt => {
         const { onKeyDown, onRemoveLabel, labels } = this.props;
         const { inputValue } = this.state;
         switch (evt.keyCode) {
@@ -71,7 +74,7 @@ class MultiSelect extends PureComponent {
     };
 
     _handleBlur = () => {
-        if (this.state.isFocused !== false) {
+        if (this.state.isFocused === true) {
             this.setState({
                 isFocused: false
             });
@@ -89,7 +92,7 @@ class MultiSelect extends PureComponent {
         this._inputDOMNode && this._inputDOMNode.focus();
     }
 
-    _setInputDOMNode = (el) => {
+    _setInputDOMNode = el => {
         if (el) {
             this._inputDOMNode = findDOMNode(el);
         }
@@ -115,7 +118,7 @@ class MultiSelect extends PureComponent {
         }
     };
 
-    _renderLabels = (labels) => {
+    _renderLabels = labels => {
         const { tooltipClassName, onRemoveLabel } = this.props;
         return labels.map(label => (
             <Label
@@ -141,7 +144,8 @@ class MultiSelect extends PureComponent {
         const isFilled = labels.length > 0 || inputValue;
 
         return (
-            <div onClick={this._handleClick.bind(this)}
+            <div onClick={this._handleClick}
+                 onMouseDown={this._handleMouseDown}
                  className={cx(styles.wrapper, wrapperClassName, { [styles["focus"]]: isFocused })}>
                 <div className={styles.content}>
                     {this._renderLabels(labels)}
@@ -153,6 +157,7 @@ class MultiSelect extends PureComponent {
                         inputHighlightClassName={styles["input-highlight"]}
                         optionItemClassName={styles["autocomplete-option"]}
                         optionActiveItemClassName={styles["autocomplete-active-option"]}
+                        outsideClickIgnoreClass={styles.wrapper}
                         width={inputWidth}
                         textInputRef={this._setInputDOMNode}
                         onFocus={this._handleFocus}

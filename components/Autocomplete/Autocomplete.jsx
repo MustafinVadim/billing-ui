@@ -86,8 +86,11 @@ class Autocomplete extends PureComponent {
     };
 
     handleClickOutside = evt => {
-        this.closeOptions();
+        this._handleBlur(evt);
+    };
 
+    _handleBlur = evt => {
+        this.closeOptions();
         if (this.props.onBlur) {
             this.props.onBlur(evt);
         }
@@ -316,6 +319,7 @@ class Autocomplete extends PureComponent {
                            placeholderClassName={cx(styles.placeholder, { [styles["with-icon"]]: hasSearchIcon })}
                            isValid={isValid}
                            tooltipCaption={tooltipErrorMessage}
+                           onBlur={this._handleBlur}
                 />
 
                 {shouldRenderMenu && (
