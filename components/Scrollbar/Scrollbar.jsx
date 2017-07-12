@@ -23,21 +23,39 @@ class Scrollbar extends PureComponent {
     };
 
     _renderTrackHorizontal = props => {
+        const { isVisible, hideOnHoverOut } = this.props;
+
         const resetStyle = {
             position: null,
             height: null
         };
+        const trackClassNames = cx(
+            styles.track, styles["is-horizontal"],
+            {
+                [styles.invisible]: !isVisible,
+                [styles["hiding-track"]]: hideOnHoverOut
+            }
+        );
 
-        return <div { ...props } style={resetStyle} className={cx(styles.track, styles["is-horizontal"], {[styles.invisible]: !this.props.isVisible})} />;
+        return <div { ...props } style={resetStyle} className={trackClassNames} />;
     };
 
     _renderTrackVertical = props => {
+        const { isVisible, hideOnHoverOut } = this.props;
+
         const resetStyle = {
             position: null,
             width: null
         };
+        const trackClassNames = cx(
+            styles.track, styles["is-vertical"],
+            {
+                [styles.invisible]: !isVisible,
+                [styles["hiding-track"]]: hideOnHoverOut
+            }
+        );
 
-        return <div { ...props } style={resetStyle} className={cx(styles.track, styles["is-vertical"], {[styles.invisible]: !this.props.isVisible})} />;
+        return <div { ...props } style={resetStyle} className={trackClassNames} />;
     };
 
     _renderThumbHorizontal = props => {
@@ -94,6 +112,7 @@ class Scrollbar extends PureComponent {
 Scrollbar.propTypes = {
     containerClassName: PropTypes.string,
     isVisible: PropTypes.bool,
+    hideOnHoverOut: PropTypes.bool,
 
     children: PropTypes.node.isRequired
     // Так же можно передать остальные props ReactScrollbar

@@ -32,7 +32,8 @@ class Autocomplete extends PureComponent {
             tooltipErrorMessage: null,
             value: value ? value : defaultValue,
             isRequestFailed: false,
-            isMenuOpened: false
+            isMenuOpened: false,
+            isControlledByKeys: false
         };
 
         this.showNewOptions = debounce(this.showNewOptions, 200);
@@ -100,14 +101,18 @@ class Autocomplete extends PureComponent {
             case keyCodes.top:
                 if (optionsCount > 0) {
                     evt.preventDefault();
-
+                    this.setState({
+                        isControlledByKeys: true
+                    });
                     this._selectNextOption(-1, selectedOptionIndex, optionsCount);
                 }
                 break;
             case keyCodes.bottom:
                 if (optionsCount > 0) {
                     evt.preventDefault();
-
+                    this.setState({
+                        isControlledByKeys: true
+                    });
                     this._selectNextOption(1, selectedOptionIndex, optionsCount);
                 }
                 break;
@@ -136,14 +141,24 @@ class Autocomplete extends PureComponent {
     };
 
     handleOptionHover = index => {
-        this.setState({
-            selectedOptionIndex: index
-        });
+        if (!this.state.isControlledByKeys) {
+            this.setState({
+                selectedOptionIndex: index
+            });
+        }
     };
 
     handleOptionHoverOut = () => {
+        if (!this.state.isControlledByKeys) {
+            this.setState({
+                selectedOptionIndex: -1
+            });
+        }
+    };
+
+    _handleMouseMove = () => {
         this.setState({
-            selectedOptionIndex: -1
+            isControlledByKeys: false
         });
     };
 
@@ -304,7 +319,7 @@ class Autocomplete extends PureComponent {
                 />
 
                 {shouldRenderMenu && (
-                    <div className={cx(styles.menu, menuClassName)} data-ft-id="autocomplete-menu">
+                    <div className={cx(styles.menu, menuClassName)} data-ft-id="autocomplete-menu" onMouseMove={this._handleMouseMove}>
                         {isRequestFailed && <TryAgain onRefresh={this.onSearchAgain} onClose={this.closeOptions} />}
                         {!isRequestFailed && (
                             <OptionsList
@@ -320,7 +335,7 @@ class Autocomplete extends PureComponent {
                                 onHoverOut={this.handleOptionHoverOut}
                                 renderItem={renderItem}
                                 maxHeight={maxMenuHeight}
-                                width={menuWidth}/>
+                                width={menuWidth} />
                         )}
                     </div>
                 )}

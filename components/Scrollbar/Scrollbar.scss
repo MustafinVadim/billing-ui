@@ -23,8 +23,6 @@
     }
 
     .track {
-        opacity: 0;
-
         transition: $transitionDefault;
 
         border-radius: $borderRadius;
@@ -44,6 +42,10 @@
 
             height: $defaultWidth * 2;
         }
+    }
+
+    .hiding-track {
+        opacity: 0;
 
         :local(.container:hover) & {
             opacity: 1;

@@ -1,16 +1,19 @@
 import { PureComponent } from "react";
 import { findDOMNode } from "react-dom";
 import PropTypes from "prop-types";
+
+import Scrollbar from "../Scrollbar";
 import Option from "./Option";
+
 import styles from "./OptionsList.scss";
 import cx from "classnames";
 
 class OptionsList extends PureComponent {
     _selectedOptionDOMNode = null;
-    _wrapperDOMNode = null;
 
     componentDidUpdate(prevProps) {
         const { selectedIndex, maxHeight } = this.props;
+
         if (selectedIndex !== prevProps.selectedIndex && !!maxHeight) {
             this._changeScrollPosition();
         }
@@ -18,23 +21,28 @@ class OptionsList extends PureComponent {
 
     _changeScrollPosition() {
         const selectedOption = this._selectedOptionDOMNode;
-        const wrapper = this._wrapperDOMNode;
 
-        if (!selectedOption || !wrapper) {
+        if (!selectedOption) {
             return;
         }
-        const viewPortTop = wrapper.scrollTop;
-        const viewPortBottom = viewPortTop + wrapper.clientHeight;
+
+        const wrapper = selectedOption.parentElement;
+
+        if (!wrapper) {
+            return;
+        }
+
+        const viewportTop = wrapper.scrollTop;
+        const viewportBottom = viewportTop + wrapper.clientHeight;
 
         const optionTop = selectedOption.offsetTop;
         const optionBottom = optionTop + selectedOption.clientHeight;
 
-        if (optionBottom > viewPortBottom) {
+        if (optionBottom > viewportBottom) {
             wrapper.scrollTop = optionBottom - wrapper.clientHeight;
-        } else if (optionTop < viewPortTop) {
+        } else if (optionTop < viewportTop) {
             wrapper.scrollTop = optionTop;
         }
-
     }
 
     render() {
@@ -44,25 +52,42 @@ class OptionsList extends PureComponent {
             [styles.scroll]: !!maxHeight
         });
 
-        return options.length === 0
-            ? <div className={styles.empty} data-ft-id="autocomplete-empty-result">{notFoundText}</div>
-            : <div className={wrapperClassNames}
-                   style={ { width: width, maxHeight: maxHeight } }
-                   ref={(elm) => {
-                       this._wrapperDOMNode = findDOMNode(elm);
-                   }}>
-                {options.map((data, index) =>
-                    <Option key={`autocomplete-option-${index}`}
-                            index={index}
-                            isSelected={selectedIndex === index}
-                            optionData={data}
-                            ref={(elm) => {
-                                if (selectedIndex === index) {
-                                    this._selectedOptionDOMNode = findDOMNode(elm);
-                                }
-                            }}
-                            { ...optionProps } />)}
-            </div>;
+        const isEmpty = options.length === 0;
+
+        if (isEmpty) {
+            return <div className={styles.empty} data-ft-id="autocomplete-empty-result">{notFoundText}</div>
+        }
+
+        const optionsList = options.map((data, index) => (
+            <Option key={`autocomplete-option-${index}`}
+                    index={index}
+                    isSelected={selectedIndex === index}
+                    optionData={data}
+                    ref={(elm) => {
+                        if (selectedIndex === index) {
+                            this._selectedOptionDOMNode = findDOMNode(elm);
+                        }
+                    }}
+                    { ...optionProps } />
+        ));
+
+        if (!maxHeight) {
+            return (
+                <div className={wrapperClassNames} style={ { width: width } }>
+                    {optionsList}
+                </div>
+            )
+        }
+
+        return (
+            <Scrollbar containerClassName={wrapperClassNames}
+                       autoHeight={true}
+                       autoHeightMax={maxHeight}
+                       hideTracksWhenNotNeeded={true}
+                       style={ { width: width } }>
+                {optionsList}
+            </Scrollbar>
+        )
     }
 }
 

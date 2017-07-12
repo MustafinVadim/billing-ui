@@ -36,7 +36,7 @@ class UtilityPanel extends PureComponent {
                     <span data-ft-id="utility-panel-title">{title}</span>
                     {headerAdditionalContent}
                 </div>
-                <Scrollbar onScroll={onScroll} containerClassName={bodyClassNames}>
+                <Scrollbar onScroll={onScroll} containerClassName={bodyClassNames} hideOnHoverOut={true}>
                     {children}
                 </Scrollbar>
             </div>
