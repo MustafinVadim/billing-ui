@@ -287,7 +287,7 @@ class Autocomplete extends PureComponent {
         const fieldsToOmit = [
             "url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect", "enableOnClickOutside",
             "autocompleteWrapperClassName", "optionItemClassName", "optionActiveItemClassName", "menuClassName", "menuWidth", "maxMenuHeight",
-            "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside"
+            "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside", "outsideClickIgnoreClass"
         ];
 
         const inputProps = omit({

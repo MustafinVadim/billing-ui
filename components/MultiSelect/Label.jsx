@@ -5,6 +5,7 @@ import Icon, { IconTypes } from "../Icon";
 import Tooltip, { TriggerTypes, PositionTypes } from "../Tooltip";
 
 import styles from "./Label.scss";
+import cx from 'classnames';
 
 class Label extends PureComponent {
     _tooltipTarget = null;
@@ -17,10 +18,10 @@ class Label extends PureComponent {
     };
 
     render() {
-        const { children, tooltipContent, tooltipClassName } = this.props;
+        const { children, tooltipContent, tooltipClassName, active } = this.props;
         const hasTooltip = !!tooltipContent;
         return (
-            <span className={styles.wrapper}>
+            <span className={cx(styles.wrapper, {[styles.active]: active})}>
                 <span className={styles.content} ref={ el => {
                     this._tooltipTarget = el
                 }}>
@@ -48,6 +49,7 @@ class Label extends PureComponent {
 
 Label.propTypes = {
     id: PropTypes.string,
+    active: PropTypes.bool,
     children: PropTypes.node,
     onRemove: PropTypes.func,
     tooltipContent: PropTypes.node,

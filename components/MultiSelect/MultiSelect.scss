@@ -66,4 +66,10 @@
 
         height: 15px;
     }
+
+    .hidden-selector {
+        position: absolute;
+        width: 0;
+        opacity: 0;
+    }
 }
