@@ -33,6 +33,7 @@ class MultiSelect extends PureComponent {
             selectedLabelIndex: -1
         });
         if (evt.target !== this._inputDOMNode) {
+            this._inputDOMNode.selectionStart = this._inputDOMNode.value.length;
             evt.preventDefault();
         }
     };
@@ -46,15 +47,15 @@ class MultiSelect extends PureComponent {
     };
 
     _handleSelect = (Value, Text, Data, optionData) => {
-        this._addLabel(optionData);
+        this._handleAddLabel(optionData);
     };
 
-    _handleInputKey = evt => {
+    _handleKey = evt => {
         const { onKeyDown, labels } = this.props;
         const { inputValue } = this.state;
         switch (evt.keyCode) {
             case keyCodes.space:
-                this._addLabel(null, inputValue);
+                this._handleAddLabel(null, inputValue);
                 evt.preventDefault();
                 break;
             case keyCodes.backspace:
@@ -78,12 +79,15 @@ class MultiSelect extends PureComponent {
     _handleSelectorKey = evt => {
         const { onKeyDown } = this.props;
         const { selectedLabelIndex } = this.state;
+
         switch (evt.keyCode) {
             case keyCodes.left:
                 this._selectNextLabel(-1);
+                evt.preventDefault();
                 break;
             case keyCodes.right:
                 this._selectNextLabel(1);
+                evt.preventDefault();
                 break;
             case keyCodes.delete:
                 this._handleRemoveLabel(selectedLabelIndex);
@@ -101,7 +105,7 @@ class MultiSelect extends PureComponent {
         });
     };
 
-    _handleSelecorFocus = () => {
+    _handleSelectorFocus = () => {
         const lastLabelIndex = this.props.labels.length - 1;
         this.setState({
             selectedLabelIndex: lastLabelIndex
@@ -114,14 +118,17 @@ class MultiSelect extends PureComponent {
         onRemoveLabel(labelId);
     };
 
-    _addLabel = (autocompleteResult, inputValue) => {
+    _handleAddLabel = (autocompleteResult, inputValue) => {
         const { onAddLabel } = this.props;
+
         onAddLabel(autocompleteResult, inputValue);
-        if (this.state.inputValue !== "") {
+
+        if (!!this.state.inputValue) {
             this.setState({
                 inputValue: ""
             });
         }
+
         this._inputDOMNode && this._inputDOMNode.focus();
     };
 
@@ -151,27 +158,20 @@ class MultiSelect extends PureComponent {
         }
     };
 
-    _selectNextLabel = (offset) => {
+    _selectNextLabel = step => {
         const { selectedLabelIndex } = this.state;
         const minIndex = 0;
         const maxIndex = this.props.labels.length - 1;
-
-        if (selectedLabelIndex < 0 && offset < 0) {
-            this.setState({
-                selectedLabelIndex: maxIndex
-            });
-            return;
-        }
-
-        let newIndex = selectedLabelIndex + offset;
+        const newIndex = selectedLabelIndex + step;
 
         if (newIndex > maxIndex || newIndex < minIndex) {
             this._inputDOMNode.focus();
+            this._inputDOMNode.selectionStart = this._inputDOMNode.value.length;
+        } else {
+            this.setState({
+                selectedLabelIndex: newIndex
+            });
         }
-
-        this.setState({
-            selectedLabelIndex: newIndex
-        });
     };
 
     _renderLabels = labels => {
@@ -213,7 +213,7 @@ class MultiSelect extends PureComponent {
                            }}
                            onKeyDown={this._handleSelectorKey}
                            onBlur={this._handleSelectorBlur}
-                           onFocus={this._handleSelecorFocus} />
+                           onFocus={this._handleSelectorFocus} />
                     <Autocomplete
                         {...autocompleteProps}
                         autocompleteWrapperClassName={styles["autocomplete-wrapper"]}
@@ -225,11 +225,10 @@ class MultiSelect extends PureComponent {
                         outsideClickIgnoreClass={styles.wrapper}
                         width={inputWidth}
                         textInputRef={this._setInputDOMNode}
-                        onFocus={this._handleFocus}
                         onBlur={this._handleBlur}
                         onChange={this._handleChange}
                         onSelect={this._handleSelect}
-                        onKeyDown={this._handleInputKey}
+                        onKeyDown={this._handleKey}
                         type={TextInputType.compact}
                         value={inputValue}
                         isFilled={isFilled}
