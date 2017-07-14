@@ -3,6 +3,8 @@
 :local {
     .wrapper {
         @extend %menu-content;
+
+        white-space: initial;
     }
 
     .link-wrapper {
