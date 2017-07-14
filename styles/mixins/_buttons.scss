@@ -28,6 +28,7 @@
     word-wrap: normal;
 
     cursor: pointer;
+    user-select: none;
 
     &:hover,
     &:focus {
