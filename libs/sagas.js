@@ -4,15 +4,15 @@ import Logger, { generateAjaxErrorMessage } from "../helpers/Logger";
 import Informer from "Informer";
 
 export const httpMethod = {
-    get: "get",
-    post: "post",
-    put: "put",
-    delete: "delete",
-    patch: "patch",
-    trace: "trace",
-    connect: "connect",
-    options: "options",
-    head: "head"
+    "get": "get",
+    "post": "post",
+    "put": "put",
+    "delete": "delete",
+    "patch": "patch",
+    "trace": "trace",
+    "connect": "connect",
+    "options": "options",
+    "head": "head"
 };
 
 export const DEFAULT_ERROR_MESSAGE = "Ошибка сервера. Попробуйте чуть позже.";
@@ -49,6 +49,12 @@ export function* fetchData({
         } : response.data;
 
         yield* createPutEffects(onSuccess, responseData);
+
+        return {
+            isSuccess: true,
+            response,
+            responseData
+        };
     } catch (xhr) {
         let errorMessage = DEFAULT_ERROR_MESSAGE;
         try {
@@ -62,5 +68,11 @@ export function* fetchData({
             const errorData = additionalResponseData ? { ...additionalResponseData, error: xhr } : xhr;
             yield* createPutEffects(onError, errorData);
         }
+
+        return {
+            isSuccess: false,
+            errorMessage,
+            xhr
+        };
     }
 }
