@@ -20,7 +20,9 @@ const KeyCodes = {
 
     g: 71,
     j: 74,
-    dot: 190
+    dot: 190,
+    semiColon: 186,
+    comma: 188
 };
 
 export default KeyCodes;
