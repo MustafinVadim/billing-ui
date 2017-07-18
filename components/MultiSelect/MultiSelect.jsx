@@ -63,8 +63,10 @@ class MultiSelect extends PureComponent {
 
         let newData = data;
 
-        if (!newData || !newData.validationResult) {
-            newData.validationResult = validate(inputValue, inputValidation);
+        if (!newData) {
+            newData = {
+                validationResult: validate(inputValue, inputValidation);
+            }
         }
 
         newData.labelsValidationResult = validate(labels, labelsValidation);
