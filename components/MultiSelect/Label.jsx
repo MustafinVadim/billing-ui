@@ -5,7 +5,7 @@ import Icon, { IconTypes } from "../Icon";
 import Tooltip, { TriggerTypes, PositionTypes } from "../Tooltip";
 
 import styles from "./Label.scss";
-import cx from 'classnames';
+import cx from "classnames";
 
 class Label extends PureComponent {
     _tooltipTarget = null;
