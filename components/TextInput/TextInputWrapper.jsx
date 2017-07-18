@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
-import { findDOMNode } from "react-dom";
+import ReactDOM from "react-dom";
 import DefaultTextInput from "./DefaultTextInput";
 import CompactTextInput from "./CompactTextInput";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
@@ -8,26 +8,22 @@ import TextInputType from "./TextInputType";
 import { TooltipTypes, PositionTypes } from "../Tooltip";
 import Validation, { validate } from "../../helpers/ValidationHelpers";
 class TextInputWrapper extends PureComponent {
-    _inputDOMNode = null;
 
-    _setInputDOMNode = (el) => {
-        const { textInputRef } = this.props;
+    _inputDom = null;
 
+    _setDomNode = (el) => {
         if (el) {
-            this._inputDOMNode = findDOMNode(el);
-        }
-
-        if (textInputRef) {
-            textInputRef(el);
+            const tagName = this.props.isTextArea ? "textarea" : "input";
+            this._inputDom = ReactDOM.findDOMNode(el).getElementsByTagName(tagName)[0];
         }
     };
 
     getDomNode() {
-        return this._inputDOMNode;
+        return this._inputDom;
     }
 
     focus() {
-        this._inputDOMNode.focus();
+        this._inputDom.focus();
     }
 
     getValidationResult() {
@@ -39,8 +35,8 @@ class TextInputWrapper extends PureComponent {
 
         return (
             type === TextInputType.compact
-                ? <CompactTextInput {...others} labelClassName={labelClassName} textInputRef={this._setInputDOMNode} />
-                : <DefaultTextInput {...others} placeholderClassName={placeholderClassName} textInputRef={this._setInputDOMNode} />
+                ? <CompactTextInput {...others} labelClassName={labelClassName} ref={this._setDomNode} />
+                : <DefaultTextInput {...others} placeholderClassName={placeholderClassName} ref={this._setDomNode} />
         );
     }
 }
@@ -50,7 +46,6 @@ TextInputWrapper.propTypes = {
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
     onKeyDown: PropTypes.func,
-    textInputRef: PropTypes.func,
     isTextArea: PropTypes.bool,
     clearable: PropTypes.bool,
     readonly: PropTypes.bool,

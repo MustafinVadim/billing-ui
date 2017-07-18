@@ -8,12 +8,15 @@
         position: relative;
 
         white-space: normal;
-        text-overflow: initial;
 
         cursor: text;
 
         &.focus {
             @extend %input-base-focused;
+        }
+
+        &.validation-error {
+            @extend %input-base-invalid;
         }
     }
 
@@ -54,15 +57,15 @@
 
     .autocomplete-wrapper,
     .input-wrapper {
-        position: initial;
+        position: static;
 
-        cursor: initial;
+        cursor: text;
     }
 
     .input-highlight {
-        top: initial;
+        top: auto;
         bottom: 6px;
-        left: initial;
+        left: auto;
 
         height: 15px;
     }

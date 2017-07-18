@@ -48,7 +48,7 @@ class Label extends PureComponent {
 }
 
 Label.propTypes = {
-    id: PropTypes.string,
+    id: PropTypes.number,
     active: PropTypes.bool,
     children: PropTypes.node,
     onRemove: PropTypes.func,
