@@ -117,6 +117,13 @@ const Validation = {
     },
 
     Required: (error = "Поле не должно быть пустым") => (value) => {
+        if (Array.isArray(value)) {
+            return {
+                isValid: !!value.length,
+                error
+            };
+        }
+
         return {
             isValid: !!value && value.trim() !== "",
             error
