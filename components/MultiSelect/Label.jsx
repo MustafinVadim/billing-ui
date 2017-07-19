@@ -12,6 +12,7 @@ class Label extends PureComponent {
 
     _handleClickRemove = (evt) => {
         const { onRemove, id } = this.props;
+
         if (onRemove) {
             onRemove(id, evt);
         }
@@ -20,6 +21,7 @@ class Label extends PureComponent {
     render() {
         const { children, tooltipContent, tooltipClassName, active } = this.props;
         const hasTooltip = !!tooltipContent;
+
         return (
             <span className={cx(styles.wrapper, {[styles.active]: active})}>
                 <span className={styles.content} ref={ el => {

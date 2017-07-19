@@ -59,7 +59,7 @@ class Autocomplete extends PureComponent {
         this.choose(index);
     };
 
-    handleChange = (value, evt, { validationResult }) => {
+    handleChange = value => {
         const { onChange } = this.props;
 
         if (!this.props.value) {
@@ -71,7 +71,7 @@ class Autocomplete extends PureComponent {
         this.showNewOptions(value);
 
         if (onChange) {
-            onChange(value, evt, { source: "TextInput", validationResult });
+            onChange(value, { source: "TextInput" });
         }
     };
 
@@ -246,7 +246,7 @@ class Autocomplete extends PureComponent {
         this.closeOptions();
 
         if (onChange) {
-            onChange(value, {}, { source: "AutocompleteOption" });
+            onChange(value, { source: "AutocompleteOption" });
         }
 
         this.fireSelect(index);

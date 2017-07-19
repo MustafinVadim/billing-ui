@@ -6,7 +6,6 @@ import Scrollbar from "../Scrollbar";
 import Option from "./Option";
 
 import styles from "./OptionsList.scss";
-import cx from "classnames";
 
 class OptionsList extends PureComponent {
     _selectedOptionDOMNode = null;
@@ -48,10 +47,6 @@ class OptionsList extends PureComponent {
     render() {
         const { options, notFoundText, selectedIndex, width, maxHeight, ...optionProps } = this.props;
 
-        const wrapperClassNames = cx({
-            [styles.scroll]: !!maxHeight
-        });
-
         const isEmpty = options.length === 0;
 
         if (isEmpty) {
@@ -63,7 +58,7 @@ class OptionsList extends PureComponent {
                     index={index}
                     isSelected={selectedIndex === index}
                     optionData={data}
-                    ref={(elm) => {
+                    ref={elm => {
                         if (selectedIndex === index) {
                             this._selectedOptionDOMNode = findDOMNode(elm);
                         }
@@ -73,15 +68,14 @@ class OptionsList extends PureComponent {
 
         if (!maxHeight) {
             return (
-                <div className={wrapperClassNames} style={ { width: width } }>
+                <div style={ { width: width } }>
                     {optionsList}
                 </div>
             )
         }
 
         return (
-            <Scrollbar containerClassName={wrapperClassNames}
-                       autoHeight={true}
+            <Scrollbar autoHeight={true}
                        autoHeightMax={maxHeight}
                        hideTracksWhenNotNeeded={true}
                        style={ { width: width } }>
