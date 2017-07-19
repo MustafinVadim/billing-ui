@@ -179,10 +179,11 @@ class Autocomplete extends PureComponent {
     };
 
     showNewOptions(text) {
+        const { openIfEmpty, enableOnClickOutside } = this.props;
         const value = text || "";
         const pattern = value.trim();
 
-        if (pattern === "") {
+        if (pattern === "" && !openIfEmpty) {
             this.closeOptions();
             return;
         }
@@ -207,7 +208,7 @@ class Autocomplete extends PureComponent {
                     });
 
                     if (isMenuOpened) {
-                        this.props.enableOnClickOutside();
+                        enableOnClickOutside();
                     }
                 }
             });
@@ -236,14 +237,16 @@ class Autocomplete extends PureComponent {
     }
 
     choose(index) {
-        const { onChange, clearOnSelect } = this.props;
+        const { onChange, clearOnSelect, closeOnSelect } = this.props;
         const value = this._valueCreator(this.state.searchResult[index]);
 
         if (clearOnSelect) {
             this.setState({ value: "" });
         }
 
-        this.closeOptions();
+        if (closeOnSelect) {
+            this.closeOptions();
+        }
 
         if (onChange) {
             onChange(value, { source: "AutocompleteOption" });
@@ -287,7 +290,7 @@ class Autocomplete extends PureComponent {
         const fieldsToOmit = [
             "url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect", "enableOnClickOutside",
             "autocompleteWrapperClassName", "optionItemClassName", "optionActiveItemClassName", "menuClassName", "menuWidth", "maxMenuHeight",
-            "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside", "outsideClickIgnoreClass"
+            "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside", "outsideClickIgnoreClass", "openIfEmpty", "closeOnSelect"
         ];
 
         const inputProps = omit({
@@ -304,12 +307,12 @@ class Autocomplete extends PureComponent {
 
         const {
             hasSearchIcon, ftId, menuWidth, maxMenuHeight, notFoundText, renderItem, optionItemClassName, optionActiveItemClassName, optionClassName,
-            inputClassName, menuClassName
+            inputClassName, menuClassName, openIfEmpty
         } = this.props;
         const { tooltipErrorMessage, isRequestFailed, isMenuOpened, value, searchResult, selectedOptionIndex } = this.state;
 
         const isValid = !tooltipErrorMessage || !value;
-        const shouldRenderMenu = isMenuOpened && !!value;
+        const shouldRenderMenu = isMenuOpened && (!!value || openIfEmpty);
 
         return (
             <div className={cx(styles.root, this.props.autocompleteWrapperClassName)} data-ft-id={ftId}>
@@ -353,6 +356,8 @@ Autocomplete.propTypes = {
     value: PropTypes.string,
     hasSearchIcon: PropTypes.bool,
     clearOnSelect: PropTypes.bool,
+    openIfEmpty: PropTypes.bool,
+    closeOnSelect: PropTypes.bool,
     defaultValue: PropTypes.string,
     notFoundText: PropTypes.string,
     maxMenuHeight: PropTypes.number,
@@ -393,6 +398,8 @@ Autocomplete.defaultProps = {
     requestData: {},
     hasSearchIcon: false,
     clearOnSelect: false,
+    closeOnSelect: true,
+    openIfEmpty: false,
     defaultValue: "",
     notFoundText: "ничего не найдено",
     valueCreator: searchItem => searchItem.Text
