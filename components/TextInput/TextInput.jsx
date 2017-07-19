@@ -186,7 +186,7 @@ TextInput.propTypes = {
     tooltipCaption: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.element]),
     tooltipProps: PropTypes.object,
     tooltipType: PropTypes.oneOf(Object.keys(TooltipTypes).map((key) => TooltipTypes[key])),
-    tooltipPosition: PropTypes.oneOf(Object.keys(PositionTypes).map((key) => TooltipTypes[key])),
+    tooltipPosition: PropTypes.oneOf(Object.keys(PositionTypes).map((key) => PositionTypes[key])),
     tooltipClassName: PropTypes.string
 };
 
