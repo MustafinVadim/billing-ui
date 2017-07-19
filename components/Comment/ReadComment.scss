@@ -31,6 +31,7 @@
 
     .date {
         color: $textSecondaryColor;
+        white-space: nowrap;
     }
 
     .text {
@@ -76,6 +77,6 @@
     }
 
     :global(.global_comment:hover) .title:before {
-        background: linear-gradient(to right, $bgElementActiveLightColor 20%, $bgElementActiveLightColor 75%);
+        background: linear-gradient(to right, rgba($bgElementActiveLightColor, .2), $bgElementActiveLightColor 75%);
     }
 }
