@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import omit from "lodash/omit";
 
 import { TextInputType } from "../TextInput";
-import calculateWidth from "./calculateInputWidth";
+import { calculateContentWidth }from "../../helpers/NodeHelper";
 import Autocomplete from "../Autocomplete";
 import Label from "./Label";
 import Tooltip, { TriggerTypes, PositionTypes, TooltipTypes } from "../Tooltip";
@@ -15,10 +15,15 @@ import { validate } from "../../helpers/ValidationHelpers";
 import styles from "./MultiSelect.scss";
 import cx from "classnames";
 
+const labelControllerDirection = {
+    next: 1,
+    previous: -1
+};
+
 class MultiSelect extends PureComponent {
     _inputDOMNode = null;
-    _selectorDOMNode = null;
-    _wrapperElement = null;
+    _labelControllerDOMNode = null;
+    _inputValidationResult = null;
 
     constructor(props, context) {
         super(props, context);
@@ -26,21 +31,23 @@ class MultiSelect extends PureComponent {
         this.state = {
             selectedLabelIndex: -1,
             isFocused: false,
-            inputWidth: props.minWidth
+            inputWidth: props.minInputWidth
         };
     }
 
     _isInputValid = () => {
-        const { inputValidation, inputValue } = this.props;
+        const { inputValue } = this.props;
         if (!inputValue) {
-            return false
+            return false;
         }
-        const validationResult = inputValidation(inputValue);
-        return validationResult.isValid;
+        return this._inputValidationResult.isValid;
     };
 
-    _handleFocus = (evt) => {
+    _handleFocus = (evt, data) => {
         const { onFocus } = this.props;
+
+        this._setInputValidationResult(data.validationResult);
+
         this.setState({
             isFocused: true
         });
@@ -51,7 +58,7 @@ class MultiSelect extends PureComponent {
     };
 
     _handleBlur = (evt, data) => {
-        const { onBlur, inputValue, labels, labelsValidation, inputValidation } = this.props;
+        const { onBlur, inputValue, labels, labelsValidation } = this.props;
 
         if (this._isInputValid()) {
             this._handleAddLabel({ inputValue });
@@ -61,25 +68,26 @@ class MultiSelect extends PureComponent {
             isFocused: false
         });
 
-        let newData = data;
+        this._setInputValidationResult(data.validationResult);
 
-        if (!newData) {
-            newData = {
-                validationResult: validate(inputValue, inputValidation)
-            }
-        }
-
-        newData.labelsValidationResult = validate(labels, labelsValidation);
+        const labelsValidationResult = validate(labels, labelsValidation);
 
         if (onBlur) {
-            onBlur(evt, newData);
+            onBlur(evt, {
+                ...data,
+                validationResult: this._inputValidationResult,
+                labelsValidationResult
+            });
         }
     };
 
     _handleChange = (value, evt, data) => {
         const { onChange } = this.props;
 
-        this._changeWidth();
+        this._changeInputWidth();
+
+        this._setInputValidationResult(data.validationResult);
+
         if (onChange) {
             onChange(value, evt, data);
         }
@@ -122,7 +130,7 @@ class MultiSelect extends PureComponent {
             case keyCodes.left:
                 const isCaretAtStart = this._inputDOMNode.selectionStart === 0;
                 if (isCaretAtStart) {
-                    this._selectorDOMNode.focus();
+                    this._labelControllerDOMNode.focus();
                 }
                 break;
             default:
@@ -132,17 +140,17 @@ class MultiSelect extends PureComponent {
         }
     };
 
-    _handleSelectorKey = evt => {
+    _handleLabelControllerKey = evt => {
         const { onKeyDown } = this.props;
         const { selectedLabelIndex } = this.state;
 
         switch (evt.keyCode) {
             case keyCodes.left:
-                this._selectNextLabel(-1);
+                this._selectNextLabel(labelControllerDirection.previous);
                 evt.preventDefault();
                 break;
             case keyCodes.right:
-                this._selectNextLabel(1);
+                this._selectNextLabel(labelControllerDirection.next);
                 evt.preventDefault();
                 break;
             case keyCodes.delete:
@@ -155,13 +163,13 @@ class MultiSelect extends PureComponent {
         }
     };
 
-    _handleSelectorBlur = () => {
+    _handleLabelControllerBlur = () => {
         this.setState({
             selectedLabelIndex: -1
         });
     };
 
-    _handleSelectorFocus = () => {
+    _handleLabelControllerFocus = () => {
         const lastLabelIndex = this.props.labels.length - 1;
         this.setState({
             selectedLabelIndex: lastLabelIndex
@@ -181,28 +189,41 @@ class MultiSelect extends PureComponent {
         onAddLabel({ autocompleteResult, inputValue });
     };
 
+    _setInputValidationResult = validationResult => {
+        this._inputValidationResult = validationResult
+            ? validationResult
+            : this._inputValidationResult
+    };
+
     _setInputDOMNode = el => {
         if (el) {
             this._inputDOMNode = findDOMNode(el).getElementsByTagName("input")[0];
         }
     };
 
-    _changeWidth = () => {
+    _setLabelControllerDOMNode = el => {
+        this._labelControllerDOMNode = findDOMNode(el);
+    };
+
+    _getMultiSelect = () => this;
+
+    _changeInputWidth = () => {
         const { inputWidth } = this.state;
-        const { minWidth, maxWidth } = this.props;
+        const { minInputWidth, maxInputWidth } = this.props;
 
-        let newWidth = calculateWidth(this._inputDOMNode);
+        let newInputWidth = calculateContentWidth(this._inputDOMNode);
 
-        if (newWidth < minWidth) {
-            newWidth = minWidth;
-        }
-        if (newWidth > maxWidth) {
-            newWidth = maxWidth;
+        if (newInputWidth < minInputWidth) {
+            newInputWidth = minInputWidth;
         }
 
-        if (newWidth !== inputWidth) {
+        if (newInputWidth > maxInputWidth) {
+            newInputWidth = maxInputWidth;
+        }
+
+        if (newInputWidth !== inputWidth) {
             this.setState({
-                inputWidth: newWidth
+                inputWidth: newInputWidth
             });
         }
     };
@@ -228,12 +249,13 @@ class MultiSelect extends PureComponent {
         const { selectedLabelIndex } = this.state;
         return labels.map((label, index) => (
             <Label
-                id={index}
-                key={index}
-                active={selectedLabelIndex === index}
-                tooltipContent={label.tooltipContent || null}
+                index={index}
+                key={`multiselect-label-${index}`}
+                isActive={selectedLabelIndex === index}
+                tooltipContent={label.tooltipContent}
                 tooltipClassName={labelTooltipClassName}
-                onRemove={onRemoveLabel}>
+                onRemove={onRemoveLabel}
+            >
                 {label.labelContent}
             </Label>
         ))
@@ -241,21 +263,20 @@ class MultiSelect extends PureComponent {
 
     render() {
         const { inputWidth, isFocused } = this.state;
-        const { labels, wrapperClassName, isValid, inputValue, inputValidation, tooltipCaption, tooltipProps } = this.props;
+        const { labels, wrapperClassName, isValid, inputValue, inputValidation, tooltipCaption, tooltipProps, autocompleteURL } = this.props;
 
         const autocompleteProps = omit(
             this.props,
             [
-                "minWidth", "maxWidth", "labels", "tooltipClassName", "wrapperClassName", "onAddLabel", "onRemoveLabel", "labelsValidation",
-                "inputValidation", "inputValue", "tooltipCaption", "tooltipProps", "labelTooltipClassName"
+                "minInputWidth", "maxInputWidth", "labels", "tooltipClassName", "wrapperClassName", "onAddLabel", "onRemoveLabel", "labelsValidation",
+                "inputValidation", "inputValue", "tooltipCaption", "tooltipProps", "labelTooltipClassName", "autocompleteURL"
             ]
         );
 
         const isFilled = labels.length > 0 || !!inputValue;
 
         return (
-            <div onClick={this._handleClick}
-                 onMouseDown={this._handleMouseDown}
+            <div onMouseDown={this._handleMouseDown}
                  className={cx(
                      styles.wrapper,
                      wrapperClassName,
@@ -263,18 +284,16 @@ class MultiSelect extends PureComponent {
                          [styles["focus"]]: isFocused,
                          [styles["validation-error"]]: !isValid
                      })}
-                 ref={(el) => {
-                     this._wrapperElement = el
-                 }}>
+            >
                 <div className={styles.content}>
                     {this._renderLabels(labels)}
-                    <input className={styles["hidden-selector"]}
-                           ref={(elm) => {
-                               this._selectorDOMNode = findDOMNode(elm);
-                           }}
-                           onKeyDown={this._handleSelectorKey}
-                           onBlur={this._handleSelectorBlur}
-                           onFocus={this._handleSelectorFocus} />
+                    <input className={styles["label-controller"]}
+                           ref={this._setLabelControllerDOMNode}
+                           tabIndex="-1"
+                           onFocus={this._handleLabelControllerFocus}
+                           onKeyDown={this._handleLabelControllerKey}
+                           onBlur={this._handleLabelControllerBlur}
+                    />
                     <Autocomplete
                         {...autocompleteProps}
                         autocompleteWrapperClassName={styles["autocomplete-wrapper"]}
@@ -293,13 +312,14 @@ class MultiSelect extends PureComponent {
                         onKeyDown={this._handleKey}
                         validateFunction={inputValidation}
                         type={TextInputType.compact}
+                        url={autocompleteURL}
                         value={inputValue}
                         isFilled={isFilled}
                     />
 
                     <Tooltip
                         {...tooltipProps}
-                        getTarget={() => this}
+                        getTarget={this._getMultiSelect}
                         trigger={TriggerTypes.manual}
                         isOpen={!isValid && isFocused && !!tooltipCaption}
                     >
@@ -312,35 +332,37 @@ class MultiSelect extends PureComponent {
 }
 
 MultiSelect.propTypes = {
-    minWidth: PropTypes.number,
-    maxWidth: PropTypes.number,
+    minInputWidth: PropTypes.number,
+    maxInputWidth: PropTypes.number,
+    autocompleteURL: PropTypes.string,
     labelTooltipClassName: PropTypes.string,
+    wrapperClassName: PropTypes.string,
     onRemoveLabel: PropTypes.func,
     onAddLabel: PropTypes.func,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
     onChange: PropTypes.func,
     onKeyDown: PropTypes.func,
-    wrapperClassName: PropTypes.string,
     isValid: PropTypes.bool,
 
     labels: PropTypes.arrayOf(
         PropTypes.shape({
             labelContent: PropTypes.string.isRequired,
-            tooltipContent: PropTypes.node
+            tooltipContent: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.element])
         })
-    ),
-    labelsValidation: PropTypes.func,
+    ).isRequired,
+    labelsValidation: PropTypes.func.isRequired,
 
     inputValue: PropTypes.string,
-    inputValidation: PropTypes.func,
+    inputValidation: PropTypes.func.isRequired,
+
     tooltipProps: PropTypes.object,
     tooltipCaption: PropTypes.string
 };
 
 MultiSelect.defaultProps = {
-    minWidth: 10,
-    maxWidth: 440,
+    minInputWidth: 10,
+    maxInputWidth: 440,
     tooltipProps: {
         positionType: PositionTypes.rightMiddle,
         type: TooltipTypes.validation

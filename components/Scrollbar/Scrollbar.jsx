@@ -16,6 +16,10 @@ class Scrollbar extends PureComponent {
         clearInterval(this._autoUpdateInterval);
     }
 
+    getReactScrollbar() {
+        return this._scrollbar;
+    }
+
     _forceUpdate = () => {
         if (this._scrollbar) {
             this._scrollbar.forceUpdate();

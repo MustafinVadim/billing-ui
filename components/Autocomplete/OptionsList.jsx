@@ -9,40 +9,40 @@ import styles from "./OptionsList.scss";
 
 class OptionsList extends PureComponent {
     _selectedOptionDOMNode = null;
+    _scrollbarElement = null;
 
     componentDidUpdate(prevProps) {
-        const { selectedIndex, maxHeight } = this.props;
+        const { selectedIndex } = this.props;
 
-        if (selectedIndex !== prevProps.selectedIndex && !!maxHeight) {
+        if (selectedIndex !== prevProps.selectedIndex && this._scrollbarElement) {
             this._changeScrollPosition();
         }
     }
 
     _changeScrollPosition() {
         const selectedOption = this._selectedOptionDOMNode;
+        const scrollbar = this._scrollbarElement;
 
         if (!selectedOption) {
             return;
         }
 
-        const wrapper = selectedOption.parentElement;
-
-        if (!wrapper) {
-            return;
-        }
-
-        const viewportTop = wrapper.scrollTop;
-        const viewportBottom = viewportTop + wrapper.clientHeight;
+        const viewportTop = scrollbar.getScrollTop();
+        const viewportBottom = viewportTop + scrollbar.getClientHeight();
 
         const optionTop = selectedOption.offsetTop;
         const optionBottom = optionTop + selectedOption.clientHeight;
 
         if (optionBottom > viewportBottom) {
-            wrapper.scrollTop = optionBottom - wrapper.clientHeight;
+            scrollbar.scrollTop(optionBottom - scrollbar.getClientHeight());
         } else if (optionTop < viewportTop) {
-            wrapper.scrollTop = optionTop;
+            scrollbar.scrollTop(optionTop);
         }
     }
+
+    _setScrollbarElement = (elm) => {
+        this._scrollbarElement = elm ? elm.getReactScrollbar() : null;
+    };
 
     render() {
         const { options, notFoundText, selectedIndex, width, maxHeight, ...optionProps } = this.props;
@@ -78,7 +78,9 @@ class OptionsList extends PureComponent {
             <Scrollbar autoHeight={true}
                        autoHeightMax={maxHeight}
                        hideTracksWhenNotNeeded={true}
-                       style={ { width: width } }>
+                       style={ { width: width } }
+                       ref={this._setScrollbarElement}
+            >
                 {optionsList}
             </Scrollbar>
         )

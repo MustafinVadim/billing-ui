@@ -11,22 +11,24 @@ class Label extends PureComponent {
     _tooltipTarget = null;
 
     _handleClickRemove = (evt) => {
-        const { onRemove, id } = this.props;
+        const { onRemove, index } = this.props;
 
         if (onRemove) {
-            onRemove(id, evt);
+            onRemove(index, evt);
         }
     };
 
+    _setTooltipTarget = (el) => {
+        this._tooltipTarget = el;
+    };
+
     render() {
-        const { children, tooltipContent, tooltipClassName, active } = this.props;
+        const { children, tooltipContent, tooltipClassName, isActive } = this.props;
         const hasTooltip = !!tooltipContent;
 
         return (
-            <span className={cx(styles.wrapper, {[styles.active]: active})}>
-                <span className={styles.content} ref={ el => {
-                    this._tooltipTarget = el
-                }}>
+            <span className={cx(styles.wrapper, { [styles.active]: isActive })}>
+                <span className={styles.content} ref={this._setTooltipTarget}>
                     {children}
                     <Icon onClick={this._handleClickRemove}
                           className={styles.icon}
@@ -50,11 +52,11 @@ class Label extends PureComponent {
 }
 
 Label.propTypes = {
-    id: PropTypes.number,
-    active: PropTypes.bool,
+    index: PropTypes.number,
+    isActive: PropTypes.bool,
     children: PropTypes.node,
     onRemove: PropTypes.func,
-    tooltipContent: PropTypes.node,
+    tooltipContent: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.element]),
     tooltipClassName: PropTypes.string
 };
 

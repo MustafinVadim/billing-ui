@@ -4,11 +4,11 @@ import onClickOutside from "react-onclickoutside";
 import debounce from "lodash/debounce";
 import omit from "lodash/omit";
 import axios from "../../libs/axios";
+import throttle from "lodash/throttle";
 
 import TryAgain from "./TryAgain";
 import OptionsList from "./OptionsList";
 import keyCodes from "../../helpers/KeyCodes";
-import { updateImmutableArrayByKey } from "../../helpers/ArrayHelper";
 
 import Icon, { IconTypes } from "../Icon";
 import TextInput from "../TextInput";
@@ -59,7 +59,7 @@ class Autocomplete extends PureComponent {
         this.choose(index);
     };
 
-    handleChange = value => {
+    handleChange = (value, evt, data) => {
         const { onChange } = this.props;
 
         if (!this.props.value) {
@@ -71,22 +71,25 @@ class Autocomplete extends PureComponent {
         this.showNewOptions(value);
 
         if (onChange) {
-            onChange(value, { source: "TextInput" });
+            onChange(value, evt, {
+                ...data,
+                source: "TextInput"
+            });
         }
     };
 
-    handleFocus = evt => {
+    handleFocus = (evt, data) => {
         const value = evt.target.value || "";
 
         this.showNewOptions(value);
 
         if (this.props.onFocus) {
-            this.props.onFocus(evt);
+            this.props.onFocus(evt, data);
         }
     };
 
     handleClickOutside = evt => {
-        this._handleBlur(evt);
+        this._handleBlur(evt, {});
     };
 
     _handleBlur = (evt, data) => {
@@ -159,11 +162,11 @@ class Autocomplete extends PureComponent {
         }
     };
 
-    _handleMouseMove = () => {
+    _handleMouseMove = throttle(() => {
         this.setState({
             isControlledByKeys: false
         });
-    };
+    });
 
     _selectNextOption = (step, currentIndex, optionsCount) => {
         let nextSelectedIndex = currentIndex + step;
@@ -249,7 +252,7 @@ class Autocomplete extends PureComponent {
         }
 
         if (onChange) {
-            onChange(value, { source: "AutocompleteOption" });
+            onChange(value, {}, { source: "AutocompleteOption" });
         }
 
         this.fireSelect(index);
@@ -260,7 +263,7 @@ class Autocomplete extends PureComponent {
         const optionData = this.state.searchResult[index];
 
         if (optionData && onSelect) {
-            return onSelect(optionData.Value, optionData.Text, optionData.Data, optionData);
+            onSelect(optionData.Value, optionData.Text, optionData.Data, optionData);
         }
     }
 
