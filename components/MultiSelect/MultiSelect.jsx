@@ -60,8 +60,11 @@ class MultiSelect extends PureComponent {
     _handleBlur = (evt, data) => {
         const { onBlur, inputValue, labels, labelsValidation } = this.props;
 
+        const labelsValidationResult = validate(labels, labelsValidation);
+
         if (this._isInputValid()) {
             this._handleAddLabel({ inputValue });
+            labelsValidationResult.isValid = true;
         }
 
         this.setState({
@@ -69,8 +72,6 @@ class MultiSelect extends PureComponent {
         });
 
         this._setInputValidationResult(data.validationResult);
-
-        const labelsValidationResult = validate(labels, labelsValidation);
 
         if (onBlur) {
             onBlur(evt, {
