@@ -203,7 +203,7 @@ class Autocomplete extends PureComponent {
                     const isMenuOpened = !ErrorMessage;
 
                     this.setState({
-                        searchResult: updateImmutableArrayByKey(this.state.searchResult, Options, "Value"),
+                        searchResult: Options,
                         isMenuOpened,
                         tooltipErrorMessage: ErrorMessage,
                         isRequestFailed: false,
