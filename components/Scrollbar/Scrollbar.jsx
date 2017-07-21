@@ -16,6 +16,10 @@ class Scrollbar extends PureComponent {
         clearInterval(this._autoUpdateInterval);
     }
 
+    getScrollbar() {
+        return this._scrollbar;
+    }
+
     _forceUpdate = () => {
         if (this._scrollbar) {
             this._scrollbar.forceUpdate();
@@ -60,6 +64,10 @@ class Scrollbar extends PureComponent {
         return <div { ...props } style={resetStyle} className={cx(styles.thumb, styles["is-vertical"])} />;
     };
 
+    _saveScrollbarRef = el => {
+        this._scrollbar = el
+    };
+
     render() {
         const { children, containerClassName, ...scrollbarProps } = this.props;
 
@@ -81,9 +89,7 @@ class Scrollbar extends PureComponent {
                 renderThumbHorizontal={this._renderThumbHorizontal}
                 renderThumbVertical={this._renderThumbVertical}
                 {...scrollbarProps}
-                ref={el => {
-                    this._scrollbar = el
-                }}
+                ref={this._saveScrollbarRef}
             >
                 {children}
             </ReactScrollbar>
