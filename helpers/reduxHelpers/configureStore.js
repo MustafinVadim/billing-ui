@@ -29,7 +29,6 @@ const _createStore = (initialState, rootReducer, outerMiddleware = []) => {
             includeDevTools()
         )
     );
-    store.dispatch(init());
 
     return store;
 };
@@ -42,6 +41,8 @@ export const configureStore = (initialState, rootReducer, rootSaga = null) => {
     const sagaMiddleware = createSagaMiddleware();
     const store = _createStore(initialState, rootReducer, [sagaMiddleware]);
     sagaMiddleware.run(rootSaga);
+    store.dispatch(init());
+
     return store;
 };
 
