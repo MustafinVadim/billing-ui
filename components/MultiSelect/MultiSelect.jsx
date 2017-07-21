@@ -191,9 +191,10 @@ class MultiSelect extends PureComponent {
     };
 
     _setInputValidationResult = validationResult => {
+        const { inputValidation, inputValue } = this.props;
         this._inputValidationResult = validationResult
             ? validationResult
-            : this._inputValidationResult
+            : validate(inputValue, inputValidation)
     };
 
     _setInputDOMNode = el => {
