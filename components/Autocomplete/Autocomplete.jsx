@@ -166,7 +166,7 @@ class Autocomplete extends PureComponent {
         this.setState({
             isControlledByKeys: false
         });
-    });
+    }, 200);
 
     _selectNextOption = (step, currentIndex, optionsCount) => {
         let nextSelectedIndex = currentIndex + step;
