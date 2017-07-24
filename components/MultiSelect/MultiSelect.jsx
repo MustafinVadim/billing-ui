@@ -117,6 +117,7 @@ class MultiSelect extends PureComponent {
             case keyCodes.comma:
             case keyCodes.semiColon:
             case keyCodes.space:
+            case keyCodes.enter:
                 const isCaretAtEnd = this._inputDOMNode.selectionStart === this._inputDOMNode.value.length;
                 if (isCaretAtEnd && this._isInputValid()) {
                     this._handleAddLabel({ inputValue });
@@ -134,10 +135,9 @@ class MultiSelect extends PureComponent {
                     this._labelControllerDOMNode.focus();
                 }
                 break;
-            default:
-                if (onKeyDown) {
-                    onKeyDown(evt);
-                }
+        }
+        if (onKeyDown) {
+            onKeyDown(evt);
         }
     };
 

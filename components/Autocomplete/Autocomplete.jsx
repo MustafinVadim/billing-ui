@@ -139,10 +139,10 @@ class Autocomplete extends PureComponent {
                     this.closeOptions();
                 }
                 break;
-            default:
-                if (this.props.onKeyDown) {
-                    this.props.onKeyDown(evt);
-                }
+        }
+
+        if (this.props.onKeyDown) {
+            this.props.onKeyDown(evt);
         }
     };
 
