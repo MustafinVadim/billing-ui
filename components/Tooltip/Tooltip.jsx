@@ -41,6 +41,14 @@ class Tooltip extends PureComponent {
         this._detachEventListeners();
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.trigger === TriggerType.manual) {
+            this.setState({
+                isOpen: nextProps.isOpen
+            });
+        }
+    }
+
     _init() {
         this._target = ReactDOM.findDOMNode(this.props.getTarget());
         this._wrapper = this.props.wrapper || findContainer(this._target);

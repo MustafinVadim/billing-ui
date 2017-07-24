@@ -5,7 +5,7 @@ import cx from "classnames";
 
 import TextInput from "../TextInput";
 import TextInputType from "../TextInput/TextInputType";
-import calculateHeight from "./calculateHeight";
+import { calculateContentHeight } from "../../helpers/NodeHelper";
 import styles from "./TextArea.scss";
 
 class TextArea extends PureComponent {
@@ -67,7 +67,7 @@ class TextArea extends PureComponent {
         const { height } = this.state;
         const { minHeight } = this.props;
 
-        let newHeight = calculateHeight(textArea);
+        let newHeight = calculateContentHeight(textArea);
 
         if (newHeight < minHeight) {
             newHeight = minHeight;

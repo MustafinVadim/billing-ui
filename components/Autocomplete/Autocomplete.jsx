@@ -4,11 +4,11 @@ import onClickOutside from "react-onclickoutside";
 import debounce from "lodash/debounce";
 import omit from "lodash/omit";
 import axios from "../../libs/axios";
+import throttle from "lodash/throttle";
 
 import TryAgain from "./TryAgain";
 import OptionsList from "./OptionsList";
 import keyCodes from "../../helpers/KeyCodes";
-import { updateImmutableArrayByKey } from "../../helpers/ArrayHelper";
 
 import Icon, { IconTypes } from "../Icon";
 import TextInput from "../TextInput";
@@ -32,7 +32,8 @@ class Autocomplete extends PureComponent {
             tooltipErrorMessage: null,
             value: value ? value : defaultValue,
             isRequestFailed: false,
-            isMenuOpened: false
+            isMenuOpened: false,
+            isControlledByKeys: false
         };
 
         this.showNewOptions = debounce(this.showNewOptions, 200);
@@ -58,7 +59,7 @@ class Autocomplete extends PureComponent {
         this.choose(index);
     };
 
-    handleChange = value => {
+    handleChange = (value, evt, data) => {
         const { onChange } = this.props;
 
         if (!this.props.value) {
@@ -70,25 +71,31 @@ class Autocomplete extends PureComponent {
         this.showNewOptions(value);
 
         if (onChange) {
-            onChange(value, { sours: "TextInput" });
+            onChange(value, evt, {
+                ...data,
+                source: "TextInput"
+            });
         }
     };
 
-    handleFocus = evt => {
+    handleFocus = (evt, data) => {
         const value = evt.target.value || "";
 
         this.showNewOptions(value);
 
         if (this.props.onFocus) {
-            this.props.onFocus(evt);
+            this.props.onFocus(evt, data);
         }
     };
 
     handleClickOutside = evt => {
-        this.closeOptions();
+        this._handleBlur(evt, {});
+    };
 
+    _handleBlur = (evt, data) => {
+        this.closeOptions();
         if (this.props.onBlur) {
-            this.props.onBlur(evt);
+            this.props.onBlur(evt, data);
         }
     };
 
@@ -100,14 +107,18 @@ class Autocomplete extends PureComponent {
             case keyCodes.top:
                 if (optionsCount > 0) {
                     evt.preventDefault();
-
+                    this.setState({
+                        isControlledByKeys: true
+                    });
                     this._selectNextOption(-1, selectedOptionIndex, optionsCount);
                 }
                 break;
             case keyCodes.bottom:
                 if (optionsCount > 0) {
                     evt.preventDefault();
-
+                    this.setState({
+                        isControlledByKeys: true
+                    });
                     this._selectNextOption(1, selectedOptionIndex, optionsCount);
                 }
                 break;
@@ -128,24 +139,34 @@ class Autocomplete extends PureComponent {
                     this.closeOptions();
                 }
                 break;
-            default:
-                if (this.props.onKeyDown) {
-                    this.props.onKeyDown(evt);
-                }
+        }
+
+        if (this.props.onKeyDown) {
+            this.props.onKeyDown(evt);
         }
     };
 
     handleOptionHover = index => {
-        this.setState({
-            selectedOptionIndex: index
-        });
+        if (!this.state.isControlledByKeys) {
+            this.setState({
+                selectedOptionIndex: index
+            });
+        }
     };
 
     handleOptionHoverOut = () => {
-        this.setState({
-            selectedOptionIndex: -1
-        });
+        if (!this.state.isControlledByKeys) {
+            this.setState({
+                selectedOptionIndex: -1
+            });
+        }
     };
+
+    _handleMouseMove = throttle(() => {
+        this.setState({
+            isControlledByKeys: false
+        });
+    }, 200);
 
     _selectNextOption = (step, currentIndex, optionsCount) => {
         let nextSelectedIndex = currentIndex + step;
@@ -161,10 +182,11 @@ class Autocomplete extends PureComponent {
     };
 
     showNewOptions(text) {
+        const { openIfEmpty, enableOnClickOutside } = this.props;
         const value = text || "";
         const pattern = value.trim();
 
-        if (pattern === "") {
+        if (pattern === "" && !openIfEmpty) {
             this.closeOptions();
             return;
         }
@@ -181,7 +203,7 @@ class Autocomplete extends PureComponent {
                     const isMenuOpened = !ErrorMessage;
 
                     this.setState({
-                        searchResult: updateImmutableArrayByKey(this.state.searchResult, Options, "Value"),
+                        searchResult: Options,
                         isMenuOpened,
                         tooltipErrorMessage: ErrorMessage,
                         isRequestFailed: false,
@@ -189,7 +211,7 @@ class Autocomplete extends PureComponent {
                     });
 
                     if (isMenuOpened) {
-                        this.props.enableOnClickOutside();
+                        enableOnClickOutside();
                     }
                 }
             });
@@ -218,17 +240,19 @@ class Autocomplete extends PureComponent {
     }
 
     choose(index) {
-        const { onChange, clearOnSelect } = this.props;
+        const { onChange, clearOnSelect, closeOnSelect } = this.props;
         const value = this._valueCreator(this.state.searchResult[index]);
 
         if (clearOnSelect) {
             this.setState({ value: "" });
         }
 
-        this.closeOptions();
+        if (closeOnSelect) {
+            this.closeOptions();
+        }
 
         if (onChange) {
-            onChange(value, { source: "AutocompleteOption" });
+            onChange(value, {}, { source: "AutocompleteOption" });
         }
 
         this.fireSelect(index);
@@ -239,7 +263,7 @@ class Autocomplete extends PureComponent {
         const optionData = this.state.searchResult[index];
 
         if (optionData && onSelect) {
-            return onSelect(optionData.Value, optionData.Text, optionData.Data);
+            onSelect(optionData.Value, optionData.Text, optionData.Data, optionData);
         }
     }
 
@@ -268,7 +292,8 @@ class Autocomplete extends PureComponent {
     render() {
         const fieldsToOmit = [
             "url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect", "enableOnClickOutside",
-            "autocompleteWrapperClassName", "optionItemClassName", "menuWidth", "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside"
+            "autocompleteWrapperClassName", "optionItemClassName", "optionActiveItemClassName", "menuClassName", "menuWidth", "maxMenuHeight",
+            "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside", "outsideClickIgnoreClass", "openIfEmpty", "closeOnSelect"
         ];
 
         const inputProps = omit({
@@ -283,24 +308,28 @@ class Autocomplete extends PureComponent {
             onChange: this.handleChange
         }, fieldsToOmit);
 
-        const { hasSearchIcon, ftId, menuWidth, notFoundText, renderItem, optionItemClassName, optionClassName } = this.props;
+        const {
+            hasSearchIcon, ftId, menuWidth, maxMenuHeight, notFoundText, renderItem, optionItemClassName, optionActiveItemClassName, optionClassName,
+            inputClassName, menuClassName, openIfEmpty
+        } = this.props;
         const { tooltipErrorMessage, isRequestFailed, isMenuOpened, value, searchResult, selectedOptionIndex } = this.state;
 
         const isValid = !tooltipErrorMessage || !value;
-        const shouldRenderMenu = isMenuOpened && !!value;
+        const shouldRenderMenu = isMenuOpened && (!!value || openIfEmpty);
 
         return (
             <div className={cx(styles.root, this.props.autocompleteWrapperClassName)} data-ft-id={ftId}>
                 {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
-                           inputClassName={cx(styles.input, { [styles["with-icon"]]: hasSearchIcon })}
+                           inputClassName={cx(styles.input, inputClassName, { [styles["with-icon"]]: hasSearchIcon })}
                            placeholderClassName={cx(styles.placeholder, { [styles["with-icon"]]: hasSearchIcon })}
                            isValid={isValid}
                            tooltipCaption={tooltipErrorMessage}
+                           onBlur={this._handleBlur}
                 />
 
                 {shouldRenderMenu && (
-                    <div className={styles.menu} style={{ width: menuWidth }} data-ft-id="autocomplete-menu">
+                    <div className={cx(styles.menu, menuClassName)} data-ft-id="autocomplete-menu" onMouseMove={this._handleMouseMove}>
                         {isRequestFailed && <TryAgain onRefresh={this.onSearchAgain} onClose={this.closeOptions} />}
                         {!isRequestFailed && (
                             <OptionsList
@@ -309,11 +338,14 @@ class Autocomplete extends PureComponent {
                                 value={value}
                                 selectedIndex={selectedOptionIndex}
                                 optionItemClassName={optionItemClassName}
+                                optionActiveItemClassName={optionActiveItemClassName}
                                 optionClassName={optionClassName}
                                 onOptionClick={this.handleItemClick}
                                 onHover={this.handleOptionHover}
                                 onHoverOut={this.handleOptionHoverOut}
-                                renderItem={renderItem} />
+                                renderItem={renderItem}
+                                maxHeight={maxMenuHeight}
+                                width={menuWidth} />
                         )}
                     </div>
                 )}
@@ -327,8 +359,11 @@ Autocomplete.propTypes = {
     value: PropTypes.string,
     hasSearchIcon: PropTypes.bool,
     clearOnSelect: PropTypes.bool,
+    openIfEmpty: PropTypes.bool,
+    closeOnSelect: PropTypes.bool,
     defaultValue: PropTypes.string,
     notFoundText: PropTypes.string,
+    maxMenuHeight: PropTypes.number,
     source: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.func
@@ -352,8 +387,11 @@ Autocomplete.propTypes = {
     valueCreator: PropTypes.func,
 
     autocompleteWrapperClassName: PropTypes.string,
+    menuClassName: PropTypes.string,
     optionItemClassName: PropTypes.string,
+    optionActiveItemClassName: PropTypes.string,
     optionClassName: PropTypes.string,
+    inputClassName: PropTypes.string,
 
     enableOnClickOutside: PropTypes.func,
     disableOnClickOutside: PropTypes.func
@@ -363,6 +401,8 @@ Autocomplete.defaultProps = {
     requestData: {},
     hasSearchIcon: false,
     clearOnSelect: false,
+    closeOnSelect: true,
+    openIfEmpty: false,
     defaultValue: "",
     notFoundText: "ничего не найдено",
     valueCreator: searchItem => searchItem.Text

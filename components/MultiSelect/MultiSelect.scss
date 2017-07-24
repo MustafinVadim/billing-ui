@@ -1,0 +1,78 @@
+﻿@import "../../styles/variables";
+@import "../../styles/materialdesign";
+
+:local {
+    .wrapper {
+        @extend %material-input-text-big;
+
+        position: relative;
+
+        white-space: normal;
+
+        cursor: text;
+
+        &.focus {
+            @extend %input-base-focused;
+        }
+
+        &.validation-error {
+            @extend %input-base-invalid;
+        }
+    }
+
+    .content {
+        margin-right: -12px;
+        margin-left: -12px;
+    }
+
+    input[type="text"].input {
+        min-width: 40px;
+        padding: 4px 5px 5px 15px;
+
+        border: none;
+
+        font-size: $fontSizeBig;
+        text-overflow: initial;
+
+        &:focus {
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+    }
+
+    .autocomplete {
+        margin-left: 5px;
+    }
+
+    .autocomplete-option {
+        @include baseFade();
+
+        overflow: hidden;
+    }
+
+    .autocomplete-active-option {
+        @include baseFade($baseColor: $bgElementActiveLightColor);
+    }
+
+    .autocomplete-wrapper,
+    .input-wrapper {
+        position: static;
+
+        cursor: text;
+    }
+
+    .input-highlight {
+        top: auto;
+        bottom: 6px;
+        left: auto;
+
+        height: 15px;
+    }
+
+    .label-controller {
+        width: 0;
+
+        opacity: 0;
+    }
+}
