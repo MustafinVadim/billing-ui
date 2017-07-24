@@ -41,7 +41,7 @@ class OptionsList extends PureComponent {
     }
 
     _setScrollbarElement = (elm) => {
-        this._scrollbarElement = elm ? elm.getReactScrollbar() : null;
+        this._scrollbarElement = elm ? elm.getScrollbar() : null;
     };
 
     render() {
