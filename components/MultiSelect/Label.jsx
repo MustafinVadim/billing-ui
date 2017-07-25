@@ -7,10 +7,12 @@ import Tooltip, { TriggerTypes, PositionTypes } from "../Tooltip";
 import styles from "./Label.scss";
 import cx from "classnames";
 
+const LABEL_REMOVE_ICON_CLASS_NAME = "js-label-remove-icon";
+
 class Label extends PureComponent {
     _tooltipTarget = null;
 
-    _handleClickRemove = (evt) => {
+    _handleClickRemove = evt => {
         const { onRemove, index } = this.props;
 
         if (onRemove) {
@@ -18,20 +20,33 @@ class Label extends PureComponent {
         }
     };
 
-    _setTooltipTarget = (el) => {
+    _handleClick = evt => {
+        const { onClick, index } = this.props;
+
+        const onRemoveIcon = evt.target.className.indexOf(LABEL_REMOVE_ICON_CLASS_NAME) >= 0;
+        if (onRemoveIcon) {
+            return;
+        }
+
+        if (onClick) {
+            onClick(index, evt);
+        }
+    };
+
+    _setTooltipTarget = el => {
         this._tooltipTarget = el;
     };
 
     render() {
-        const { children, tooltipContent, tooltipClassName, isActive } = this.props;
+        const { children, tooltipContent, tooltipClassName, isActive, className } = this.props;
         const hasTooltip = !!tooltipContent;
 
         return (
-            <span className={cx(styles.wrapper, { [styles.active]: isActive })}>
-                <span className={styles.content} ref={this._setTooltipTarget}>
+            <span className={cx(styles.wrapper, { [styles.active]: isActive })} >
+                <span className={cx(styles.content, className)} ref={this._setTooltipTarget} onClick={this._handleClick}>
                     {children}
                     <Icon onClick={this._handleClickRemove}
-                          className={styles.icon}
+                          className={cx(styles.icon, LABEL_REMOVE_ICON_CLASS_NAME)}
                           type={IconTypes.Delete} />
                 </span>
                 {hasTooltip && (
@@ -56,6 +71,8 @@ Label.propTypes = {
     isActive: PropTypes.bool,
     children: PropTypes.node,
     onRemove: PropTypes.func,
+    onClick: PropTypes.func,
+    className: PropTypes.string,
     tooltipContent: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.element]),
     tooltipClassName: PropTypes.string
 };

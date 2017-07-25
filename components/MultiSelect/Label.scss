@@ -30,6 +30,7 @@
 
         font-size: $fontSizeBig;
         line-height: $lineHeightSmall;
+        white-space: nowrap;
         text-overflow: ellipsis;
 
         :local(.active) & {
