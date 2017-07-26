@@ -49,7 +49,7 @@ class MultiSelect extends PureComponent {
 
     _isInputValid = () => {
         const { inputValue } = this.props;
-        if (!inputValue) {
+        if (!inputValue.trim()) {
             return false;
         }
         return this._inputValidationResult.isValid;
