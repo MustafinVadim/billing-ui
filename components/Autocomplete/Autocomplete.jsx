@@ -293,7 +293,8 @@ class Autocomplete extends PureComponent {
         const fieldsToOmit = [
             "url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect", "enableOnClickOutside",
             "autocompleteWrapperClassName", "optionItemClassName", "optionActiveItemClassName", "menuClassName", "menuWidth", "maxMenuHeight",
-            "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside", "outsideClickIgnoreClass", "openIfEmpty", "closeOnSelect"
+            "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside", "outsideClickIgnoreClass", "openIfEmpty", "closeOnSelect",
+            "openIfNotFound"
         ];
 
         const inputProps = omit({
@@ -310,12 +311,12 @@ class Autocomplete extends PureComponent {
 
         const {
             hasSearchIcon, ftId, menuWidth, maxMenuHeight, notFoundText, renderItem, optionItemClassName, optionActiveItemClassName, optionClassName,
-            inputClassName, menuClassName, openIfEmpty
+            inputClassName, menuClassName, openIfEmpty, openIfNotFound
         } = this.props;
         const { tooltipErrorMessage, isRequestFailed, isMenuOpened, value, searchResult, selectedOptionIndex } = this.state;
 
         const isValid = !tooltipErrorMessage || !value;
-        const shouldRenderMenu = isMenuOpened && (!!value || openIfEmpty);
+        const shouldRenderMenu = isMenuOpened && (!!value || openIfEmpty) && (searchResult.length > 0 || openIfNotFound);
 
         return (
             <div className={cx(styles.root, this.props.autocompleteWrapperClassName)} data-ft-id={ftId}>
@@ -360,6 +361,7 @@ Autocomplete.propTypes = {
     hasSearchIcon: PropTypes.bool,
     clearOnSelect: PropTypes.bool,
     openIfEmpty: PropTypes.bool,
+    openIfNotFound: PropTypes.bool,
     closeOnSelect: PropTypes.bool,
     defaultValue: PropTypes.string,
     notFoundText: PropTypes.string,
@@ -403,6 +405,7 @@ Autocomplete.defaultProps = {
     clearOnSelect: false,
     closeOnSelect: true,
     openIfEmpty: false,
+    openIfNotFound: true,
     defaultValue: "",
     notFoundText: "ничего не найдено",
     valueCreator: searchItem => searchItem.Text
