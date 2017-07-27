@@ -49,7 +49,7 @@ class MultiSelect extends PureComponent {
 
     _isInputValid = () => {
         const { inputValue } = this.props;
-        if (!inputValue.trim()) {
+        if (!inputValue || !inputValue.trim()) {
             return false;
         }
         return this._inputValidationResult.isValid;
@@ -127,6 +127,7 @@ class MultiSelect extends PureComponent {
     _handleSelect = (Value, Text, Data, optionData) => {
         const { inputValue } = this.props;
         this._handleAddLabel({ autocompleteResult: optionData, inputValue });
+        this._autocompleteElement.showNewOptions();
         this._inputDOMNode && this._inputDOMNode.focus();
     };
 
@@ -140,6 +141,7 @@ class MultiSelect extends PureComponent {
                 const isCaretAtEnd = this._inputDOMNode.selectionStart === this._inputDOMNode.value.length;
                 if (isCaretAtEnd && this._isInputValid()) {
                     this._handleAddLabel({ inputValue });
+                    this._autocompleteElement.showNewOptions();
                     evt.preventDefault();
                 }
                 break;
@@ -205,8 +207,9 @@ class MultiSelect extends PureComponent {
     _handleAddLabel = ({ autocompleteResult, inputValue }) => {
         const { onAddLabel, onChange } = this.props;
 
+        this._inputDOMNode.value = "";
+        this._changeInputWidth();
         onChange && onChange("");
-        this._autocompleteElement.showNewOptions();
 
         onAddLabel({ autocompleteResult, inputValue });
     };
