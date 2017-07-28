@@ -113,7 +113,7 @@ class Tooltip extends PureComponent {
         this._timer = setTimeout(() => {
             this._tryUpdatePosition();
             delete this._timer;
-        }, 100);
+        }, 200);
     };
 
     _toggleTooltip = (evt) => {
