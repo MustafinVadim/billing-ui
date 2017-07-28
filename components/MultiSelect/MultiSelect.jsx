@@ -211,7 +211,7 @@ class MultiSelect extends PureComponent {
         this._changeInputWidth();
         onChange && onChange("");
 
-        onAddLabel({ autocompleteResult, inputValue });
+        onAddLabel({ autocompleteResult, inputValue: inputValue.trim() });
     };
 
     _handleLabelClick = index => {
