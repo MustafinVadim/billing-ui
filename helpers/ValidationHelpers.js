@@ -144,6 +144,13 @@ const Validation = {
         };
     },
 
+    ArrayMaxLength: (maxLength, error = "Превышено максимальное количество элементов") => (value) => {
+        return {
+            isValid: !value || value.length <= maxLength,
+            error
+        }
+    },
+
     Inn: (error = "Некорректный ИНН") => (value) => {
         return {
             isValid: !value
