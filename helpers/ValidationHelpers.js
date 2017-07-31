@@ -14,7 +14,7 @@ const SETTLEMENT_ACCOUNT_REGEXP = /^\d{20}$/;
 
 const EMAIL_REGEXP = /^[\wа-яА-Я\d+\-.%]+@[\wа-яА-Я\d\-.]+\.[\wа-яА-Я\d]{2,}$/;
 // eslint-disable-next-line max-len
-const EMAILS_REGEXP = /^[\W]*([\wа-яА-Я\d+\-.%]+@[\wа-яА-Я\d\-.]+\.[\wа-яА-Я\d]{2,}[\W]*[,;]{1}[\W]*)*([\wа-яА-Я\d+\-.%]+@[\wа-яА-Я\d\-.]+\.[\wа-яА-Я\d]{2,})[\W]*$/;
+const EMAILS_REGEXP = /^[\w\d!#$%&'*+/=?^_`}{~-]+(?:\.[\w\d!#$%&'*+/=?^_`}{~-]+)*@(?:[\w\d](?:[\w\d-]*[\w\d])?\.)+[\w\d](?:[\w\d-]*[\w\d])$/;
 
 const PHONE_REGEXP = /^((\+7|8)(([\s|\(|\)|\t|\n|-]*\d){10})$)|(\+7$)/;
 
