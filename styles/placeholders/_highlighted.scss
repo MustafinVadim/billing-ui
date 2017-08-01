@@ -1,0 +1,22 @@
+﻿@import "../bourbon";
+@import "../animations/highlight";
+
+%highlighted {
+    position: relative;
+
+    &:before {
+        @include position(absolute, 0 0 1px 0);
+
+        content: "";
+
+        z-index: 1;
+
+        opacity: 0;
+
+        background-color: #ffe975;
+
+        :global {
+            animation: highlight 2s .3s cubic-bezier(.165, .84, .44, 1);
+        }
+    }
+}
