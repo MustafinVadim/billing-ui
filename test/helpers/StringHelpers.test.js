@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import {
-    isUpperCase, innKppResolver, datesRangeResolver, toLowerFirstLetter, toShortProductName, translite, switchToRusLanguage, switchToEngLanguage
+    isUpperCase, innKppResolver, datesRangeResolver, toLowerFirstLetter, toShortProductName, translite, switchToRusLanguage, switchToEngLanguage, getPreparedNumber
 } from "../../helpers/StringHelpers";
 
 describe("String helper", () => {
@@ -138,6 +138,16 @@ describe("String helper", () => {
             expect(switchToEngLanguage("Э")).to.equal('"');
             // eslint-disable-next-line quotes
             expect(switchToEngLanguage('"')).to.equal("@");
+        });
+    });
+
+    describe("Префиксы для телефонов getPreparedNumber", () => {
+        const prefix = "+7";
+        it("Меняет 8 на +7", () => {
+            expect(getPreparedNumber("89251234578", prefix)).to.equal("+79251234578");
+        });
+        it("Сохраняет православное форматирование телефончика", () => {
+            expect(getPreparedNumber("8 (922)-125-26-32", prefix)).to.equal("+7 (922)-125-26-32");
         });
     });
 });

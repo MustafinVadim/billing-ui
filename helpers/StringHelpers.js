@@ -267,3 +267,16 @@ export const switchToEngLanguage = string => {
 
     return string.replace(/[\S]/g, replacer);
 };
+
+export const getPreparedNumber = (number, prefix) => {
+    const pattern = /^(([\S\s]*\+7)|([\S\s]*\+))/g;
+    const replacedNumber = number.replace(pattern, "");
+    const digits = replacedNumber.replace(/\D/g, "");
+
+    if (digits.length >= 11 && replacedNumber[0] === "8") {
+        return prefix + replacedNumber.slice(1);
+    }
+
+    return prefix + replacedNumber;
+};
+
