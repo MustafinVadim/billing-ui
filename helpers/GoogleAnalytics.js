@@ -4,15 +4,15 @@ class GoogleAnalytics {
     static triggerEventsAsync(events) {
         if (Array.isArray(events)) {
             events.forEach(evt => {
-                GoogleAnalytics.triggerEventAsync(evt.category, evt.action, evt.label);
+                GoogleAnalytics.triggerEventAsync(evt.category, evt.action, evt.label, evt.value);
             });
         } else {
-            GoogleAnalytics.triggerEventAsync(events.category, events.action, events.label);
+            GoogleAnalytics.triggerEventAsync(events.category, events.action, events.label, events.value);
         }
     }
 
-    static triggerEventAsync(category, action, label) {
-        GaEventHelper && GaEventHelper.publishEventAsync(category, action, label);
+    static triggerEventAsync(category, action, label, value) {
+        GaEventHelper && GaEventHelper.publishEventAsync(category, action, label, value);
     }
 
     static customVar(name, value) {
