@@ -96,14 +96,17 @@ class ActionsBar extends PureComponent {
 
         return (
             <div className={cx(styles["actionsBar-wrapper"], wrapperClassName)}>
-                <div className={styles["ghost-actionsBar"]} style={ghostActionsBarStyle}></div>
-                <div className={actionsBarClassNames} style={actionsBarStyle} ref={el => { this._actionsBarNode = ReactDOM.findDOMNode(el) }}>
+                <div className={styles["ghost-actionsBar"]} style={ghostActionsBarStyle} />
+                <div className={actionsBarClassNames} style={actionsBarStyle} ref={el => {
+                    this._actionsBarNode = ReactDOM.findDOMNode(el)
+                }}>
                     <div className={contentClassName}>
                         {showSubmit && (
-                            <Button type={ButtonType.button}
-                                    onClick={onSubmitClick}
-                                    disabled={submitDisabled}
-                                    className={cx(styles.actionSubmit, submitClassName, {[styles.disabled]: submitDisabled})}
+                            <Button
+                                type={ButtonType.button}
+                                onClick={onSubmitClick}
+                                disabled={submitDisabled}
+                                className={cx(styles.actionSubmit, submitClassName, { [styles.disabled]: submitDisabled })}
                                 attributes={{
                                     "data-ft-id": "submit-button",
                                     ...submitAttributes
@@ -113,11 +116,12 @@ class ActionsBar extends PureComponent {
                             </Button>
                         )}
                         {showCancel && (
-                            <button type="button"
-                                    onClick={this.handleCancelClick}
-                                    className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
+                            <button
+                                type="button"
+                                onClick={this.handleCancelClick}
+                                className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
                                 data-ft-id="cancel-button"
-                                    { ...cancelAttributes }
+                                {...cancelAttributes}
                             >
                                 {cancelText}
                             </button>
