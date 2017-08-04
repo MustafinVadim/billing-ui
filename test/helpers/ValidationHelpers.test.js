@@ -359,6 +359,16 @@ describe("ValidationHelpers", () => {
         });
     });
 
+    describe("Inn", () => {
+        it("should set isValid = true", () => {
+            expect(Validation.Inn()("").isValid).to.be.true;
+            expect(Validation.Inn()("0583214749").isValid).to.be.true;
+        });
+        it("should set isValid = false", () => {
+            expect(Validation.Inn()("000583214749").isValid).to.be.false;
+        });
+    });
+
     describe("SettlementAccount", () => {
         it("should set passed error message", () => {
             expect(Validation.SettlementAccount(commonErrorMessage)("").error).to.equal(commonErrorMessage);
