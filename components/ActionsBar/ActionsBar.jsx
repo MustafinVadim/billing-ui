@@ -58,7 +58,8 @@ class ActionsBar extends PureComponent {
     }
 
     _collectState() {
-        const fixed = this._containerNode.scrollHeight > this._mainWrapperNode.clientHeight;
+        const containerBottom = this._containerNode.getBoundingClientRect().bottom;
+        const fixed = containerBottom >= this._mainWrapperNode.clientHeight;
 
         if (this.state.fixed === fixed) {
             return this.state;
