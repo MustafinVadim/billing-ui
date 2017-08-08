@@ -2,19 +2,30 @@
 import range from "lodash/range";
 import union from "lodash/union";
 
-export const getPages = (pagesCount, currentPage, groupCount = 3) => {
-    if (pagesCount <= groupCount * 2) {
+export const ellipsis = "...";
+
+export const getPages = (pagesCount, currentPage, middleGroupCount = 5, sideGroupCount = 1) => {
+    if (pagesCount <= middleGroupCount + sideGroupCount) {
         return range(1, pagesCount + 1).map(page => page.toString());
     }
 
-    const halfGroup = Math.floor(groupCount / 2);
-    const hasMiddle = currentPage > halfGroup + 1 && currentPage < pagesCount - halfGroup;
+    const halfGroup = Math.floor(middleGroupCount / 2);
 
-    const firstPages = range(1, groupCount + 1);
-    const middlePages = hasMiddle ? range(currentPage - halfGroup, currentPage + halfGroup + 1) : [];
-    const lastPages = range(pagesCount - groupCount + 1, pagesCount + 1);
+    const firstGroupStart = 1;
+    const firstGroupEnd = sideGroupCount;
 
-    return union(firstPages, middlePages, lastPages)
+    const lastGroupStart = pagesCount - sideGroupCount + 1
+    const lastGroupEnd = pagesCount;
+
+    const middleGroupStart = Math.max(firstGroupEnd + 1, currentPage - halfGroup);
+    const middleGroupEnd = Math.min(lastGroupStart - 1, currentPage + halfGroup);
+
+    const firstGroup = range(firstGroupStart, firstGroupEnd + 1);
+    const middlePages = range(middleGroupStart, middleGroupEnd + 1, 1);
+    const lastGroup = range(lastGroupStart, lastGroupEnd + 1);
+
+
+    return union(firstGroup, middlePages, lastGroup)
         .reduce((result, current, index, array) => {
             const prev = array[index - 1];
             if (current > prev + 1) {
@@ -25,5 +36,3 @@ export const getPages = (pagesCount, currentPage, groupCount = 3) => {
         }, [])
         .map(i => i.toString());
 };
-
-export const ellipsis = "...";
