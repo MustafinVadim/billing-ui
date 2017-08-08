@@ -18,14 +18,14 @@
 
         overflow: hidden;
 
-        border-bottom: 1px solid $borderBaseColor;
+        border-bottom: 1px solid $borderInputColor;
 
         line-height: $lineHeightRegular;
 
         cursor: pointer;
 
         &.disabled {
-            border-bottom: 1px dashed $borderBaseColor;
+            border-bottom: 1px dashed $borderInputColor;
 
             color: $textInactiveColor;
 
