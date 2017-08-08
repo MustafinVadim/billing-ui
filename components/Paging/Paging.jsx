@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import classnames from "classnames";
-import range from "lodash/range";
 
+import { getPages, ellipsis } from "./pagingHelpers";
 import PageSizeSwitcher from "./PageSizeSwitcher";
 import Themes from "./Themes";
 import resolveTheme from "./themeResolver";
@@ -16,32 +16,30 @@ class Paging extends PureComponent {
         this.styles = styles || resolveTheme(type);
     }
 
-    getPage(pageCount, counter) {
-        const { CurrentPage, onChange, edgeCount } = this.props;
-
-        const leftEdge = CurrentPage - edgeCount;
-        const rightEdge = CurrentPage + edgeCount;
-
-        if (counter !== 1 && counter !== pageCount && (leftEdge >= counter || rightEdge <= counter)) {
-            return leftEdge === counter || rightEdge === counter ? <span key={`ellipsis_${counter}`} className={this.styles.ellipsis}>...</span> : null;
+    getPagingItem(pageCount, page, index) {
+        const { CurrentPage, onChange } = this.props;
+        if (page === ellipsis) {
+            return <span key={`ellipsis_${index}`} className={this.styles.ellipsis}>{page}</span>;
         }
 
-        if (CurrentPage === counter) {
-            return <span key={`pageNumber_${counter}`} className={this.styles.active}>{counter}</span>;
+        if (CurrentPage.toString() === page) {
+            return <span key={`pageNumber_${page}`} className={this.styles.active}>{page}</span>;
         }
 
         return (
-            <span key={`pageNumber_${counter}`} className={this.styles.link}
-                  onClick={onChange.bind(this, counter)}>
-                {counter}
+            <span
+                key={`pageNumber_${page}`}
+                className={this.styles.link}
+                onClick={onChange.bind(this, page)}>
+                {page}
             </span>
         );
     }
 
-    getPages() {
-        const { PageSize, Total } = this.props;
+    getPaging() {
+        const { PageSize, Total, CurrentPage } = this.props;
         const pageCount = Math.floor(Total / PageSize) + (Total % PageSize !== 0 ? 1 : 0);
-        return range(1, pageCount + 1).map(counter => this.getPage(pageCount, counter));
+        return getPages(pageCount, CurrentPage).map((page, index) => this.getPagingItem(pageCount, page, index));
     }
 
     render() {
@@ -59,9 +57,9 @@ class Paging extends PureComponent {
         return (
             <div className={paginationClassNames}>
                 <div className={this.styles.row}>
-                    {showPages && this.getPages(this.styles)}
+                    {showPages && this.getPaging(this.styles)}
                     {pageSizeSwitcherItems && (
-                        <PageSizeSwitcher onClick={onSwitchPageSize} items={pageSizeSwitcherItems} active={activePageSize} type={type} styles={styles}/>
+                        <PageSizeSwitcher onClick={onSwitchPageSize} items={pageSizeSwitcherItems} active={activePageSize} type={type} styles={styles} />
                     )}
                 </div>
             </div>
@@ -94,7 +92,7 @@ Paging.propTypes = {
 };
 
 Paging.defaultProps = {
-    edgeCount: 5,
+    edgeCount: 3,
     type: Themes.GeneralTheme,
     showPages: true
 };
