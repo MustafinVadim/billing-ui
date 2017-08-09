@@ -49,7 +49,7 @@ class MultiSelect extends PureComponent {
 
     _isInputValid = () => {
         const { inputValue } = this.props;
-        if (!inputValue || !inputValue.trim()) {
+        if (!inputValue || !(inputValue || "").trim()) {
             return false;
         }
         return this._inputValidationResult.isValid;
@@ -211,7 +211,7 @@ class MultiSelect extends PureComponent {
         this._changeInputWidth();
         onChange && onChange("");
 
-        onAddLabel({ autocompleteResult, inputValue: inputValue.trim() });
+        onAddLabel({ autocompleteResult, inputValue: (inputValue || "").trim() });
     };
 
     _handleLabelClick = index => {
