@@ -5,6 +5,7 @@
   "scripts": {
     "test:ci": "npm run eslint && npm run stylelint && npm test -- --reporter min",
     "test": "mocha ./test/**/*.test.js",
+    "test:watch": "mocha watch ./test/**/*.test.js",
     "eslint": "eslint ./**/**.js --cache && eslint ./**/**.jsx --cache",
     "stylelint": "stylelint ./**/*.scss --color --syntax scss",
     "stylefmt": "stylefmt --recursive ./styles & stylefmt --recursive ./components",

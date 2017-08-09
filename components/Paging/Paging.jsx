@@ -30,7 +30,7 @@ class Paging extends PureComponent {
             <span
                 key={`pageNumber_${page}`}
                 className={this.styles.link}
-                onClick={onChange.bind(this, page)}>
+                onClick={onChange.bind(this, parseInt(page))}>
                 {page}
             </span>
         );

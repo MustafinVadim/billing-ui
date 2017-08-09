@@ -9,11 +9,11 @@ const itFactory = (pagesCount, currentPage, middleGroupCount, sideGroupCount) =>
         Группировка в середине по: ${middleGroupCount} страниц,
         Группировка по краям по ${sideGroupCount} страниц
     `, () => {
-        expect(getPages(pagesCount, currentPage, middleGroupCount, sideGroupCount)).to.deep.equal(expectation)
-    })
+            expect(getPages(pagesCount, currentPage, middleGroupCount, sideGroupCount)).to.deep.equal(expectation)
+        })
 };
 
-describe("Paging", () => {
+describe.only("Paging", () => {
     describe("симметричный", () => {
         itFactory(0, 0, 3, 3)([]);
         itFactory(1, 1, 3, 3)(["1"]);
@@ -39,7 +39,9 @@ describe("Paging", () => {
         itFactory(100, 7, 7, 7)(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "...", "94", "95", "96", "97", "98", "99", "100"]);
         itFactory(100, 94, 7, 7)(["1", "2", "3", "4", "5", "6", "7", "...", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100"]);
         itFactory(100, 93, 7, 7)(["1", "2", "3", "4", "5", "6", "7", "...", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100"]);
-        itFactory(100, 50, 7, 7)(["1", "2", "3", "4", "5", "6", "7", "...", "47", "48", "49", "50", "51", "52", "53", "...", "94", "95", "96", "97", "98", "99", "100"]);
+        itFactory(100, 50, 7, 7)(
+            ["1", "2", "3", "4", "5", "6", "7", "...", "47", "48", "49", "50", "51", "52", "53", "...", "94", "95", "96", "97", "98", "99", "100"]
+        );
     });
 
     describe("асимметричный", () => {
@@ -51,5 +53,7 @@ describe("Paging", () => {
         itFactory(10, 5, 5, 1)(["1", "...", "3", "4", "5", "6", "7", "...", "10"]);
         itFactory(10, 7, 5, 1)(["1", "...", "5", "6", "7", "8", "9", "10"]);
         itFactory(10, 10, 5, 1)(["1", "...", "8", "9", "10"]);
+        itFactory(10, 1, 3, 1)(["1", "2", "...", "10"]);
+        itFactory(30, 2, 3, 1)(["1", "2", "3", "...", "30"]);
     });
 });
