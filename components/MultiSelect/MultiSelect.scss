@@ -27,7 +27,8 @@
 
     input[type="text"].input {
         min-width: 40px;
-        padding: 4px 5px 5px 15px;
+        max-width: 100%;
+        padding: 4px 15px 5px;
 
         border: none;
 
@@ -41,8 +42,8 @@
         }
     }
 
-    .autocomplete {
-        margin-left: 5px;
+    .autocomplete-wrapper {
+        max-width: 100%;
     }
 
     .autocomplete-option {
