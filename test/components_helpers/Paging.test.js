@@ -13,7 +13,7 @@ const itFactory = (pagesCount, currentPage, middleGroupCount, sideGroupCount) =>
         })
 };
 
-describe.only("Paging", () => {
+describe("Paging", () => {
     describe("симметричный", () => {
         itFactory(0, 0, 3, 3)([]);
         itFactory(1, 1, 3, 3)(["1"]);
