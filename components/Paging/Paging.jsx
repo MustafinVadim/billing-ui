@@ -37,9 +37,9 @@ class Paging extends PureComponent {
     }
 
     getPaging() {
-        const { PageSize, Total, CurrentPage } = this.props;
+        const { PageSize, Total, CurrentPage, middleGroupCount, sideGroupCount } = this.props;
         const pageCount = Math.floor(Total / PageSize) + (Total % PageSize !== 0 ? 1 : 0);
-        return getPages(pageCount, CurrentPage).map((page, index) => this.getPagingItem(pageCount, page, index));
+        return getPages(pageCount, CurrentPage, middleGroupCount, sideGroupCount).map((page, index) => this.getPagingItem(pageCount, page, index));
     }
 
     render() {
@@ -71,7 +71,8 @@ Paging.propTypes = {
     Total: PropTypes.number.isRequired,
     CurrentPage: PropTypes.number.isRequired,
     PageSize: PropTypes.number.isRequired,
-    edgeCount: PropTypes.number,
+    middleGroupCount: PropTypes.number,
+    sideGroupCount: PropTypes.number,
     showPages: PropTypes.bool,
 
     onChange: PropTypes.func.isRequired,
@@ -92,7 +93,8 @@ Paging.propTypes = {
 };
 
 Paging.defaultProps = {
-    edgeCount: 3,
+    middleGroupCount: 5,
+    sideGroupCount: 1,
     type: Themes.GeneralTheme,
     showPages: true
 };
