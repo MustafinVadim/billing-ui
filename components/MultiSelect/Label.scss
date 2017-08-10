@@ -50,10 +50,6 @@
 
         user-select: none;
 
-        :local(.invalid) & {
-            box-shadow: 0 0 0 2px $borderErrorColor;
-        }
-
         :local(.active) & {
             box-shadow: 0 0 0 2px $borderFocusColor;
         }

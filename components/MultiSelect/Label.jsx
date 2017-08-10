@@ -3,7 +3,7 @@ import { findDOMNode } from "react-dom";
 import PropTypes from "prop-types";
 
 import Icon, { IconTypes } from "../Icon";
-import Tooltip, { TriggerTypes, PositionTypes, TooltipTypes } from "../Tooltip";
+import Tooltip, { TriggerTypes, PositionTypes } from "../Tooltip";
 import { calculateContentWidth } from "../../helpers/NodeHelper";
 
 import styles from "./Label.scss";
@@ -102,19 +102,18 @@ class Label extends PureComponent {
     render() {
         const { children, tooltipContent, tooltipClassName, isActive, validationResult, className } = this.props;
         const { isEditMode, inputWidth } = this.state;
-        const hasTooltip = (!!tooltipContent || !validationResult.isValid) && !isEditMode;
+        const hasTooltip = !!tooltipContent && !isEditMode;
 
         const wrapperClassNames = cx(
             styles.wrapper,
             {
-                [styles.active]: isActive,
-                [styles.invalid]: !validationResult.isValid
+                [styles.active]: isActive
             }
-            );
+        );
 
         return (
             <span className={wrapperClassNames}>
-                {isEditMode
+                {isEditMode || !validationResult.isValid
                     ? (
                         <input
                             style={{
@@ -149,11 +148,10 @@ class Label extends PureComponent {
                         getTarget={() => this._tooltipTarget}
                         trigger={TriggerTypes.hover}
                         positionType={PositionTypes.topCenter}
-                        type={validationResult.isValid ? TooltipTypes.tip : TooltipTypes.validation}
                         offsetPosition={{
                             top: 7
                         }}>
-                        {validationResult.isValid ? tooltipContent : validationResult.error}
+                        {tooltipContent}
                     </Tooltip>
                 )}
             </span>
