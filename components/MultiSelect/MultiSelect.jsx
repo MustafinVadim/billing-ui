@@ -75,7 +75,7 @@ class MultiSelect extends PureComponent {
         const labelsValidationResult = validate(labels, labelsValidation);
 
         if (this._isInputValid()) {
-            this._handleAddLabel({ inputValue });
+            this._handleLabelAdd({ inputValue });
             labelsValidationResult.isValid = true;
         }
 
@@ -122,7 +122,7 @@ class MultiSelect extends PureComponent {
 
     _handleSelect = (Value, Text, Data, optionData) => {
         const { inputValue } = this.props;
-        this._handleAddLabel({ autocompleteResult: optionData, inputValue });
+        this._handleLabelAdd({ autocompleteResult: optionData, inputValue });
         this._autocompleteElement.showNewOptions();
         this._inputDOMNode && this._inputDOMNode.focus();
     };
@@ -136,14 +136,14 @@ class MultiSelect extends PureComponent {
             case keyCodes.enter:
                 const isCaretAtEnd = this._inputDOMNode.selectionStart === this._inputDOMNode.value.length;
                 if (isCaretAtEnd && this._isInputValid()) {
-                    this._handleAddLabel({ inputValue });
+                    this._handleLabelAdd({ inputValue });
                     this._autocompleteElement.showNewOptions();
                     evt.preventDefault();
                 }
                 break;
             case keyCodes.backspace:
                 if (!inputValue) {
-                    this._handleRemoveLabel(labels.length - 1);
+                    this._handleLabelRemove(labels.length - 1);
                 }
                 break;
             case keyCodes.left:
@@ -173,7 +173,7 @@ class MultiSelect extends PureComponent {
                 break;
             case keyCodes.delete:
             case keyCodes.backspace:
-                this._handleRemoveLabel(selectedLabelIndex);
+                this._handleLabelRemove(selectedLabelIndex);
                 break;
             default:
                 if (onKeyDown) {
@@ -195,12 +195,12 @@ class MultiSelect extends PureComponent {
         });
     };
 
-    _handleRemoveLabel = (labelIndex) => {
+    _handleLabelRemove = (labelIndex) => {
         const { onRemoveLabel } = this.props;
         onRemoveLabel(labelIndex);
     };
 
-    _handleAddLabel = ({ autocompleteResult, inputValue }) => {
+    _handleLabelAdd = ({ autocompleteResult, inputValue }) => {
         const { onAddLabel, onChange } = this.props;
 
         this._inputDOMNode.value = "";
@@ -210,7 +210,7 @@ class MultiSelect extends PureComponent {
         onAddLabel({ autocompleteResult, inputValue: (inputValue || "").trim() });
     };
 
-    _handleChangeLabel = (index, value, evt) => {
+    _handleLabelChange = (index, value, evt) => {
         const { onChangeLabel, inputValidation } = this.props;
 
         const validationResult = validate(value, inputValidation);
@@ -309,8 +309,8 @@ class MultiSelect extends PureComponent {
                 validationResult={label.validationResult}
                 tooltipContent={label.tooltipContent}
                 tooltipClassName={labelTooltipClassName}
-                onRemove={this._handleRemoveLabel}
-                onChange={this._handleChangeLabel}
+                onRemove={this._handleLabelRemove}
+                onChange={this._handleLabelChange}
                 onClick={this._handleLabelClick}
                 onBlur={this._handleLabelBlur}
             >
