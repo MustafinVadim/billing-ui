@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import Icon, { IconTypes } from "../Icon";
 import Tooltip, { TriggerTypes, PositionTypes } from "../Tooltip";
 import { calculateContentWidth } from "../../helpers/NodeHelper";
+import keyCodes from "../../helpers/KeyCodes";
 
 import styles from "./Label.scss";
 import cx from "classnames";
@@ -12,6 +13,9 @@ import cx from "classnames";
 const LABEL_REMOVE_ICON_CLASS_NAME = "js-label-remove-icon";
 
 class Label extends PureComponent {
+    _tooltipTarget = null;
+    _inputDOMNode = null;
+
     constructor(props, context) {
         super(props, context);
 
@@ -21,14 +25,34 @@ class Label extends PureComponent {
         }
     }
 
-    _tooltipTarget = null;
-    _inputDOMNode = null;
-
     componentDidUpdate() {
         if (this.state.isEditMode) {
             this._changeInputWidth();
             this._inputDOMNode && this._inputDOMNode.focus();
         }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.isActive && !nextProps.validationResult.isValid) {
+            this.switchToEditMode();
+        }
+    }
+
+    switchToEditMode() {
+        this.setState({
+            isEditMode: true
+        });
+        this._inputDOMNode && this._inputDOMNode.select();
+    }
+
+    exitEditMode() {
+        const { onExitEditMode, index } = this.props;
+
+        this.setState({
+            isEditMode: false
+        });
+
+        onExitEditMode(index);
     }
 
     _handleClickRemove = evt => {
@@ -53,9 +77,7 @@ class Label extends PureComponent {
     };
 
     _handleDoubleClick = () => {
-        this.setState({
-            isEditMode: true
-        });
+        this.switchToEditMode();
     };
 
     _handleChange = evt => {
@@ -69,14 +91,38 @@ class Label extends PureComponent {
         }
     };
 
+    _handleFocus = () => {
+        this.switchToEditMode();
+    };
+
     _handleBlur = () => {
         const { onBlur, index } = this.props;
 
-        this.setState({
-            isEditMode: false
-        });
+        this.exitEditMode();
 
         onBlur && onBlur(index);
+    };
+
+    _handleKey = evt => {
+        const { onKeyDown } = this.props;
+        switch (evt.keyCode) {
+            case keyCodes.comma:
+            case keyCodes.semiColon:
+            case keyCodes.space:
+                const isCaretAtEnd = this._inputDOMNode.selectionStart === this._inputDOMNode.value.length;
+                if (isCaretAtEnd) {
+                    this.exitEditMode();
+                }
+                break;
+
+            case keyCodes.enter:
+                this.exitEditMode();
+                break;
+        }
+
+        if (onKeyDown) {
+            onKeyDown(evt);
+        }
     };
 
     _changeInputWidth = () => {
@@ -125,6 +171,8 @@ class Label extends PureComponent {
                             ref={this._setInputDOMNode}
                             onBlur={this._handleBlur}
                             onChange={this._handleChange}
+                            onFocus={this._handleFocus}
+                            onKeyDown={this._handleKey}
                         />
                     )
 
@@ -171,6 +219,8 @@ Label.propTypes = {
     onClick: PropTypes.func,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    onExitEditMode: PropTypes.func,
     className: PropTypes.string,
     tooltipContent: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.element]),
     tooltipClassName: PropTypes.string

@@ -27,6 +27,7 @@ class MultiSelect extends PureComponent {
     _labelControllerDOMNode = null;
     _inputValidationResult = null;
     _autocompleteElement = null;
+    _selectedLabelElement = null;
 
     constructor(props, context) {
         super(props, context);
@@ -163,6 +164,9 @@ class MultiSelect extends PureComponent {
         const { selectedLabelIndex } = this.state;
 
         switch (evt.keyCode) {
+            case keyCodes.enter:
+                this._selectedLabelElement.switchToEditMode();
+                break;
             case keyCodes.left:
                 this._selectNextLabel(labelControllerDirection.previous);
                 evt.preventDefault();
@@ -242,6 +246,10 @@ class MultiSelect extends PureComponent {
         });
     };
 
+    _handleLabelExitEditMode = () => {
+        this._inputDOMNode.focus();
+    };
+
     _setInputValidationResult = validationResult => {
         const { inputValidation, inputValue } = this.props;
         this._inputValidationResult = validationResult
@@ -265,6 +273,10 @@ class MultiSelect extends PureComponent {
         }
         this._autocompleteElement = el.getInstance();
         this._setInputDOMNode(el);
+    };
+
+    _setSelectedLabelElement = el => {
+        this._selectedLabelElement = el;
     };
 
     _getMultiSelect = () => this;
@@ -313,6 +325,8 @@ class MultiSelect extends PureComponent {
                 onChange={this._handleLabelChange}
                 onClick={this._handleLabelClick}
                 onBlur={this._handleLabelBlur}
+                onExitEditMode={this._handleLabelExitEditMode}
+                ref={selectedLabelIndex === index ? this._setSelectedLabelElement : null}
             >
                 {label.labelContent}
             </Label>
