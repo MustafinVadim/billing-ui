@@ -15,11 +15,6 @@ import { validate } from "../../helpers/ValidationHelpers";
 import styles from "./MultiSelect.scss";
 import cx from "classnames";
 
-const labelControllerDirection = {
-    next: 1,
-    previous: -1
-};
-
 const LABEL_CLASSNAME = "js-multiselect-label";
 
 class MultiSelect extends PureComponent {
@@ -142,11 +137,13 @@ class MultiSelect extends PureComponent {
                     evt.preventDefault();
                 }
                 break;
+
             case keyCodes.backspace:
                 if (!inputValue) {
                     this._handleLabelRemove(labels.length - 1);
                 }
                 break;
+
             case keyCodes.left:
                 const isCaretAtStart = this._inputDOMNode.selectionStart === 0;
                 if (isCaretAtStart) {
@@ -154,6 +151,7 @@ class MultiSelect extends PureComponent {
                 }
                 break;
         }
+
         if (onKeyDown) {
             onKeyDown(evt);
         }
@@ -165,24 +163,27 @@ class MultiSelect extends PureComponent {
 
         switch (evt.keyCode) {
             case keyCodes.enter:
-                this._selectedLabelElement.switchToEditMode();
+                this._selectedLabelElement.enterEditMode();
                 break;
+
             case keyCodes.left:
-                this._selectNextLabel(labelControllerDirection.previous);
+                this._selectLabel(selectedLabelIndex - 1);
                 evt.preventDefault();
                 break;
+
             case keyCodes.right:
-                this._selectNextLabel(labelControllerDirection.next);
+                this._selectLabel(selectedLabelIndex + 1);
                 evt.preventDefault();
                 break;
+
             case keyCodes.delete:
             case keyCodes.backspace:
                 this._handleLabelRemove(selectedLabelIndex);
                 break;
-            default:
-                if (onKeyDown) {
-                    onKeyDown(evt);
-                }
+        }
+
+        if (onKeyDown) {
+            onKeyDown(evt);
         }
     };
 
@@ -246,8 +247,31 @@ class MultiSelect extends PureComponent {
         });
     };
 
-    _handleLabelExitEditMode = () => {
-        this._inputDOMNode.focus();
+    _handleLabelKey = (index, evt, { targetElement }) => {
+        const {onKeyDown} = this.props;
+
+        switch (evt.keyCode) {
+            case keyCodes.enter:
+                targetElement.exitEditMode();
+                this._inputDOMNode.focus();
+                break;
+
+            case keyCodes.left:
+                if (targetElement.isCaretAtStart()) {
+                    this._selectLabel(index - 1);
+                }
+                break;
+
+            case keyCodes.right:
+                if (targetElement.isCaretAtEnd()) {
+                    this._selectLabel(index + 1);
+                }
+                break;
+        }
+
+        if (onKeyDown) {
+            onKeyDown(evt);
+        }
     };
 
     _setInputValidationResult = validationResult => {
@@ -293,18 +317,17 @@ class MultiSelect extends PureComponent {
         }
     };
 
-    _selectNextLabel = step => {
-        const { selectedLabelIndex } = this.state;
+    _selectLabel = index => {
         const minIndex = 0;
         const maxIndex = this.props.labels.length - 1;
-        const newIndex = selectedLabelIndex + step;
 
-        if (newIndex > maxIndex || newIndex < minIndex) {
+        if (index > maxIndex || index < minIndex) {
             this._inputDOMNode.focus();
             this._inputDOMNode.selectionStart = this._inputDOMNode.value.length;
         } else {
+            this._labelControllerDOMNode.focus();
             this.setState({
-                selectedLabelIndex: newIndex
+                selectedLabelIndex: index
             });
         }
     };
@@ -325,6 +348,7 @@ class MultiSelect extends PureComponent {
                 onChange={this._handleLabelChange}
                 onClick={this._handleLabelClick}
                 onBlur={this._handleLabelBlur}
+                onKeyDown={this._handleLabelKey}
                 onExitEditMode={this._handleLabelExitEditMode}
                 ref={selectedLabelIndex === index ? this._setSelectedLabelElement : null}
             >
