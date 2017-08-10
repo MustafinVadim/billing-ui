@@ -349,7 +349,6 @@ class MultiSelect extends PureComponent {
                 onClick={this._handleLabelClick}
                 onBlur={this._handleLabelBlur}
                 onKeyDown={this._handleLabelKey}
-                onExitEditMode={this._handleLabelExitEditMode}
                 ref={selectedLabelIndex === index ? this._setSelectedLabelElement : null}
             >
                 {label.labelContent}

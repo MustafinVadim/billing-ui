@@ -45,9 +45,12 @@ class Label extends PureComponent {
     }
 
     exitEditMode() {
-        this.setState({
-            isEditMode: false
-        });
+        const { validationResult: { isValid } } = this.props;
+        if (isValid) {
+            this.setState({
+                isEditMode: false
+            });
+        }
     }
 
     isCaretAtEnd() {
@@ -86,24 +89,20 @@ class Label extends PureComponent {
     };
 
     _handleChange = evt => {
-        const { onChange, onRemove, index } = this.props;
+        const { onChange, index } = this.props;
         const value = evt.target.value;
 
-        if (value) {
-            onChange && onChange(index, value, evt);
-        } else {
-            onRemove && onRemove(index, evt);
-        }
+        onChange && onChange(index, value, evt);
     };
 
-    _handleFocus = () => {
-        this.enterEditMode();
-    };
-
-    _handleBlur = () => {
-        const { onBlur, index } = this.props;
+    _handleBlur = (evt) => {
+        const { onBlur, onRemove, index, children } = this.props;
 
         this.exitEditMode();
+
+        if (!children) {
+            onRemove && onRemove(index, evt);
+        }
 
         onBlur && onBlur(index);
     };
@@ -133,26 +132,25 @@ class Label extends PureComponent {
     };
 
     _setInputDOMNode = el => {
-        this._inputDOMNode = findDOMNode(el)
+        this._inputDOMNode = findDOMNode(el);
     };
 
     render() {
-        const { children, tooltipContent, tooltipClassName, isActive, validationResult, className } = this.props;
+        const { children, tooltipContent, tooltipClassName, isActive, className } = this.props;
         const { isEditMode, inputWidth } = this.state;
         const hasTooltip = !!tooltipContent && !isEditMode;
-        const asInput = isEditMode || !validationResult.isValid;
 
         const wrapperClassNames = cx(
             styles.wrapper,
             {
                 [styles.active]: isActive,
-                [styles["as-input"]]: asInput
+                [styles["edit-mode"]]: isEditMode
             }
         );
 
         return (
             <span className={wrapperClassNames}>
-                {asInput
+                {isEditMode
                     ? (
                         <input
                             style={{
@@ -208,7 +206,7 @@ Label.propTypes = {
         isValid: PropTypes.bool,
         error: PropTypes.string
     }),
-    children: PropTypes.node,
+    children: PropTypes.string,
     onRemove: PropTypes.func,
     onClick: PropTypes.func,
     onChange: PropTypes.func,
