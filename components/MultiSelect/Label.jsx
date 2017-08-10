@@ -140,17 +140,19 @@ class Label extends PureComponent {
         const { children, tooltipContent, tooltipClassName, isActive, validationResult, className } = this.props;
         const { isEditMode, inputWidth } = this.state;
         const hasTooltip = !!tooltipContent && !isEditMode;
+        const asInput = isEditMode || !validationResult.isValid;
 
         const wrapperClassNames = cx(
             styles.wrapper,
             {
-                [styles.active]: isActive
+                [styles.active]: isActive,
+                [styles["as-input"]]: asInput
             }
         );
 
         return (
             <span className={wrapperClassNames}>
-                {isEditMode || !validationResult.isValid
+                {asInput
                     ? (
                         <input
                             style={{
