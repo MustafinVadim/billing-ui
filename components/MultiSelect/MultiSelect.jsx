@@ -364,7 +364,7 @@ class MultiSelect extends PureComponent {
         const autocompleteProps = omit(
             this.props,
             [
-                "labels", "tooltipClassName", "wrapperClassName", "onAddLabel", "onRemoveLabel", "labelsValidation",
+                "labels", "tooltipClassName", "wrapperClassName", "onAddLabel", "onRemoveLabel", "onChangeLabel", "labelsValidation",
                 "inputValidation", "inputValue", "tooltipCaption", "tooltipProps", "labelTooltipClassName", "autocompleteURL"
             ]
         );
@@ -449,10 +449,10 @@ MultiSelect.propTypes = {
             tooltipContent: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.element])
         })
     ).isRequired,
-    labelsValidation: PropTypes.func.isRequired,
+    labelsValidation: PropTypes.oneOfType([PropTypes.func.isRequired, PropTypes.arrayOf(PropTypes.func)]),
 
     inputValue: PropTypes.string,
-    inputValidation: PropTypes.func.isRequired,
+    inputValidation: PropTypes.oneOfType([PropTypes.func.isRequired, PropTypes.arrayOf(PropTypes.func)]),
 
     tooltipProps: PropTypes.object,
     tooltipCaption: PropTypes.string
