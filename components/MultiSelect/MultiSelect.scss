@@ -28,11 +28,12 @@
     input[type="text"].input {
         min-width: 40px;
         max-width: 100%;
-        padding: 4px 15px 5px;
+        padding: 4px 15px;
 
         border: none;
 
         font-size: $fontSizeBig;
+        vertical-align: middle;
         text-overflow: initial;
 
         &:focus {
