@@ -38,18 +38,23 @@ class Label extends PureComponent {
     }
 
     enterEditMode() {
+        const { onEnterEditMode, index} = this.props;
+
         this.setState({
             isEditMode: true
         });
         this._inputDOMNode && this._inputDOMNode.select();
+
+        onEnterEditMode && onEnterEditMode(index);
     }
 
     exitEditMode() {
-        const { validationResult: { isValid } } = this.props;
+        const { onExitEditMode, validationResult: { isValid } } = this.props;
         if (isValid) {
             this.setState({
                 isEditMode: false
             });
+            onExitEditMode && onExitEditMode()
         }
     }
 
@@ -90,7 +95,7 @@ class Label extends PureComponent {
 
     _handleChange = evt => {
         const { onChange, index } = this.props;
-        const value = evt.target.value;
+        const value = evt.target.value.trim();
 
         onChange && onChange(index, value, evt);
     };
@@ -111,7 +116,7 @@ class Label extends PureComponent {
         const { onKeyDown, index } = this.props;
 
         if (onKeyDown) {
-            onKeyDown(index, evt, { targetElement: this });
+            onKeyDown(index, evt);
         }
     };
 
@@ -212,6 +217,8 @@ Label.propTypes = {
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
     onKeyDown: PropTypes.func,
+    onEnterEditMode: PropTypes.func,
+    onExitEditMode: PropTypes.func,
     className: PropTypes.string,
     tooltipContent: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.element]),
     tooltipClassName: PropTypes.string

@@ -23,12 +23,14 @@ class MultiSelect extends PureComponent {
     _inputValidationResult = null;
     _autocompleteElement = null;
     _selectedLabelElement = null;
+    _editedLabelElement = null;
 
     constructor(props, context) {
         super(props, context);
 
         this.state = {
             selectedLabelIndex: -1,
+            editedLabelIndex: -1,
             isFocused: false,
             inputWidth: props.minInputWidth,
             wasTouched: false
@@ -247,24 +249,34 @@ class MultiSelect extends PureComponent {
         });
     };
 
-    _handleLabelKey = (index, evt, { targetElement }) => {
-        const {onKeyDown} = this.props;
+    _handleLabelKey = (index, evt) => {
+        const { onKeyDown } = this.props;
 
         switch (evt.keyCode) {
             case keyCodes.enter:
-                targetElement.exitEditMode();
+                this._editedLabelElement.exitEditMode();
                 this._inputDOMNode.focus();
                 break;
 
             case keyCodes.left:
-                if (targetElement.isCaretAtStart()) {
+                if (this._editedLabelElement.isCaretAtStart()) {
                     this._selectLabel(index - 1);
                 }
                 break;
 
             case keyCodes.right:
-                if (targetElement.isCaretAtEnd()) {
+                if (this._editedLabelElement.isCaretAtEnd()) {
                     this._selectLabel(index + 1);
+                }
+                break;
+
+            case keyCodes.comma:
+            case keyCodes.semiColon:
+            case keyCodes.space:
+                if (this._editedLabelElement.isCaretAtEnd()) {
+                    this._editedLabelElement.exitEditMode();
+                    this._inputDOMNode.focus();
+                    evt.preventDefault();
                 }
                 break;
         }
@@ -272,6 +284,18 @@ class MultiSelect extends PureComponent {
         if (onKeyDown) {
             onKeyDown(evt);
         }
+    };
+
+    _handleLabelEnterEditMode = index => {
+        this.setState({
+            editedLabelIndex: index
+        });
+    };
+
+    _handleLabelExitEditMode = () => {
+        this.setState({
+            editedLabelIndex: -1
+        });
     };
 
     _setInputValidationResult = validationResult => {
@@ -301,6 +325,21 @@ class MultiSelect extends PureComponent {
 
     _setSelectedLabelElement = el => {
         this._selectedLabelElement = el;
+    };
+
+    _setEditedLabelElement = el => {
+        this._editedLabelElement = el;
+    };
+
+    _setLabelElement = index => el => {
+        const { selectedLabelIndex, editedLabelIndex } = this.state;
+        if (index === selectedLabelIndex) {
+            this._setSelectedLabelElement(el);
+        }
+
+        if (index === editedLabelIndex) {
+            this._setEditedLabelElement(el);
+        }
     };
 
     _getMultiSelect = () => this;
@@ -349,7 +388,9 @@ class MultiSelect extends PureComponent {
                 onClick={this._handleLabelClick}
                 onBlur={this._handleLabelBlur}
                 onKeyDown={this._handleLabelKey}
-                ref={selectedLabelIndex === index ? this._setSelectedLabelElement : null}
+                onEnterEditMode={this._handleLabelEnterEditMode}
+                onExitEditMode={this._handleLabelExitEditMode}
+                ref={this._setLabelElement(index)}
             >
                 {label.labelContent}
             </Label>
