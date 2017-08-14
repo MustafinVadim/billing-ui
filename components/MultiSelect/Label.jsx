@@ -24,10 +24,14 @@ class Label extends PureComponent {
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
         if (this.state.isEditMode) {
             this._changeInputWidth();
             this._inputDOMNode && this._inputDOMNode.focus();
+
+            if (!prevState.isEditMode) {
+                this._inputDOMNode && this._inputDOMNode.select();
+            }
         }
     }
 
