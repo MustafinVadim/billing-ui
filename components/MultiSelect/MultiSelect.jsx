@@ -15,11 +15,6 @@ import { validate } from "../../helpers/ValidationHelpers";
 import styles from "./MultiSelect.scss";
 import cx from "classnames";
 
-const labelControllerDirection = {
-    next: 1,
-    previous: -1
-};
-
 const LABEL_CLASSNAME = "js-multiselect-label";
 
 class MultiSelect extends PureComponent {
@@ -27,12 +22,15 @@ class MultiSelect extends PureComponent {
     _labelControllerDOMNode = null;
     _inputValidationResult = null;
     _autocompleteElement = null;
+    _selectedLabelElement = null;
+    _editedLabelElement = null;
 
     constructor(props, context) {
         super(props, context);
 
         this.state = {
             selectedLabelIndex: -1,
+            editedLabelIndex: -1,
             isFocused: false,
             inputWidth: props.minInputWidth,
             wasTouched: false
@@ -75,7 +73,7 @@ class MultiSelect extends PureComponent {
         const labelsValidationResult = validate(labels, labelsValidation);
 
         if (this._isInputValid()) {
-            this._handleAddLabel({ inputValue });
+            this._handleLabelAdd({ inputValue });
             labelsValidationResult.isValid = true;
         }
 
@@ -118,15 +116,11 @@ class MultiSelect extends PureComponent {
             this._inputDOMNode.selectionStart = this._inputDOMNode.value.length;
             evt.preventDefault();
         }
-
-        if (onLabel) {
-            evt.preventDefault();
-        }
     };
 
     _handleSelect = (Value, Text, Data, optionData) => {
         const { inputValue } = this.props;
-        this._handleAddLabel({ autocompleteResult: optionData, inputValue });
+        this._handleLabelAdd({ autocompleteResult: optionData, inputValue });
         this._autocompleteElement.showNewOptions();
         this._inputDOMNode && this._inputDOMNode.focus();
     };
@@ -140,16 +134,18 @@ class MultiSelect extends PureComponent {
             case keyCodes.enter:
                 const isCaretAtEnd = this._inputDOMNode.selectionStart === this._inputDOMNode.value.length;
                 if (isCaretAtEnd && this._isInputValid()) {
-                    this._handleAddLabel({ inputValue });
+                    this._handleLabelAdd({ inputValue });
                     this._autocompleteElement.showNewOptions();
                     evt.preventDefault();
                 }
                 break;
+
             case keyCodes.backspace:
                 if (!inputValue) {
-                    this._handleRemoveLabel(labels.length - 1);
+                    this._handleLabelRemove(labels.length - 1);
                 }
                 break;
+
             case keyCodes.left:
                 const isCaretAtStart = this._inputDOMNode.selectionStart === 0;
                 if (isCaretAtStart) {
@@ -157,6 +153,7 @@ class MultiSelect extends PureComponent {
                 }
                 break;
         }
+
         if (onKeyDown) {
             onKeyDown(evt);
         }
@@ -167,22 +164,28 @@ class MultiSelect extends PureComponent {
         const { selectedLabelIndex } = this.state;
 
         switch (evt.keyCode) {
+            case keyCodes.enter:
+                this._selectedLabelElement.enterEditMode();
+                break;
+
             case keyCodes.left:
-                this._selectNextLabel(labelControllerDirection.previous);
+                this._selectLabel(selectedLabelIndex - 1);
                 evt.preventDefault();
                 break;
+
             case keyCodes.right:
-                this._selectNextLabel(labelControllerDirection.next);
+                this._selectLabel(selectedLabelIndex + 1);
                 evt.preventDefault();
                 break;
+
             case keyCodes.delete:
             case keyCodes.backspace:
-                this._handleRemoveLabel(selectedLabelIndex);
+                this._handleLabelRemove(selectedLabelIndex);
                 break;
-            default:
-                if (onKeyDown) {
-                    onKeyDown(evt);
-                }
+        }
+
+        if (onKeyDown) {
+            onKeyDown(evt);
         }
     };
 
@@ -199,12 +202,12 @@ class MultiSelect extends PureComponent {
         });
     };
 
-    _handleRemoveLabel = (labelIndex) => {
+    _handleLabelRemove = (labelIndex) => {
         const { onRemoveLabel } = this.props;
         onRemoveLabel(labelIndex);
     };
 
-    _handleAddLabel = ({ autocompleteResult, inputValue }) => {
+    _handleLabelAdd = ({ autocompleteResult, inputValue }) => {
         const { onAddLabel, onChange } = this.props;
 
         this._inputDOMNode.value = "";
@@ -214,10 +217,84 @@ class MultiSelect extends PureComponent {
         onAddLabel({ autocompleteResult, inputValue: (inputValue || "").trim() });
     };
 
+    _handleLabelChange = (index, value, evt) => {
+        const { onChangeLabel, inputValidation } = this.props;
+
+        const validationResult = validate(value, inputValidation);
+
+        if (onChangeLabel) {
+            onChangeLabel(index, value, evt, {
+                validationResult
+            });
+        }
+    };
+
+    _handleLabelBlur = (index, evt) => {
+        const { onBlur, labels, labelsValidation } = this.props;
+
+        const labelsValidationResult = validate(labels, labelsValidation);
+
+        if (onBlur) {
+            onBlur(evt, {
+                validationResult: this._inputValidationResult,
+                labelsValidationResult
+            });
+        }
+    };
+
     _handleLabelClick = index => {
         this._labelControllerDOMNode.focus();
         this.setState({
             selectedLabelIndex: index
+        });
+    };
+
+    _handleLabelKey = (index, evt) => {
+        const { onKeyDown } = this.props;
+
+        switch (evt.keyCode) {
+            case keyCodes.enter:
+                this._editedLabelElement.exitEditMode();
+                this._inputDOMNode.focus();
+                break;
+
+            case keyCodes.left:
+                if (this._editedLabelElement.isCaretAtStart()) {
+                    this._selectLabel(index - 1);
+                }
+                break;
+
+            case keyCodes.right:
+                if (this._editedLabelElement.isCaretAtEnd()) {
+                    this._selectLabel(index + 1);
+                }
+                break;
+
+            case keyCodes.comma:
+            case keyCodes.semiColon:
+            case keyCodes.space:
+                if (this._editedLabelElement.isCaretAtEnd()) {
+                    this._editedLabelElement.exitEditMode();
+                    this._inputDOMNode.focus();
+                    evt.preventDefault();
+                }
+                break;
+        }
+
+        if (onKeyDown) {
+            onKeyDown(evt);
+        }
+    };
+
+    _handleLabelEnterEditMode = index => {
+        this.setState({
+            editedLabelIndex: index
+        });
+    };
+
+    _handleLabelExitEditMode = () => {
+        this.setState({
+            editedLabelIndex: -1
         });
     };
 
@@ -246,21 +323,31 @@ class MultiSelect extends PureComponent {
         this._setInputDOMNode(el);
     };
 
+    _setSelectedLabelElement = el => {
+        this._selectedLabelElement = el;
+    };
+
+    _setEditedLabelElement = el => {
+        this._editedLabelElement = el;
+    };
+
+    _setLabelElement = index => el => {
+        const { selectedLabelIndex, editedLabelIndex } = this.state;
+        if (index === selectedLabelIndex) {
+            this._setSelectedLabelElement(el);
+        }
+
+        if (index === editedLabelIndex) {
+            this._setEditedLabelElement(el);
+        }
+    };
+
     _getMultiSelect = () => this;
 
     _changeInputWidth = () => {
         const { inputWidth } = this.state;
-        const { minInputWidth, maxInputWidth } = this.props;
 
         let newInputWidth = calculateContentWidth(this._inputDOMNode);
-
-        if (newInputWidth < minInputWidth) {
-            newInputWidth = minInputWidth;
-        }
-
-        if (newInputWidth > maxInputWidth) {
-            newInputWidth = maxInputWidth;
-        }
 
         if (newInputWidth !== inputWidth) {
             this.setState({
@@ -269,24 +356,23 @@ class MultiSelect extends PureComponent {
         }
     };
 
-    _selectNextLabel = step => {
-        const { selectedLabelIndex } = this.state;
+    _selectLabel = index => {
         const minIndex = 0;
         const maxIndex = this.props.labels.length - 1;
-        const newIndex = selectedLabelIndex + step;
 
-        if (newIndex > maxIndex || newIndex < minIndex) {
+        if (index > maxIndex || index < minIndex) {
             this._inputDOMNode.focus();
             this._inputDOMNode.selectionStart = this._inputDOMNode.value.length;
         } else {
+            this._labelControllerDOMNode.focus();
             this.setState({
-                selectedLabelIndex: newIndex
+                selectedLabelIndex: index
             });
         }
     };
 
     _renderLabels = labels => {
-        const { labelTooltipClassName, onRemoveLabel } = this.props;
+        const { labelTooltipClassName } = this.props;
         const { selectedLabelIndex } = this.state;
         return labels.map((label, index) => (
             <Label
@@ -294,10 +380,17 @@ class MultiSelect extends PureComponent {
                 className={LABEL_CLASSNAME}
                 key={`multiselect-label-${index}`}
                 isActive={selectedLabelIndex === index}
+                validationResult={label.validationResult}
                 tooltipContent={label.tooltipContent}
                 tooltipClassName={labelTooltipClassName}
-                onRemove={onRemoveLabel}
+                onRemove={this._handleLabelRemove}
+                onChange={this._handleLabelChange}
                 onClick={this._handleLabelClick}
+                onBlur={this._handleLabelBlur}
+                onKeyDown={this._handleLabelKey}
+                onEnterEditMode={this._handleLabelEnterEditMode}
+                onExitEditMode={this._handleLabelExitEditMode}
+                ref={this._setLabelElement(index)}
             >
                 {label.labelContent}
             </Label>
@@ -311,7 +404,7 @@ class MultiSelect extends PureComponent {
         const autocompleteProps = omit(
             this.props,
             [
-                "minInputWidth", "maxInputWidth", "labels", "tooltipClassName", "wrapperClassName", "onAddLabel", "onRemoveLabel", "labelsValidation",
+                "labels", "tooltipClassName", "wrapperClassName", "onAddLabel", "onRemoveLabel", "onChangeLabel", "labelsValidation",
                 "inputValidation", "inputValue", "tooltipCaption", "tooltipProps", "labelTooltipClassName", "autocompleteURL"
             ]
         );
@@ -387,6 +480,7 @@ MultiSelect.propTypes = {
     onFocus: PropTypes.func,
     onChange: PropTypes.func,
     onKeyDown: PropTypes.func,
+    onChangeLabel: PropTypes.func,
     isValid: PropTypes.bool,
 
     labels: PropTypes.arrayOf(
@@ -395,18 +489,16 @@ MultiSelect.propTypes = {
             tooltipContent: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.element])
         })
     ).isRequired,
-    labelsValidation: PropTypes.func.isRequired,
+    labelsValidation: PropTypes.oneOfType([PropTypes.func.isRequired, PropTypes.arrayOf(PropTypes.func)]),
 
     inputValue: PropTypes.string,
-    inputValidation: PropTypes.func.isRequired,
+    inputValidation: PropTypes.oneOfType([PropTypes.func.isRequired, PropTypes.arrayOf(PropTypes.func)]),
 
     tooltipProps: PropTypes.object,
     tooltipCaption: PropTypes.string
 };
 
 MultiSelect.defaultProps = {
-    minInputWidth: 10,
-    maxInputWidth: 440,
     tooltipProps: {
         positionType: PositionTypes.rightMiddle,
         type: TooltipTypes.validation

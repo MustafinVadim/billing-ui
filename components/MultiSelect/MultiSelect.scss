@@ -27,11 +27,13 @@
 
     input[type="text"].input {
         min-width: 40px;
-        padding: 4px 5px 5px 15px;
+        max-width: 100%;
+        padding: 4px 15px;
 
         border: none;
 
         font-size: $fontSizeBig;
+        vertical-align: middle;
         text-overflow: initial;
 
         &:focus {
@@ -41,8 +43,8 @@
         }
     }
 
-    .autocomplete {
-        margin-left: 5px;
+    .autocomplete-wrapper {
+        max-width: 100%;
     }
 
     .autocomplete-option {
