@@ -292,10 +292,14 @@ class MultiSelect extends PureComponent {
         });
     };
 
-    _handleLabelExitEditMode = () => {
+    _handleLabelExitEditMode = (index, value) => {
+        const { onChangeLabelComplete } = this.props;
+
         this.setState({
             editedLabelIndex: -1
         });
+
+        onChangeLabelComplete && onChangeLabelComplete(index, value);
     };
 
     _setInputValidationResult = validationResult => {
@@ -405,7 +409,7 @@ class MultiSelect extends PureComponent {
             this.props,
             [
                 "labels", "tooltipClassName", "wrapperClassName", "onAddLabel", "onRemoveLabel", "onChangeLabel", "labelsValidation",
-                "inputValidation", "inputValue", "tooltipCaption", "tooltipProps", "labelTooltipClassName", "autocompleteURL"
+                "inputValidation", "inputValue", "tooltipCaption", "tooltipProps", "labelTooltipClassName", "autocompleteURL", "onChangeLabelComplete"
             ]
         );
 
@@ -481,6 +485,7 @@ MultiSelect.propTypes = {
     onChange: PropTypes.func,
     onKeyDown: PropTypes.func,
     onChangeLabel: PropTypes.func,
+    onChangeLabelComplete: PropTypes.func,
     isValid: PropTypes.bool,
 
     labels: PropTypes.arrayOf(

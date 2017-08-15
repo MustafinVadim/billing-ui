@@ -53,12 +53,12 @@ class Label extends PureComponent {
     }
 
     exitEditMode() {
-        const { onExitEditMode, validationResult: { isValid } } = this.props;
+        const { onExitEditMode, validationResult: { isValid }, index, children } = this.props;
         if (isValid) {
             this.setState({
                 isEditMode: false
             });
-            onExitEditMode && onExitEditMode()
+            onExitEditMode && onExitEditMode(index, children)
         }
     }
 
