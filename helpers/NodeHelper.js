@@ -126,7 +126,6 @@ export const calculateContentWidth = node => {
         max-height:none !important;
         height:0 !important;
         visibility:hidden !important;
-        overflow:hidden !important;
         position:absolute !important;
         z-index:-1000 !important;
         top:0 !important;

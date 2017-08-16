@@ -197,9 +197,12 @@ class MultiSelect extends PureComponent {
 
     _handleLabelControllerFocus = () => {
         const lastLabelIndex = this.props.labels.length - 1;
-        this.setState({
-            selectedLabelIndex: lastLabelIndex
-        });
+
+        if (this.state.selectedLabelIndex === -1) {
+            this.setState({
+                selectedLabelIndex: lastLabelIndex
+            });
+        }
     };
 
     _handleLabelRemove = (labelIndex) => {

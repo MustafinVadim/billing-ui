@@ -21,7 +21,7 @@ export const findIndex = (predicate, arr = []) => {
     }
 
     for (let i = 0; i < arr.length; i++) {
-        if (predicate(arr[i])) {
+        if (predicate(arr[i], i, arr)) {
             return i;
         }
     }
