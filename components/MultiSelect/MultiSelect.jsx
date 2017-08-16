@@ -40,7 +40,7 @@ class MultiSelect extends PureComponent {
     componentWillReceiveProps(newProps) {
         if (!this.state.wasTouched) {
             this.setState({
-                wasTouched: newProps.inputValue !== this.props.inputValue
+                wasTouched: newProps.inputValue !== this.props.inputValue || newProps.labels !== this.props.labels
             });
         }
     }
