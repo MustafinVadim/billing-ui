@@ -236,6 +236,7 @@ class MultiSelect extends PureComponent {
         const { onBlur, labels, labelsValidation } = this.props;
 
         const labelsValidationResult = validate(labels, labelsValidation);
+        this._setInputValidationResult();
 
         if (onBlur) {
             onBlur(evt, {
