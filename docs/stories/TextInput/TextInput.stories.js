@@ -1,9 +1,8 @@
 import React from "react";
-import { storiesOf, action } from "@kadira/storybook";
-import { text, boolean, number, select } from "@kadira/storybook-addon-knobs";
+import { storiesOf } from "@storybook/react";
+import { action } from "@storybook/addon-actions";
+import { text, boolean, number, select } from "@storybook/addon-knobs";
 import { TextInputType } from "../../../components/TextInput";
-
-import "./../../src/css/icon-fonts.scss";
 import { TextInputWrapper } from "./TextInputWrapper";
 
 storiesOf("TextInput", module)

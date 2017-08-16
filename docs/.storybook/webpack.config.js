@@ -1,32 +1,45 @@
 const path = require("path");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-
-const autoprefixer = require("autoprefixer");
-const postcssPseudoelements = require("postcss-pseudoelements");
+const webpack = require("webpack");
 
 module.exports = {
-    resolveLoader: {
-        root: path.resolve(__dirname, "../node_modules/")
-    },
     resolve: {
-        root: path.resolve(__dirname, "../node_modules/")
+        modules: [ path.resolve(__dirname, "../node_modules/"), "node_modules" ]
     },
-    postcss: function() {
-        return [
-            autoprefixer({ browsers: ["last 5 versions", "> 0.02%", "ie >= 9"] }),
-            postcssPseudoelements
-        ];
-    },
+
+    plugins: [
+        new webpack.ProvidePlugin({
+            React: "react",
+            ReactDom: "react-dom"
+        }),
+    ],
+
     module: {
-        noParse: ["node_modules"],
-        loaders: [
+        rules: [
             {
-                test: /\.scss$/,
-                loaders: [
-                    "style-loader",
-                    "css-loader?sourceMap&localIdentName=[name]-[local]-[hash:base64:8]",
-                    "postcss-loader?sourceMap",
-                    "sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true"
+                test: /\.(css|scss)$/,
+                use: [
+                    { loader: "style-loader" },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: true,
+                            localIdentName: "[name]-[local]-[hash:base64:8]"
+                        }
+                    },
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            outputStyle: "expanded",
+                            sourceMap: true,
+                            sourceMapContents: true
+                        }
+                    },
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    }
                 ]
             },
 
@@ -37,20 +50,30 @@ module.exports = {
                     path.join(__dirname, "../../libs"),
                     path.join(__dirname, "../../helpers")
                 ],
-                loader: "babel"
+                loader: "babel-loader"
             },
 
-            { test: /\.(jpe?g|png|gif|svg)$/i, loader: "url-loader?name=[name].[hash].[ext]&limit=10000" },
-
-            { test: /\.woff2?$/, loader: "url-loader?prefix=font/&limit=5000&mimetype=application/font-woff" },
-            { test: /\.ttf$/, loader: "file-loader?prefix=font/" },
-            { test: /\.eot$/, loader: "file-loader?prefix=font/" },
 
             {
-                test: /\.js$/,
-                include: require.resolve("react"),
-                loader: "expose?React"
-            }
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                use: [{
+                    loader: "url-loader",
+                    options: {
+                        name: "[name].[hash].[ext]",
+                        limit: 10000
+                    }
+                }]
+            },
+
+            {
+                test: /\.(ttf|eot|woff2?)$/,
+                use: [{
+                    loader: "file-loader",
+                    // options: {
+                    //     prefix: "font/"
+                    // }
+                }]
+            },
         ]
     }
 };

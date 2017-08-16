@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    font-size: 100%;
+    line-height: 1;
+    font-family: inherit;
+    vertical-align: baseline;
+}
+
+a img, :link img, :visited img {
+    border: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+q:before, q:after,
+blockquote:before, blockquote:after {
+    content: "";
+}
+
+a {
+    text-decoration: none;
+}
+
+::-ms-clear {
+    display: none;
+}

@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "@kadira/react-storybook-addon-info": "^3.3.0",
-    "@kadira/storybook": "^2.21.0",
-    "@kadira/storybook-addon-knobs": "^1.4.1",
-    "@kadira/storybook-deployer": "^1.2.0",
+    "@storybook/addon-actions": "^3.2.0",
+    "@storybook/addon-backgrounds": "^3.0.0",
+    "@storybook/addon-info": "^3.2.4",
+    "@storybook/addon-knobs": "^3.2.0",
+    "@storybook/react": "^3.2.3",
+    "@storybook/storybook-deployer": "^2.0.0",
     "autoprefixer": "^6.5.1",
     "billing-ui": "^1.22.2",
     "classnames": "^2.2.5",
@@ -19,8 +21,8 @@
     "react-dom": "^15.3.2",
     "react-input-mask": "^0.7.5",
     "react-storybook-addon-backgrounds": "^0.0.7",
-    "sass-loader": "^4.0.2",
-    "style-loader": "^0.13.1",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.2",
     "webpack-merge": "^0.15.0"
   },
   "scripts": {

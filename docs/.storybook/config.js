@@ -1,7 +1,10 @@
-import { configure, setAddon, addDecorator } from '@kadira/storybook';
-import infoAddon from "@kadira/react-storybook-addon-info";
-import { withKnobs } from "@kadira/storybook-addon-knobs";
-import backgrounds from "react-storybook-addon-backgrounds";
+import { configure, setAddon, addDecorator } from "@storybook/react";
+import infoAddon from "@storybook/addon-info";
+import { withKnobs } from "@storybook/addon-knobs";
+import backgrounds from "@storybook/addon-backgrounds";
+
+import "../src/css/icon-fonts.scss";
+import "../src/css/Reset.css";
 
 setAddon(infoAddon);
 
