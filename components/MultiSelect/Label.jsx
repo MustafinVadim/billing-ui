@@ -29,7 +29,7 @@ class Label extends PureComponent {
             this._changeInputWidth();
             this._inputDOMNode && this._inputDOMNode.focus();
 
-            if (!prevState.isEditMode) {
+            if (!prevState.isEditMode || prevProps.isActive) {
                 this._inputDOMNode && this._inputDOMNode.select();
             }
         }
@@ -80,21 +80,21 @@ class Label extends PureComponent {
         }
     };
 
-    _handleClick = evt => {
-        const { onClick, index } = this.props;
+    _handleMouseDown = evt => {
+        const { onMouseDown, index, isActive } = this.props;
 
         const onRemoveIcon = evt.target.className.indexOf(LABEL_REMOVE_ICON_CLASS_NAME) >= 0;
         if (onRemoveIcon) {
             return;
         }
 
-        if (onClick) {
-            onClick(index, evt);
+        if (isActive) {
+            this.enterEditMode();
         }
-    };
 
-    _handleDoubleClick = () => {
-        this.enterEditMode();
+        if (onMouseDown) {
+            onMouseDown(index, evt);
+        }
     };
 
     _handleChange = evt => {
@@ -181,7 +181,7 @@ class Label extends PureComponent {
                         <span
                             className={cx(styles.content, className)}
                             ref={this._setTooltipTarget}
-                            onClick={this._handleClick}
+                            onMouseDown={this._handleMouseDown}
                             onDoubleClick={this._handleDoubleClick}
                         >
                             {children}
@@ -217,7 +217,7 @@ Label.propTypes = {
     }),
     children: PropTypes.string,
     onRemove: PropTypes.func,
-    onClick: PropTypes.func,
+    onMouseDown: PropTypes.func,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
     onKeyDown: PropTypes.func,

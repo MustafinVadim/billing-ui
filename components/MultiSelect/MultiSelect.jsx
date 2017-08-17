@@ -127,12 +127,15 @@ class MultiSelect extends PureComponent {
 
     _handleKey = evt => {
         const { onKeyDown, labels, inputValue } = this.props;
+
+        const isCaretAtEnd = this._inputDOMNode.selectionStart === this._inputDOMNode.value.length;
+        const isCaretAtStart = this._inputDOMNode.selectionStart === 0;
+
         switch (evt.keyCode) {
             case keyCodes.comma:
             case keyCodes.semiColon:
             case keyCodes.space:
             case keyCodes.enter:
-                const isCaretAtEnd = this._inputDOMNode.selectionStart === this._inputDOMNode.value.length;
                 if (isCaretAtEnd && this._isInputValid()) {
                     this._handleLabelAdd({ inputValue });
                     this._autocompleteElement.showNewOptions();
@@ -141,15 +144,15 @@ class MultiSelect extends PureComponent {
                 break;
 
             case keyCodes.backspace:
-                if (!inputValue) {
+                if (isCaretAtStart) {
                     this._handleLabelRemove(labels.length - 1);
                 }
                 break;
 
             case keyCodes.left:
-                const isCaretAtStart = this._inputDOMNode.selectionStart === 0;
                 if (isCaretAtStart) {
                     this._labelControllerDOMNode.focus();
+                    evt.preventDefault();
                 }
                 break;
         }
@@ -199,9 +202,7 @@ class MultiSelect extends PureComponent {
         const lastLabelIndex = this.props.labels.length - 1;
 
         if (this.state.selectedLabelIndex === -1) {
-            this.setState({
-                selectedLabelIndex: lastLabelIndex
-            });
+            this._selectLabel(lastLabelIndex);
         }
     };
 
@@ -246,11 +247,12 @@ class MultiSelect extends PureComponent {
         }
     };
 
-    _handleLabelClick = index => {
+    _handleLabelMouseDown = (index, evt) => {
         this._labelControllerDOMNode.focus();
         this.setState({
             selectedLabelIndex: index
         });
+        evt.preventDefault();
     };
 
     _handleLabelKey = (index, evt) => {
@@ -265,12 +267,14 @@ class MultiSelect extends PureComponent {
             case keyCodes.left:
                 if (this._editedLabelElement.isCaretAtStart()) {
                     this._selectLabel(index - 1);
+                    evt.preventDefault();
                 }
                 break;
 
             case keyCodes.right:
                 if (this._editedLabelElement.isCaretAtEnd()) {
                     this._selectLabel(index + 1);
+                    evt.preventDefault();
                 }
                 break;
 
@@ -393,7 +397,7 @@ class MultiSelect extends PureComponent {
                 tooltipClassName={labelTooltipClassName}
                 onRemove={this._handleLabelRemove}
                 onChange={this._handleLabelChange}
-                onClick={this._handleLabelClick}
+                onMouseDown={this._handleLabelMouseDown}
                 onBlur={this._handleLabelBlur}
                 onKeyDown={this._handleLabelKey}
                 onEnterEditMode={this._handleLabelEnterEditMode}
