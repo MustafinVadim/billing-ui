@@ -122,10 +122,12 @@ export const getNodeStyling = node => {
 
 export const calculateContentWidth = node => {
     const HIDDEN_STYLE = `
+        white-space: pre !important;
         min-height:0 !important;
         max-height:none !important;
         height:0 !important;
         visibility:hidden !important;
+        overflow:hidden !important;
         position:absolute !important;
         z-index:-1000 !important;
         top:0 !important;
@@ -146,7 +148,7 @@ export const calculateContentWidth = node => {
     hiddenElement.setAttribute("style", sizingStyle + ";" + HIDDEN_STYLE);
     hiddenElement.innerText = (node.value || node.placeholder) + defaultValue;
 
-    let width = hiddenElement.clientWidth + 2;
+    let width = hiddenElement.scrollWidth + 2;
     document.body.removeChild(hiddenElement);
 
     if (boxSizing === "border-box") {
