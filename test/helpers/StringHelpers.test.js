@@ -1,6 +1,14 @@
 import { expect } from "chai";
 import {
-    isUpperCase, innKppResolver, datesRangeResolver, toLowerFirstLetter, toShortProductName, translite, switchToRusLanguage, switchToEngLanguage, getPreparedNumber
+    isUpperCase,
+    innKppResolver,
+    datesRangeResolver,
+    toLowerFirstLetter,
+    toShortProductName,
+    translite,
+    switchToRusLanguage,
+    switchToEngLanguage,
+    getPreparedNumber
 } from "../../helpers/StringHelpers";
 
 describe("String helper", () => {

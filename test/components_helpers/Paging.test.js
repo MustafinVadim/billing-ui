@@ -1,16 +1,17 @@
 import { expect } from "chai";
 import { getPages } from "../../components/Paging/pagingHelpers";
 
-
 const itFactory = (pagesCount, currentPage, middleGroupCount, sideGroupCount) => (expectation) => {
     it(`
         Количество станиц: ${pagesCount},
         Текущая страница: ${currentPage},
         Группировка в середине по: ${middleGroupCount} страниц,
         Группировка по краям по ${sideGroupCount} страниц
-    `, () => {
+        `,
+        () => {
             expect(getPages(pagesCount, currentPage, middleGroupCount, sideGroupCount)).to.deep.equal(expectation)
-        })
+        }
+    )
 };
 
 describe("Paging", () => {
