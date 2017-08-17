@@ -17,7 +17,7 @@
 
         &.edit-mode {
             max-width: 100%;
-            padding: 4px 5px;
+            padding: 3px 5px 4px;
         }
     }
 
@@ -32,6 +32,7 @@
         outline: none;
 
         line-height: $lineHeightRegular;
+        height: 23px;
     }
 
     .content {
