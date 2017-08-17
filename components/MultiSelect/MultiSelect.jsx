@@ -227,8 +227,18 @@ class MultiSelect extends PureComponent {
         }
     };
 
+    _handleLabelFocus = index => {
+        this.setState({
+            editedLabelIndex: index
+        });
+    };
+
     _handleLabelBlur = (index, evt) => {
         const { onBlur, labels, labelsValidation } = this.props;
+
+        this.setState({
+            editedLabelIndex: -1
+        });
 
         const labelsValidationResult = validate(labels, labelsValidation);
         this._setInputValidationResult();
@@ -286,18 +296,8 @@ class MultiSelect extends PureComponent {
         }
     };
 
-    _handleLabelEnterEditMode = index => {
-        this.setState({
-            editedLabelIndex: index
-        });
-    };
-
     _handleLabelExitEditMode = (index, value) => {
         const { onChangeLabelComplete } = this.props;
-
-        this.setState({
-            editedLabelIndex: -1
-        });
 
         onChangeLabelComplete && onChangeLabelComplete(index, value);
     };
@@ -390,6 +390,7 @@ class MultiSelect extends PureComponent {
                 onRemove={this._handleLabelRemove}
                 onChange={this._handleLabelChange}
                 onMouseDown={this._handleLabelMouseDown}
+                onFocus={this._handleLabelFocus}
                 onBlur={this._handleLabelBlur}
                 onKeyDown={this._handleLabelKey}
                 onEnterEditMode={this._handleLabelEnterEditMode}

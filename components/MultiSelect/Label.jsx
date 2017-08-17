@@ -42,7 +42,7 @@ class Label extends PureComponent {
     }
 
     enterEditMode() {
-        const { onEnterEditMode, index} = this.props;
+        const { onEnterEditMode, index } = this.props;
 
         this.setState({
             isEditMode: true
@@ -114,6 +114,12 @@ class Label extends PureComponent {
         }
 
         onBlur && onBlur(index);
+    };
+
+    _handleFocus = (evt) => {
+        const { onFocus, index } = this.props;
+
+        onFocus && onFocus(index, evt);
     };
 
     _handleKey = evt => {
@@ -220,6 +226,7 @@ Label.propTypes = {
     onMouseDown: PropTypes.func,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
+    onFocus: PropTypes.func,
     onKeyDown: PropTypes.func,
     onEnterEditMode: PropTypes.func,
     onExitEditMode: PropTypes.func,
