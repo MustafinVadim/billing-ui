@@ -109,9 +109,6 @@ class MultiSelect extends PureComponent {
         const onLabel = evt.target.className.indexOf(LABEL_CLASSNAME) >= 0;
         if (!onInput && !onLabel) {
             this._inputDOMNode && this._inputDOMNode.focus();
-            this.setState({
-                selectedLabelIndex: -1
-            });
 
             this._inputDOMNode.selectionStart = this._inputDOMNode.value.length;
             evt.preventDefault();
@@ -145,7 +142,7 @@ class MultiSelect extends PureComponent {
 
             case keyCodes.backspace:
                 if (isCaretAtStart) {
-                    this._handleLabelRemove(labels.length - 1);
+                    this._removeLabel(labels.length - 1);
                 }
                 break;
 
@@ -170,7 +167,7 @@ class MultiSelect extends PureComponent {
 
         switch (evt.keyCode) {
             case keyCodes.enter:
-                this._selectedLabelElement.enterEditMode();
+                this._enterLabelEditMode(selectedLabelIndex);
                 break;
 
             case keyCodes.left:
@@ -185,7 +182,8 @@ class MultiSelect extends PureComponent {
 
             case keyCodes.delete:
             case keyCodes.backspace:
-                this._handleLabelRemove(selectedLabelIndex);
+                this._removeLabel(selectedLabelIndex);
+                evt.preventDefault();
                 break;
         }
 
@@ -200,9 +198,19 @@ class MultiSelect extends PureComponent {
         });
     };
 
-    _handleLabelRemove = (labelIndex) => {
+    _handleLabelRemoveClick = (index) => {
+        this._removeLabel(index);
+    };
+
+    _removeLabel = (index) => {
         const { onRemoveLabel } = this.props;
-        onRemoveLabel(labelIndex);
+
+        this._inputDOMNode.focus();
+        this.setState({
+            selectedLabelIndex: -1
+        });
+
+        onRemoveLabel(index);
     };
 
     _handleLabelAdd = ({ autocompleteResult, inputValue }) => {
@@ -228,17 +236,17 @@ class MultiSelect extends PureComponent {
     };
 
     _handleLabelFocus = index => {
-        this.setState({
-            editedLabelIndex: index
-        });
+        this._enterLabelEditMode(index);
     };
 
     _handleLabelBlur = (index, evt) => {
         const { onBlur, labels, labelsValidation } = this.props;
 
-        this.setState({
-            editedLabelIndex: -1
-        });
+        if (!labels[index].labelContent) {
+            this._removeLabel(index);
+        }
+
+        this._exitLabelEditMode(index);
 
         const labelsValidationResult = validate(labels, labelsValidation);
         this._setInputValidationResult();
@@ -252,8 +260,13 @@ class MultiSelect extends PureComponent {
     };
 
     _handleLabelMouseDown = (index, evt) => {
+        const { selectedLabelIndex } = this.state;
         this._labelControllerDOMNode.focus();
-        this._selectLabel(index);
+        if (selectedLabelIndex === index) {
+            this._enterLabelEditMode(index);
+        } else {
+            this._selectLabel(index);
+        }
         evt.preventDefault();
     };
 
@@ -262,7 +275,7 @@ class MultiSelect extends PureComponent {
 
         switch (evt.keyCode) {
             case keyCodes.enter:
-                this._editedLabelElement.exitEditMode();
+                this._exitLabelEditMode(index);
                 this._inputDOMNode.focus();
                 break;
 
@@ -284,7 +297,7 @@ class MultiSelect extends PureComponent {
             case keyCodes.semiColon:
             case keyCodes.space:
                 if (this._editedLabelElement.isCaretAtEnd()) {
-                    this._editedLabelElement.exitEditMode();
+                    this._exitLabelEditMode(index);
                     this._inputDOMNode.focus();
                     evt.preventDefault();
                 }
@@ -294,12 +307,6 @@ class MultiSelect extends PureComponent {
         if (onKeyDown) {
             onKeyDown(evt);
         }
-    };
-
-    _handleLabelExitEditMode = (index, value) => {
-        const { onChangeLabelComplete } = this.props;
-
-        onChangeLabelComplete && onChangeLabelComplete(index, value);
     };
 
     _setInputValidationResult = validationResult => {
@@ -361,40 +368,63 @@ class MultiSelect extends PureComponent {
     };
 
     _selectLabel = index => {
+        const { labels } = this.props;
         const minIndex = 0;
-        const maxIndex = this.props.labels.length - 1;
+        const maxIndex = labels.length - 1;
 
         if (index > maxIndex || index < minIndex) {
             this._inputDOMNode.focus();
             this._inputDOMNode.selectionStart = this._inputDOMNode.value.length;
         } else {
-            this._labelControllerDOMNode.focus();
             this.setState({
                 selectedLabelIndex: index
             });
+
+            this._labelControllerDOMNode.focus();
+
+            if (!labels[index].validationResult.isValid) {
+                this._enterLabelEditMode(index);
+            }
         }
+    };
+
+    _enterLabelEditMode = (index) => {
+        this.setState({
+            editedLabelIndex: index
+        }, () => {
+            this._selectedLabelElement.selectInput();
+        });
+    };
+
+    _exitLabelEditMode = (index) => {
+        const { onChangeLabelComplete } = this.props;
+
+        this.setState({
+            editedLabelIndex: -1
+        });
+
+        onChangeLabelComplete && onChangeLabelComplete(index);
     };
 
     _renderLabels = labels => {
         const { labelTooltipClassName } = this.props;
-        const { selectedLabelIndex } = this.state;
+        const { selectedLabelIndex, editedLabelIndex } = this.state;
         return labels.map((label, index) => (
             <Label
                 index={index}
                 className={LABEL_CLASSNAME}
                 key={`multiselect-label-${index}`}
                 isActive={selectedLabelIndex === index}
+                isEditMode={editedLabelIndex === index || !label.validationResult.isValid}
                 validationResult={label.validationResult}
                 tooltipContent={label.tooltipContent}
                 tooltipClassName={labelTooltipClassName}
-                onRemove={this._handleLabelRemove}
+                onRemoveClick={this._handleLabelRemoveClick}
                 onChange={this._handleLabelChange}
                 onMouseDown={this._handleLabelMouseDown}
                 onFocus={this._handleLabelFocus}
                 onBlur={this._handleLabelBlur}
                 onKeyDown={this._handleLabelKey}
-                onEnterEditMode={this._handleLabelEnterEditMode}
-                onExitEditMode={this._handleLabelExitEditMode}
                 ref={this._setLabelElement(index)}
             >
                 {label.labelContent}

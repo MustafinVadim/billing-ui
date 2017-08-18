@@ -19,46 +19,15 @@ class Label extends PureComponent {
         super(props, context);
 
         this.state = {
-            inputWidth: 0,
-            isEditMode: false
-        }
+            inputWidth: 0
+        };
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.isEditMode) {
+    componentDidUpdate() {
+        const {isEditMode} = this.props;
+
+        if (isEditMode) {
             this._changeInputWidth();
-            this._inputDOMNode && this._inputDOMNode.focus();
-
-            if (!prevState.isEditMode || prevProps.isActive) {
-                this._inputDOMNode && this._inputDOMNode.select();
-            }
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.isActive && !nextProps.validationResult.isValid) {
-            this.enterEditMode();
-        }
-    }
-
-    enterEditMode() {
-        const { onEnterEditMode, index } = this.props;
-
-        this.setState({
-            isEditMode: true
-        });
-        this._inputDOMNode && this._inputDOMNode.select();
-
-        onEnterEditMode && onEnterEditMode(index);
-    }
-
-    exitEditMode() {
-        const { onExitEditMode, validationResult: { isValid }, index, children } = this.props;
-        if (isValid) {
-            this.setState({
-                isEditMode: false
-            });
-            onExitEditMode && onExitEditMode(index, children)
         }
     }
 
@@ -72,24 +41,25 @@ class Label extends PureComponent {
         return selectionEnd === 0 && selectionStart === selectionEnd
     }
 
-    _handleClickRemove = evt => {
-        const { onRemove, index } = this.props;
+    selectInput() {
+        this._inputDOMNode && this._inputDOMNode.focus();
+        this._inputDOMNode && this._inputDOMNode.select();
+    }
 
-        if (onRemove) {
-            onRemove(index, evt);
+    _handleClickRemove = evt => {
+        const { onRemoveClick, index } = this.props;
+
+        if (onRemoveClick) {
+            onRemoveClick(index, evt);
         }
     };
 
     _handleMouseDown = evt => {
-        const { onMouseDown, index, isActive } = this.props;
+        const { onMouseDown, index } = this.props;
 
         const onRemoveIcon = evt.target.className.indexOf(LABEL_REMOVE_ICON_CLASS_NAME) >= 0;
         if (onRemoveIcon) {
             return;
-        }
-
-        if (isActive) {
-            this.enterEditMode();
         }
 
         if (onMouseDown) {
@@ -105,15 +75,9 @@ class Label extends PureComponent {
     };
 
     _handleBlur = (evt) => {
-        const { onBlur, onRemove, index, children } = this.props;
+        const { onBlur, index } = this.props;
 
-        this.exitEditMode();
-
-        if (!children) {
-            onRemove && onRemove(index, evt);
-        }
-
-        onBlur && onBlur(index);
+        onBlur && onBlur(index, evt);
     };
 
     _handleFocus = (evt) => {
@@ -151,8 +115,8 @@ class Label extends PureComponent {
     };
 
     render() {
-        const { children, tooltipContent, tooltipClassName, isActive, className } = this.props;
-        const { isEditMode, inputWidth } = this.state;
+        const { children, tooltipContent, tooltipClassName, isActive, isEditMode, className } = this.props;
+        const { inputWidth } = this.state;
         const hasTooltip = !!tooltipContent && !isEditMode;
 
         const wrapperClassNames = cx(
@@ -188,7 +152,6 @@ class Label extends PureComponent {
                             className={cx(styles.content, className)}
                             ref={this._setTooltipTarget}
                             onMouseDown={this._handleMouseDown}
-                            onDoubleClick={this._handleDoubleClick}
                         >
                             {children}
                             <Icon onClick={this._handleClickRemove}
@@ -217,12 +180,13 @@ class Label extends PureComponent {
 Label.propTypes = {
     index: PropTypes.number,
     isActive: PropTypes.bool,
+    isEditMode: PropTypes.bool,
     validationResult: PropTypes.shape({
         isValid: PropTypes.bool,
         error: PropTypes.string
     }),
     children: PropTypes.string,
-    onRemove: PropTypes.func,
+    onRemoveClick: PropTypes.func,
     onMouseDown: PropTypes.func,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
