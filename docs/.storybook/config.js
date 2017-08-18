@@ -3,8 +3,8 @@ import infoAddon from "@storybook/addon-info";
 import { withKnobs } from "@storybook/addon-knobs";
 import backgrounds from "@storybook/addon-backgrounds";
 
-import "../src/css/icon-fonts.scss";
 import "../src/css/Reset.css";
+import "../src/css/icon-fonts.scss";
 
 setAddon(infoAddon);
 
