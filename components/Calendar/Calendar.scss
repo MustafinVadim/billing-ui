@@ -58,11 +58,7 @@
     .cell {
         position: absolute;
 
-        &.holy {
-            color: $textDisabledColor;
-        }
-
-        &.active:not(.current) .cell-inner {
+        &.active:not(.current):not(.disabled) .cell-inner {
             background: $linkBaseColor;
 
             color: $textWhiteColor;
@@ -71,6 +67,10 @@
         &.today .cell-inner {
             color: $themeMainTextColor;
             font-weight: bold;
+        }
+
+        &.disabled .cell-inner {
+            color: $textDisabledColor;
         }
 
         &.current .cell-inner {

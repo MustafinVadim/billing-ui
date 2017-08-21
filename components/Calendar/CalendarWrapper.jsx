@@ -305,7 +305,7 @@ class CalendarWrapper extends PureComponent {
             return;
         }
 
-        const { value, minYear, maxYear, pickerClassName } = this.props;
+        const { value, minYear, maxYear, pickerClassName, minDate, maxDate } = this.props;
 
         return (
             <div className={cx(styles.picker, pickerClassName)} onKeyDown={this.handlePickerKey}>
@@ -313,6 +313,8 @@ class CalendarWrapper extends PureComponent {
                         verticalShift={this.state.height}
                         minYear={minYear}
                         maxYear={maxYear}
+                        minDate={minDate}
+                        maxDate={maxDate}
                         onPick={this.handlePick}
                         onClose={this.handlePickerClose}
                 />

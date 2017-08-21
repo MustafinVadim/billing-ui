@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
-import moment, { formatDate } from "../../libs/moment";
+import moment, { formatDate, outOfRange} from "../../libs/moment";
 import TimeConstants from "../../helpers/TimeConstants";
+import CustomPropTypes from "../../helpers/CustomPropTypes";
 
 import cx from "classnames";
 import styles from "./Calendar.scss";
@@ -79,6 +80,8 @@ class Calendar extends PureComponent {
     };
 
     handleMouseDown = (evt) => {
+        const { onPick, minDate, maxDate } = this.props;
+
         if (evt.button !== 0) {
             return;
         }
@@ -93,9 +96,11 @@ class Calendar extends PureComponent {
         if (weekDay < 7) {
             date.date(date.date() + weekDay);
 
-            if (this.props.onPick) {
-                this.props.onPick(date);
+            if (outOfRange(date, minDate, maxDate)) {
+                return;
             }
+
+            onPick && onPick(date);
         }
     };
 
@@ -152,6 +157,8 @@ class Calendar extends PureComponent {
     }
 
     renderCells(offset, from, week) {
+        const { value, minDate, maxDate } = this.props;
+
         const cells = [];
         const cellCount = Math.ceil((CALENDAR_HEIGHT + offset) / DAY_HEIGHT) * 7;
 
@@ -169,13 +176,14 @@ class Calendar extends PureComponent {
             const mouseX = this.state.mouseX;
             const mouseY = this.state.mouseY;
             const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y + DAY_HEIGHT > mouseY;
+            const disabled = outOfRange(date, minDate, maxDate);
 
             const cellClassNames = cx(styles.cell, {
                 [styles.active]: active,
                 [styles.today]: date.isSame(this._today, "day"),
-                [styles.current]: date.isSame(this.props.value, "day"),
+                [styles.current]: date.isSame(value, "day"),
                 [styles.grey]: date.month() % 2,
-                [styles.holy]: date.day() === 0 || date.day() === 6
+                [styles.disabled]: disabled
             });
             cells.push((
                 <span key={cur} className={cellClassNames} style={style} data-ft-id={`calendar-day_${formatDate(date)}`}>
@@ -217,7 +225,9 @@ Calendar.propTypes = {
     initialDate: PropTypes.oneOfType([PropTypes.instanceOf(moment), PropTypes.string]),
     value: PropTypes.instanceOf(moment),
     onNav: PropTypes.func,
-    onPick: PropTypes.func
+    onPick: PropTypes.func,
+    maxDate: CustomPropTypes.date,
+    minDate: CustomPropTypes.date
 };
 
 export default Calendar;

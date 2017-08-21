@@ -6,6 +6,7 @@ import moment from "../../libs/moment";
 
 import Calendar from "./Calendar";
 import DateSelect from "./DateSelect";
+import CustomPropTypes from "../../helpers/CustomPropTypes";
 
 import styles from "./Picker.scss";
 
@@ -115,6 +116,8 @@ class Picker extends PureComponent {
 Picker.propTypes = {
     value: PropTypes.instanceOf(moment),
     verticalShift: PropTypes.number,
+    maxDate: CustomPropTypes.date,
+    minDate: CustomPropTypes.date,
     minYear: PropTypes.number,
     maxYear: PropTypes.number,
     onPick: PropTypes.func,
