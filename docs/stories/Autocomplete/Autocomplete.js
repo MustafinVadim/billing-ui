@@ -17,7 +17,7 @@ export class AutocompleteWrapper extends React.Component {
             inputValue: value
         });
 
-        onChange && onChange(arguments);
+        onChange && onChange(value);
     };
 
     render() {
