@@ -3,6 +3,10 @@ import { action } from "@storybook/addon-actions";
 import { boolean, number, date } from "@storybook/addon-knobs";
 import { CalendarWrapper } from "./Calendar";
 
+import moment from "../../../libs/moment";
+
+const DEFAULT_DATE_RANGE = 3;
+
 storiesOf("Calendar", module)
     .add("main", () => (
         <CalendarWrapper
@@ -13,8 +17,8 @@ storiesOf("Calendar", module)
             isOpened={boolean("is opened", false)}
             maxYear={number("max year", 2100)}
             minYear={number("min year", 1900)}
-            maxDate={date("max date", undefined)}
-            minDate={date("min date", undefined)}
+            maxDate={date("max date", moment().add(DEFAULT_DATE_RANGE, "days").toDate())}
+            minDate={date("min date", moment().subtract(DEFAULT_DATE_RANGE, "days").toDate())}
             width={number("width", 115)}
         />
     ));
