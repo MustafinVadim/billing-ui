@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
-import { boolean, number, date } from "@storybook/addon-knobs";
+import { boolean, number, date, text } from "@storybook/addon-knobs";
 import { CalendarWrapper } from "./Calendar";
 
 import moment from "../../../libs/moment";
@@ -24,6 +24,7 @@ storiesOf("Calendar", module)
             maxDate={date("max date", moment().add(ENABLED_DATE_RANGE, "days").toDate())}
             minHighlightedDate={date("min highlighted date", moment().subtract(HIGHLIGHTED_DATE_RANGE, "days").toDate())}
             maxHighlightedDate={date("max highlighted date", moment().add(HIGHLIGHTED_DATE_RANGE, "days").toDate())}
+            highlightLegenda={text("legenda", "срок бронирования")}
             width={number("width", 115)}
         />
     ));

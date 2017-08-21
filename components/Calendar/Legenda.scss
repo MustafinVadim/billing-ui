@@ -1,0 +1,17 @@
+﻿@import "./../../styles/variables";
+
+:local {
+    .root {
+        padding: 12px 10px 15px;
+
+        border-top: 1px solid $borderDarkestColor;
+    }
+
+    .marker {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+
+        background-color: $availableColor;
+    }
+}

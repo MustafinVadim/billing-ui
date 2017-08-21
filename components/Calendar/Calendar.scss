@@ -81,11 +81,11 @@
 
         &.highlighted {
             .cell-inner {
-                color: $textAvailableColor;
+                color: $availableColor;
             }
 
             &.current .cell-inner {
-                background: $textAvailableColor;
+                background: $availableColor;
 
                 color: $textWhiteColor;
             }

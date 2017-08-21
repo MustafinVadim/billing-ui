@@ -6,6 +6,7 @@ import moment from "../../libs/moment";
 
 import Calendar from "./Calendar";
 import DateSelect from "./DateSelect";
+import Legenda from "./Legenda";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
 
 import styles from "./Picker.scss";
@@ -83,7 +84,7 @@ class Picker extends PureComponent {
 
     render() {
         const { date } = this.state;
-        const { minYear, maxYear } = this.props;
+        const { minYear, maxYear, highlightLegenda } = this.props;
         return (
             <div className={styles.root} data-ft-id="calendar-picker">
 
@@ -108,6 +109,9 @@ class Picker extends PureComponent {
                     initialDate={date}
                     onNav={(date) => this.setState({date})}
                 />
+                {highlightLegenda && (
+                    <Legenda text={highlightLegenda}/>
+                )}
             </div>
         );
     }
@@ -120,6 +124,7 @@ Picker.propTypes = {
     minDate: CustomPropTypes.date,
     minHighlightedDate: CustomPropTypes.date,
     maxHighlightedDate: CustomPropTypes.date,
+    highlightLegenda: PropTypes.string,
     minYear: PropTypes.number,
     maxYear: PropTypes.number,
     onPick: PropTypes.func,
