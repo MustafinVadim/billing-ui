@@ -118,6 +118,8 @@ Picker.propTypes = {
     verticalShift: PropTypes.number,
     maxDate: CustomPropTypes.date,
     minDate: CustomPropTypes.date,
+    minHighlightedDate: CustomPropTypes.date,
+    maxHighlightedDate: CustomPropTypes.date,
     minYear: PropTypes.number,
     maxYear: PropTypes.number,
     onPick: PropTypes.func,

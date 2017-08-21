@@ -78,6 +78,18 @@
 
             color: $textWhiteColor;
         }
+
+        &.highlighted {
+            .cell-inner {
+                color: $textAvailableColor;
+            }
+
+            &.current .cell-inner {
+                background: $textAvailableColor;
+
+                color: $textWhiteColor;
+            }
+        }
     }
 
     .cell-inner {

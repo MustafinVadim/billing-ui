@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
-import moment, { formatDate, outOfRange} from "../../libs/moment";
+import moment, { formatDate, inRange, outOfRange} from "../../libs/moment";
 import TimeConstants from "../../helpers/TimeConstants";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
 
@@ -157,7 +157,7 @@ class Calendar extends PureComponent {
     }
 
     renderCells(offset, from, week) {
-        const { value, minDate, maxDate } = this.props;
+        const { value, minDate, maxDate, minHighlightedDate, maxHighlightedDate } = this.props;
 
         const cells = [];
         const cellCount = Math.ceil((CALENDAR_HEIGHT + offset) / DAY_HEIGHT) * 7;
@@ -177,13 +177,15 @@ class Calendar extends PureComponent {
             const mouseY = this.state.mouseY;
             const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y + DAY_HEIGHT > mouseY;
             const disabled = outOfRange(date, minDate, maxDate);
+            const highlighted = inRange(date, minHighlightedDate, maxHighlightedDate);
 
             const cellClassNames = cx(styles.cell, {
                 [styles.active]: active,
                 [styles.today]: date.isSame(this._today, "day"),
                 [styles.current]: date.isSame(value, "day"),
                 [styles.grey]: date.month() % 2,
-                [styles.disabled]: disabled
+                [styles.disabled]: disabled,
+                [styles.highlighted]: highlighted
             });
             cells.push((
                 <span key={cur} className={cellClassNames} style={style} data-ft-id={`calendar-day_${formatDate(date)}`}>
@@ -227,7 +229,9 @@ Calendar.propTypes = {
     onNav: PropTypes.func,
     onPick: PropTypes.func,
     maxDate: CustomPropTypes.date,
-    minDate: CustomPropTypes.date
+    minDate: CustomPropTypes.date,
+    minHighlightedDate: CustomPropTypes.date,
+    maxHighlightedDate: CustomPropTypes.date
 };
 
 export default Calendar;

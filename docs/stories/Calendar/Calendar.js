@@ -25,7 +25,7 @@ export class CalendarWrapper extends React.Component {
     };
 
     render() {
-        const { minDate, maxDate } = this.props;
+        const { minDate, maxDate, minHighlightedDate, maxHighlightedDate } = this.props;
         const { isValid, date } = this.state;
 
         return (
@@ -33,9 +33,11 @@ export class CalendarWrapper extends React.Component {
                 {...this.props}
                 onChange={this._handleChange}
                 value={date}
+                isValid={isValid}
                 minDate={moment(minDate).toISOString()}
                 maxDate={moment(maxDate).toISOString()}
-                isValid={isValid}
+                minHighlightedDate={moment(minHighlightedDate).toISOString()}
+                maxHighlightedDate={moment(maxHighlightedDate).toISOString()}
             />
         );
     }

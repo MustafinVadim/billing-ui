@@ -305,7 +305,7 @@ class CalendarWrapper extends PureComponent {
             return;
         }
 
-        const { value, minYear, maxYear, pickerClassName, minDate, maxDate } = this.props;
+        const { value, minYear, maxYear, pickerClassName, minDate, maxDate, minHighlightedDate, maxHighlightedDate } = this.props;
 
         return (
             <div className={cx(styles.picker, pickerClassName)} onKeyDown={this.handlePickerKey}>
@@ -315,6 +315,8 @@ class CalendarWrapper extends PureComponent {
                         maxYear={maxYear}
                         minDate={minDate}
                         maxDate={maxDate}
+                        minHighlightedDate={minHighlightedDate}
+                        maxHighlightedDate={maxHighlightedDate}
                         onPick={this.handlePick}
                         onClose={this.handlePickerClose}
                 />
@@ -370,6 +372,8 @@ CalendarWrapper.propTypes = {
     minYear: PropTypes.number,
     maxDate: CustomPropTypes.date,
     minDate: CustomPropTypes.date,
+    minHighlightedDate: CustomPropTypes.date,
+    maxHighlightedDate: CustomPropTypes.date,
     value: CustomPropTypes.date,
     isNullable: PropTypes.bool,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
