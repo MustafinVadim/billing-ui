@@ -8,6 +8,14 @@ class Icon extends PureComponent {
     render() {
         const { type, className, onClick, isStrikeout, ...otherProps } = this.props;
 
+        if (type === IconType.Ruble) {
+            return (
+                <span className={classnames("currency-ruble", className)}>
+                    {IconType.Ruble}
+                </span>
+            );
+        }
+
         const iconClass = classnames(
             "iconic base-unselectable",
             styles.icon,
