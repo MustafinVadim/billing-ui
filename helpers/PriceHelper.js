@@ -1,4 +1,4 @@
-﻿export const priceFormatHelper = amount => {
+﻿export const priceFormatHelper = (amount, needFractionalPart = true) => {
     let isNegative = amount < 0;
     const _amount = Math.abs(amount);
 
@@ -14,7 +14,7 @@
         integralNumberString = integralNumberString.slice(0, sliceEdge);
     }
 
-    const fractionalFormat = fractionalPart !== 0
+    const fractionalFormat = needFractionalPart && fractionalPart !== 0
         ? `.${fractionalPart < 10 ? `0${fractionalPart}` : fractionalPart}`
         : "";
 

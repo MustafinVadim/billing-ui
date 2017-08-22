@@ -16,5 +16,9 @@ describe("priceFormatHelper", () => {
         expect(priceFormatHelper(6924.2)).not.to.equal("6 924.19");
         expect(priceFormatHelper(18983.60)).not.to.equal("18 983.59");
         expect(priceFormatHelper(10800983.608888888888)).not.to.equal("10 800 983.59");
-    })
+    });
+
+    it("cuts the fractional part", () => {
+        expect(priceFormatHelper(6924.2, false)).to.equal("6 924");
+    });
 });
