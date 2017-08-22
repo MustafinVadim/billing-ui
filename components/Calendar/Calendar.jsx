@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
-import moment, { formatDate, inRange, outOfRange } from "../../libs/moment";
+import moment, { formatDate, convertISOString, inRange, outOfRange } from "../../libs/moment";
 import TimeConstants from "../../helpers/TimeConstants";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
 
@@ -96,7 +96,7 @@ class Calendar extends PureComponent {
         if (weekDay < 7) {
             date.date(date.date() + weekDay);
 
-            if (outOfRange(date, minDate, maxDate)) {
+            if (outOfRange(date, convertISOString(minDate), convertISOString(maxDate))) {
                 return;
             }
 
@@ -178,7 +178,7 @@ class Calendar extends PureComponent {
             const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y + DAY_HEIGHT > mouseY;
             const disabled = outOfRange(date, minDate, maxDate);
             const current = date.isSame(value, "day");
-            const highlighted = highlight && inRange(date, highlight.minDate, highlight.maxDate);
+            const highlighted = highlight && inRange(date, convertISOString(highlight.minDate), convertISOString(highlight.maxDate));
 
             const highlightedStyle = highlighted ? {
                 color: !current ? highlight.color : null,

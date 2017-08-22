@@ -106,6 +106,7 @@ class TextInput extends PureComponent {
             value,
             title: value,
             style: {
+                ...others.style,
                 "width": width,
                 "height": height
             },
