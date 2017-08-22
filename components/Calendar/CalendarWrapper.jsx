@@ -16,7 +16,7 @@ import { filterObjectKeys } from "./../../helpers/ArrayHelper";
 
 import styles from "./CalendarWrapper.scss";
 
-const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName"];
+const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName", "highlight", "initialDate"];
 
 class CalendarWrapper extends PureComponent {
     _selectionRanges = [{ start: 0, end: 2, type: "days" }, { start: 3, end: 5, type: "months" }, { start: 6, end: 10, type: "years" }];
@@ -305,19 +305,21 @@ class CalendarWrapper extends PureComponent {
             return;
         }
 
-        const { value, minYear, maxYear, pickerClassName, minDate, maxDate, highlight } = this.props;
+        const { value, minYear, maxYear, pickerClassName, minDate, maxDate, highlight, initialDate } = this.props;
 
         return (
             <div className={cx(styles.picker, pickerClassName)} onKeyDown={this.handlePickerKey}>
-                <Picker value={convertISOString(value)}
-                        verticalShift={this.state.height}
-                        minYear={minYear}
-                        maxYear={maxYear}
-                        minDate={minDate}
-                        maxDate={maxDate}
-                        highlight={highlight}
-                        onPick={this.handlePick}
-                        onClose={this.handlePickerClose}
+                <Picker
+                    initialDate={convertISOString(initialDate)}
+                    value={convertISOString(value)}
+                    verticalShift={this.state.height}
+                    minYear={minYear}
+                    maxYear={maxYear}
+                    minDate={minDate}
+                    maxDate={maxDate}
+                    highlight={highlight}
+                    onPick={this.handlePick}
+                    onClose={this.handlePickerClose}
                 />
             </div>
         );
@@ -384,6 +386,7 @@ CalendarWrapper.propTypes = {
         color: PropTypes.string
     }),
     value: CustomPropTypes.date,
+    initialDate: CustomPropTypes.date,
     isNullable: PropTypes.bool,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,

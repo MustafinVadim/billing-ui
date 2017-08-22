@@ -25,7 +25,6 @@ const isDetached = element => {
     return true;
 };
 
-
 class Picker extends PureComponent {
     _handleDocClick = this.handleDocClick.bind(this);
 
@@ -84,7 +83,7 @@ class Picker extends PureComponent {
 
     render() {
         const { date } = this.state;
-        const { minYear, maxYear, highlight } = this.props;
+        const { minYear, maxYear, highlight, initialDate, value } = this.props;
         return (
             <div className={styles.root} data-ft-id="calendar-picker">
 
@@ -105,12 +104,12 @@ class Picker extends PureComponent {
                     </div>
                 </div>
                 <Calendar ref="calendar"
-                    {...this.props}
-                    initialDate={date}
-                    onNav={(date) => this.setState({date})}
+                          {...this.props}
+                          initialDate={value.isValid() ? date : initialDate}
+                          onNav={(date) => this.setState({ date })}
                 />
                 {highlight && highlight.legend && (
-                    <Legenda text={highlight.legend} color={highlight.color}/>
+                    <Legenda text={highlight.legend} color={highlight.color} />
                 )}
             </div>
         );
@@ -119,6 +118,7 @@ class Picker extends PureComponent {
 
 Picker.propTypes = {
     value: PropTypes.instanceOf(moment),
+    initialDate: PropTypes.instanceOf(moment),
     verticalShift: PropTypes.number,
     maxDate: CustomPropTypes.date,
     minDate: CustomPropTypes.date,
