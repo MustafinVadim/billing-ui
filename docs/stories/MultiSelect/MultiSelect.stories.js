@@ -1,8 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
-import { text, select } from "@storybook/addon-knobs";
+import { text } from "@storybook/addon-knobs";
 import { MultiSelectWrapper } from "./MultiSelect";
-import { PositionTypes } from "../../../components/Tooltip";
 
 storiesOf("MultiSelect", module)
     .add("main", () => (

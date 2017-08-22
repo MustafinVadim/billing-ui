@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
-import moment, { formatDate, inRange, outOfRange} from "../../libs/moment";
+import moment, { formatDate, inRange, outOfRange } from "../../libs/moment";
 import TimeConstants from "../../helpers/TimeConstants";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
 
@@ -157,7 +157,7 @@ class Calendar extends PureComponent {
     }
 
     renderCells(offset, from, week) {
-        const { value, minDate, maxDate, minHighlightedDate, maxHighlightedDate } = this.props;
+        const { value, minDate, maxDate, highlight } = this.props;
 
         const cells = [];
         const cellCount = Math.ceil((CALENDAR_HEIGHT + offset) / DAY_HEIGHT) * 7;
@@ -177,19 +177,24 @@ class Calendar extends PureComponent {
             const mouseY = this.state.mouseY;
             const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y + DAY_HEIGHT > mouseY;
             const disabled = outOfRange(date, minDate, maxDate);
-            const highlighted = inRange(date, minHighlightedDate, maxHighlightedDate);
+            const current = date.isSame(value, "day");
+            const highlighted = highlight && inRange(date, highlight.minDate, highlight.maxDate);
+
+            const highlightedStyle = highlighted ? {
+                color: !current ? highlight.color : null,
+                backgroundColor: current ? highlight.color : null
+            } : null;
 
             const cellClassNames = cx(styles.cell, {
                 [styles.active]: active,
                 [styles.today]: date.isSame(this._today, "day"),
-                [styles.current]: date.isSame(value, "day"),
+                [styles.current]: current,
                 [styles.grey]: date.month() % 2,
-                [styles.disabled]: disabled,
-                [styles.highlighted]: highlighted
+                [styles.disabled]: disabled
             });
             cells.push((
                 <span key={cur} className={cellClassNames} style={style} data-ft-id={`calendar-day_${formatDate(date)}`}>
-                    <span className={styles["cell-inner"]}>{date.date()}</span>
+                    <span className={styles["cell-inner"]} style={highlightedStyle}>{date.date()}</span>
                 </span>
             ));
         }
@@ -213,10 +218,10 @@ class Calendar extends PureComponent {
                 {cells}
                 {months}
                 <div className={styles.mask}
-                    data-ft-id="calendar-days_overlay"
-                    onMouseMove={this.handleMouseMove}
-                    onMouseLeave={this.handleMouseLeave}
-                    onMouseDown={this.handleMouseDown}
+                     data-ft-id="calendar-days_overlay"
+                     onMouseMove={this.handleMouseMove}
+                     onMouseLeave={this.handleMouseLeave}
+                     onMouseDown={this.handleMouseDown}
                 />
             </div>
         );
@@ -230,8 +235,12 @@ Calendar.propTypes = {
     onPick: PropTypes.func,
     maxDate: CustomPropTypes.date,
     minDate: CustomPropTypes.date,
-    minHighlightedDate: CustomPropTypes.date,
-    maxHighlightedDate: CustomPropTypes.date
+    highlight: PropTypes.shape({
+        minDate: CustomPropTypes.date,
+        maxDate: CustomPropTypes.date,
+        legend: PropTypes.string,
+        color: PropTypes.string
+    })
 };
 
 export default Calendar;
