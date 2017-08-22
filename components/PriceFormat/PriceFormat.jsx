@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import iconType from "../Icon";
-import specialCharacters from "../SpecialCharacters";
+import specialCharacters from "../../helpers/SpecialCharacters";
 import { priceFormatHelper } from "../../helpers/PriceHelper";
 
 const CurrencySymbol = () => (
