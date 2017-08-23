@@ -16,7 +16,7 @@ import { filterObjectKeys } from "./../../helpers/ArrayHelper";
 
 import styles from "./CalendarWrapper.scss";
 
-const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName", "highlight", "initialDate"];
+const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName", "highlight", "defaultStartDate"];
 
 class CalendarWrapper extends PureComponent {
     _selectionRanges = [{ start: 0, end: 2, type: "days" }, { start: 3, end: 5, type: "months" }, { start: 6, end: 10, type: "years" }];
@@ -305,12 +305,12 @@ class CalendarWrapper extends PureComponent {
             return;
         }
 
-        const { value, minYear, maxYear, pickerClassName, minDate, maxDate, highlight, initialDate } = this.props;
+        const { value, minYear, maxYear, pickerClassName, minDate, maxDate, highlight, defaultStartDate } = this.props;
 
         return (
             <div className={cx(styles.picker, pickerClassName)} onKeyDown={this.handlePickerKey}>
                 <Picker
-                    initialDate={convertISOString(initialDate)}
+                    defaultStartDate={convertISOString(defaultStartDate)}
                     value={convertISOString(value)}
                     verticalShift={this.state.height}
                     minYear={minYear}
@@ -335,7 +335,7 @@ class CalendarWrapper extends PureComponent {
             [styles.disabled]: disabled
         });
 
-        const highlighted = inRange(date, convertISOString(highlight.minDate), convertISOString(highlight.maxDate));
+        const highlighted = highlight && inRange(date, convertISOString(highlight.minDate), convertISOString(highlight.maxDate));
 
         const inputStyle = {
             color: highlighted ? highlight.color : null
@@ -386,7 +386,7 @@ CalendarWrapper.propTypes = {
         color: PropTypes.string
     }),
     value: CustomPropTypes.date,
-    initialDate: CustomPropTypes.date,
+    defaultStartDate: CustomPropTypes.date,
     isNullable: PropTypes.bool,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,

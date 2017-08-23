@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
-import { boolean, number, date, text, color, withKnobsOptions } from "@storybook/addon-knobs";
+import { boolean, number, date, text, color } from "@storybook/addon-knobs";
 import { CalendarWrapper } from "./Calendar";
 
 import moment from "../../../libs/moment";
@@ -14,7 +14,7 @@ const DEFAULT_MAX_DATE = moment().add(ENABLED_DATE_RANGE, "days").toDate();
 const DEFAULT_MIN_HL_DATE = moment().subtract(HIGHLIGHTED_DATE_RANGE, "days").toDate();
 const DEFAULT_MAX_HL_DATE = moment().add(HIGHLIGHTED_DATE_RANGE, "days").toDate();
 
-const DEFAULT_INITIAL_DATE = moment().add(2, "weeks").toDate();
+const DEFAULT_INITIAL_DATE = moment().toDate();
 
 storiesOf("Calendar", module)
     .add("main", () => (
@@ -34,7 +34,7 @@ storiesOf("Calendar", module)
                 legend: text("legend", "срок бронирования"),
                 color: color("highlight color", "#1d9d00")
             }}
-            initialDate={date("initial date", DEFAULT_INITIAL_DATE)}
+            defaultStartDate={date("initial date", DEFAULT_INITIAL_DATE)}
             width={number("width", 115)}
         />
     ));

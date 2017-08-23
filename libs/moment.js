@@ -13,8 +13,6 @@ export const convertToISO = (date) => {
         : convertString(date).toISOString();
 };
 
-export const inRange = (date, minDate, maxDate) => date.isValid() && (!minDate || !date.isBefore(minDate, "day"))
-    && (!maxDate || !date.isAfter(maxDate, "day"));
+export const inRange = (date, minDate, maxDate) => date.isValid() && date.isBetween(minDate, maxDate, 'day', '[]');
 
-export const outOfRange = (date, minDate, maxDate) => !inRange(date, minDate, maxDate);
 export default moment;

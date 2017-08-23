@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
-import moment, { formatDate, convertISOString, inRange, outOfRange } from "../../libs/moment";
+import moment, { formatDate, convertISOString, inRange } from "../../libs/moment";
 import TimeConstants from "../../helpers/TimeConstants";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
 
@@ -34,11 +34,11 @@ const getDay = date => {
 };
 
 const dateToPos = date => {
-    return (Math.floor((+date - FIRST_WEEK_SHIFT - DAY) / WEEK) - 1) * DAY_HEIGHT;
+    return getWeek(+date) * DAY_HEIGHT;
 };
 
 const posToDate = pos => {
-    return moment(Math.floor(pos / DAY_HEIGHT + 2) * WEEK - FIRST_WEEK_SHIFT);
+    return moment(Math.floor(pos / DAY_HEIGHT) * WEEK - FIRST_WEEK_SHIFT);
 };
 
 class Calendar extends PureComponent {
@@ -50,6 +50,7 @@ class Calendar extends PureComponent {
         };
 
         this._today = moment();
+        this.moment = moment;
     }
 
     moveToDate(date) {
@@ -90,13 +91,13 @@ class Calendar extends PureComponent {
         const x = evt.clientX - rect.left;
         const y = evt.clientY - rect.top;
 
-        const time = Math.floor((this.state.pos + y) / DAY_HEIGHT) * WEEK - FIRST_WEEK_SHIFT;
+        const time = posToDate(this.state.pos + y);
         const date = moment(time);
         const weekDay = Math.floor(x / DAY_WIDTH);
         if (weekDay < 7) {
             date.date(date.date() + weekDay);
 
-            if (outOfRange(date, convertISOString(minDate), convertISOString(maxDate))) {
+            if (!inRange(date, convertISOString(minDate), convertISOString(maxDate))) {
                 return;
             }
 
@@ -176,7 +177,7 @@ class Calendar extends PureComponent {
             const mouseX = this.state.mouseX;
             const mouseY = this.state.mouseY;
             const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y + DAY_HEIGHT > mouseY;
-            const disabled = outOfRange(date, minDate, maxDate);
+            const disabled = !inRange(date, minDate, maxDate);
             const current = date.isSame(value, "day");
             const highlighted = highlight && inRange(date, convertISOString(highlight.minDate), convertISOString(highlight.maxDate));
 
@@ -207,7 +208,7 @@ class Calendar extends PureComponent {
         if (offset < 0) {
             offset += DAY_HEIGHT;
         }
-        const from = (this.state.pos - offset) / DAY_HEIGHT * WEEK - FIRST_WEEK_SHIFT;
+        const from = posToDate(this.state.pos - offset);
         const week = getWeek(from);
 
         const months = this.renderMonth(offset, from, week);

@@ -83,7 +83,10 @@ class Picker extends PureComponent {
 
     render() {
         const { date } = this.state;
-        const { minYear, maxYear, highlight, initialDate, value } = this.props;
+        const { minYear, maxYear, highlight, defaultStartDate, value } = this.props;
+
+        const initialDate = value.isValid() || !defaultStartDate.isValid() ? moment(date).subtract(3, "weeks") : defaultStartDate;
+
         return (
             <div className={styles.root} data-ft-id="calendar-picker">
 
@@ -105,7 +108,7 @@ class Picker extends PureComponent {
                 </div>
                 <Calendar ref="calendar"
                           {...this.props}
-                          initialDate={value.isValid() ? date : initialDate}
+                          initialDate={initialDate}
                           onNav={(date) => this.setState({ date })}
                 />
                 {highlight && highlight.legend && (
@@ -118,7 +121,7 @@ class Picker extends PureComponent {
 
 Picker.propTypes = {
     value: PropTypes.instanceOf(moment),
-    initialDate: PropTypes.instanceOf(moment),
+    defaultStartDate: PropTypes.instanceOf(moment),
     verticalShift: PropTypes.number,
     maxDate: CustomPropTypes.date,
     minDate: CustomPropTypes.date,
