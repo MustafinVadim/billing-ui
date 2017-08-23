@@ -192,9 +192,16 @@ class MultiSelect extends PureComponent {
         }
     };
 
+    _handleLabelControllerFocus = () => {
+        this.setState({
+            isFocused: true
+        });
+    };
+
     _handleLabelControllerBlur = () => {
         this.setState({
-            selectedLabelIndex: -1
+            selectedLabelIndex: -1,
+            isFocused: false
         });
     };
 
@@ -237,6 +244,10 @@ class MultiSelect extends PureComponent {
 
     _handleLabelFocus = index => {
         this._enterLabelEditMode(index);
+
+        this.setState({
+            isFocused: true
+        });
     };
 
     _handleLabelBlur = (index, evt) => {
@@ -250,6 +261,10 @@ class MultiSelect extends PureComponent {
 
         const labelsValidationResult = validate(labels, labelsValidation);
         this._setInputValidationResult();
+
+        this.setState({
+            isFocused: false
+        });
 
         if (onBlur) {
             onBlur(evt, {
@@ -464,6 +479,7 @@ class MultiSelect extends PureComponent {
                            tabIndex="-1"
                            onKeyDown={this._handleLabelControllerKey}
                            onBlur={this._handleLabelControllerBlur}
+                           onFocus={this._handleLabelControllerFocus}
                     />
                     <Autocomplete
                         {...autocompleteProps}
