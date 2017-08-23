@@ -142,7 +142,7 @@ class CalendarWrapper extends PureComponent {
         const { isValid, errorType } = this.validate(date);
 
         this.setState({
-            date: this._getTime(date),
+            date,
             isValid,
             errorType
         });
@@ -237,9 +237,8 @@ class CalendarWrapper extends PureComponent {
             return;
         }
 
-        const momentDate = convertISOString(date || this._emptyDate);
-        const { isValid, errorType } = this.validate(momentDate, minDate, maxDate);
-        const dateTime = this._getTime(momentDate);
+        const dateTime = convertISOString(date || this._emptyDate);
+        const { isValid, errorType } = this.validate(dateTime, minDate, maxDate);
         const dateHasChanged = !dateTime.isSame(convertISOString(value), "day");
         const validityHasChanged = this.state.isValid !== isValid;
 
@@ -285,11 +284,6 @@ class CalendarWrapper extends PureComponent {
     _selectPrevBlock() {
         let selectedBlock = this._selectedBlock;
         this._selectBlock(selectedBlock === 0 ? 0 : selectedBlock - 1);
-    }
-
-    _getTime(date) {
-        const { type } = this.props;
-        return type === "time" ? date : date.set({ "hour": "00", "minute": "00", "second": "00" })
     }
 
     _defineHeight() {
