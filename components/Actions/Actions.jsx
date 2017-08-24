@@ -1,18 +1,43 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import SpecialCharacters from "../../helpers/SpecialCharacters";
 import Popup from "../PopupWrapper";
 
 import styles from "./Actions.scss";
-import classnames from "classnames";
+import cx from "classnames";
 
-class Actions extends Component {
+class Actions extends PureComponent {
     _closeLink = null;
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isActive: props.isActive
+        };
+    }
+
+    componendDidUpdate() {
+        this.setState({
+            isActive: this.props.isActive
+        });
+    }
+
+    _handleClickContent = () => {
+        const { shouldCloseOnClick } = this.props;
+
+        if (shouldCloseOnClick) {
+            this.setState({
+                isActive: false
+            });
+        }
+    };
+
     render() {
-        const { className, children, getBindItem, position, onOpen, onClose, isActive, ellipsisClassName } = this.props;
-        const classNamesPopup = classnames(styles.popup, className);
-        const ellipsisClassNames = classnames(styles["close-link"], ellipsisClassName);
+        const { className, children, getBindItem, position, onOpen, onClose, ellipsisClassName } = this.props;
+        const { isActive } = this.state;
+        const classNamesPopup = cx(styles.popup, className);
+        const ellipsisClassNames = cx(styles["close-link"], ellipsisClassName);
 
         return (
             <Popup className={classNamesPopup}
@@ -24,10 +49,14 @@ class Actions extends Component {
                    onClose={onClose}
                    isActive={isActive}
             >
-                <span className={ellipsisClassNames} ref={node => { this._closeLink = node }}>
-                    {SpecialCharacters.Ellipsis}
-                </span>
-                {children}
+                <div onClick={this._handleClickContent}>
+                    <span className={ellipsisClassNames} ref={node => {
+                        this._closeLink = node
+                    }}>
+                        {SpecialCharacters.Ellipsis}
+                    </span>
+                    {children}
+                </div>
             </Popup>
         );
     }
@@ -36,9 +65,12 @@ class Actions extends Component {
 Actions.propTypes = {
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
+
     isActive: PropTypes.bool,
     position: PropTypes.object,
     getBindItem: PropTypes.func.isRequired,
+    shouldCloseOnClick: PropTypes.bool,
+
     className: PropTypes.string,
     ellipsisClassName: PropTypes.string,
     children: PropTypes.node
@@ -46,7 +78,8 @@ Actions.propTypes = {
 
 Actions.defaultProps = {
     position: { top: 0, right: 0 },
-    className: ""
+    className: "",
+    closeOnAction: false
 };
 
 export default Actions;

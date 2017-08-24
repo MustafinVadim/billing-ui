@@ -1,38 +1,20 @@
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 import Icon from "../Icon";
 import Link from "../Link";
 import styles from "./Actions.scss";
-import classnames from "classnames";
+import cx from "classnames";
 
-class Action extends Component {
-    getAction() {
-        const { className, iconType, description, onClick } = this.props;
-        const actionClassNames = classnames(styles.action, className);
-
-        return (
-            <div className={actionClassNames} onClick={() => onClick()}>
-                <Icon className={styles.icon} type={iconType} />
-                <span className={styles.description}>{description}</span>
-            </div>
-        );
-    }
-
-    getActionAsLink() {
-        const { className, iconType, description, href, target, onClick } = this.props;
-        const actionClassNames = classnames(styles.action, className);
+class Action extends PureComponent {
+    render() {
+        const { href, target, description, onClick, className, iconType, iconClassName } = this.props;
 
         return (
-            <Link className={actionClassNames} href={href} target={target} onClick={() => onClick()}>
-                <Icon className={styles.icon} type={iconType} />
+            <Link className={cx(styles.action, className)} href={href} target={target} onClick={onClick}>
+                <Icon className={cx(styles.icon, iconClassName)} type={iconType} />
                 <span className={styles.description}>{description}</span>
             </Link>
         );
-    }
-
-    render() {
-        const { asLink } = this.props;
-        return (asLink ? this.getActionAsLink() : this.getAction());
     }
 }
 
@@ -43,7 +25,8 @@ Action.propTypes = {
     target: PropTypes.string,
     iconType: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    className: PropTypes.string
+    className: PropTypes.string,
+    iconClassName: PropTypes.string
 };
 
 Action.defaultProps = {
