@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import freeze from "deep-freeze";
-import { replaceByIndex, findIndex, findEntity, findIndexAndEntity, arrayReduceHelper, omitEntityByIndex } from "../../helpers/ArrayHelper";
+import { replaceByIndex, findIndex, findEntity, findIndexAndEntity, arrayReduceHelper, omitEntityByIndex, reorder } from "../../helpers/ArrayHelper";
 
 describe("ArrayHelper", () => {
     describe("replace element by index", () => {
@@ -93,7 +93,7 @@ describe("ArrayHelper", () => {
             const expectedIndex = 2;
             const expectedEntity = "a";
 
-            const [ actualIndex, actualEntity ] = findIndexAndEntity(item => item === "a", initArr);
+            const [actualIndex, actualEntity] = findIndexAndEntity(item => item === "a", initArr);
             expect(actualIndex).to.equal(expectedIndex);
             expect(actualEntity).to.equal(expectedEntity);
         });
@@ -102,7 +102,7 @@ describe("ArrayHelper", () => {
             const expectedIndex = -1;
             const expectedEntity = null;
 
-            const [ actualIndex, actualEntity ] = findIndexAndEntity(item => item === "c", initArr);
+            const [actualIndex, actualEntity] = findIndexAndEntity(item => item === "c", initArr);
             expect(actualIndex).to.equal(expectedIndex);
             expect(actualEntity).to.equal(expectedEntity);
         });
@@ -184,6 +184,15 @@ describe("ArrayHelper", () => {
             );
 
             expect(newState).to.deep.equal(expectedState);
+        });
+    });
+
+    describe("reorder()", () => {
+        it("should immutably replace array element from old index to new index", () => {
+            const initial = freeze([1, 2, 3]);
+            const expected = [2, 1, 3];
+
+            expect(reorder(initial, 0, 1)).to.deep.equal(expected);
         });
     });
 });
