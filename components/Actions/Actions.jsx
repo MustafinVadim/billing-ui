@@ -27,9 +27,7 @@ class Actions extends PureComponent {
         const { shouldCloseOnClick } = this.props;
 
         if (shouldCloseOnClick) {
-            this.setState({
-                isActive: false
-            });
+            this._handleClose();
         }
     };
 
