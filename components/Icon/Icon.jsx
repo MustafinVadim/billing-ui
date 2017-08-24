@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import IconType from "./IconType";
-import classnames from "classnames";
+import cx from "classnames";
 import styles from "./Icon.scss";
 
 class Icon extends PureComponent {
@@ -10,13 +10,17 @@ class Icon extends PureComponent {
 
         if (type === IconType.Ruble) {
             return (
-                <span className={classnames("currency-ruble", className)}>
+                <span className={cx("currency-ruble", styles.icon, className)}>
                     {IconType.Ruble}
                 </span>
             );
         }
 
-        const iconClass = classnames(
+        if (type === IconType.Billing) {
+            return <span className={cx(styles[type], styles.icon, className)} />;
+        }
+
+        const iconClass = cx(
             "iconic base-unselectable",
             styles.icon,
             {
@@ -35,7 +39,7 @@ class Icon extends PureComponent {
 
 Icon.propTypes = {
     type: PropTypes.string.isRequired,
-    className: PropTypes.string.isRequired,
+    className: PropTypes.string,
     onClick: PropTypes.func,
     isStrikeout: PropTypes.bool
 };

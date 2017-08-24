@@ -17,4 +17,13 @@
 
         border-left: 1px solid $textBaseColor;
     }
+
+    .billing {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+
+        background-image: url("../../svg/billing.svg");
+        background-size: contain;
+    }
 }

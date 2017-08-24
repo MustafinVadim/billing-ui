@@ -183,7 +183,8 @@ export const IconTypes = {
     TextAlignLeft: "\ue0b6",
     TextAlignRight: "\ue0b8",
     TextNbsp: "\ue0b5",
-    Ruble: "\u20b6"
+    Ruble: "\u20b6",
+    Billing: "billing"
 };
 
 export default IconTypes;
