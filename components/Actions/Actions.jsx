@@ -34,19 +34,27 @@ class Actions extends PureComponent {
     };
 
     _handleOpen = () => {
+        const { onOpen } = this.props;
+
         this.setState({
             isActive: true
         });
 
-        this.props.onOpen();
+        if (onOpen) {
+            onOpen();
+        }
     };
 
     _handleClose = () => {
+        const { onClose } = this.props;
+
         this.setState({
             isActive: false
         });
 
-        this.props.onClose();
+        if (onClose) {
+            onClose();
+        }
     };
 
     render() {
