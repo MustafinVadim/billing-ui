@@ -33,8 +33,24 @@ class Actions extends PureComponent {
         }
     };
 
+    _handleOpen = () => {
+        this.setState({
+            isActive: true
+        });
+
+        this.props.onOpen();
+    };
+
+    _handleClose = () => {
+        this.setState({
+            isActive: false
+        });
+
+        this.props.onClose();
+    };
+
     render() {
-        const { className, children, getBindItem, position, onOpen, onClose, ellipsisClassName } = this.props;
+        const { className, children, getBindItem, position, ellipsisClassName } = this.props;
         const { isActive } = this.state;
         const classNamesPopup = cx(styles.popup, className);
         const ellipsisClassNames = cx(styles["close-link"], ellipsisClassName);
@@ -45,8 +61,8 @@ class Actions extends PureComponent {
                    getBindItem={getBindItem}
                    getOpenLink={getBindItem}
                    getCloseLink={() => this._closeLink}
-                   onOpen={onOpen}
-                   onClose={onClose}
+                   onOpen={this._handleOpen}
+                   onClose={this._handleClose}
                    isActive={isActive}
             >
                 <div onClick={this._handleClickContent}>
