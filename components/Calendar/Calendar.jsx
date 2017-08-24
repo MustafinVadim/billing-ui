@@ -19,6 +19,7 @@ const FIRST_WEEK_SHIFT = (new Date(0).getDay() - 1) * DAY;
 const DAY_HEIGHT = 31;
 const DAY_WIDTH = 28;
 const CALENDAR_HEIGHT = 210;
+const ROWS_COUNT = Math.ceil(CALENDAR_HEIGHT / DAY_HEIGHT);
 
 const getWeek = (time) => {
     return Math.floor((FIRST_WEEK_SHIFT + time) / WEEK);
@@ -46,7 +47,7 @@ class Calendar extends PureComponent {
         super(props, context);
 
         this.state = {
-            pos: dateToPos(props.initialDate)
+            pos: this._prettyfyPosition(dateToPos(props.initialDate))
         };
 
         this._today = moment();
@@ -72,7 +73,8 @@ class Calendar extends PureComponent {
             deltaY = deltaY / Math.abs(deltaY) * DAY_HEIGHT * 5;
         }
 
-        const pos = this.state.pos + deltaY;
+        const pos = this._prettyfyPosition(this.state.pos + deltaY);
+
         this.setState({ pos });
 
         const date = posToDate(pos);
@@ -201,6 +203,31 @@ class Calendar extends PureComponent {
         }
 
         return cells;
+    }
+
+    _prettyfyPosition(pos) {
+        const { minDate: minDateISO, maxDate: maxDateISO } = this.props;
+
+        let date = posToDate(pos);
+
+        const minDate = convertISOString(minDateISO);
+        const maxDate = convertISOString(maxDateISO);
+
+        const minWeek = getWeek(minDate);
+        const maxWeek = getWeek(maxDate);
+
+        const firstShowingWeek = getWeek(date);
+        const lastShowingWeek = getWeek(date) + ROWS_COUNT - 1;
+
+        if (maxWeek - minWeek <= ROWS_COUNT - 1) {
+            date = moment((minDate + maxDate) / 2).subtract(Math.floor(ROWS_COUNT / 2), "weeks");
+        } else if (firstShowingWeek <= minWeek) {
+            date = minDate;
+        } else if (lastShowingWeek >= maxWeek) {
+            date = moment(maxDate).subtract(ROWS_COUNT - 1, "weeks");
+        }
+
+        return dateToPos(date);
     }
 
     render() {
