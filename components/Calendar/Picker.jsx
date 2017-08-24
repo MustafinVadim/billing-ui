@@ -83,7 +83,7 @@ class Picker extends PureComponent {
 
     render() {
         const { date } = this.state;
-        const { minYear, maxYear, highlight, defaultStartDate, value } = this.props;
+        const { minYear, maxYear, minDate, maxDate, highlight, defaultStartDate, value } = this.props;
 
         const initialDate = value.isValid() || !defaultStartDate.isValid() ? moment(date).subtract(3, "weeks") : defaultStartDate;
 
@@ -96,11 +96,16 @@ class Picker extends PureComponent {
                                     value={date.year()}
                                     minYear={minYear}
                                     maxYear={maxYear}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
                                     width={60}
                                     onChange={this.handleYearChange}
                         />
                         <DateSelect type="month"
                                     value={date.month()}
+                                    year={date.year()}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
                                     width={95}
                                     onChange={this.handleMonthChange}
                         />
@@ -123,8 +128,8 @@ Picker.propTypes = {
     value: PropTypes.instanceOf(moment),
     defaultStartDate: PropTypes.instanceOf(moment),
     verticalShift: PropTypes.number,
-    maxDate: CustomPropTypes.date,
-    minDate: CustomPropTypes.date,
+    maxDate: PropTypes.instanceOf(moment),
+    minDate: PropTypes.instanceOf(moment),
     highlight: PropTypes.shape({
         minDate: CustomPropTypes.date,
         maxDate: CustomPropTypes.date,

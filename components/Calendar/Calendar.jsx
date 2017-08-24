@@ -58,7 +58,7 @@ class Calendar extends PureComponent {
         const newDate = moment(0);
         newDate.year(date.year());
         newDate.month(date.month());
-        this.setState({ pos: dateToPos(newDate) });
+        this.setState({ pos: this._prettyfyPosition(dateToPos(newDate)) });
     }
 
     handleWheel = (evt) => {

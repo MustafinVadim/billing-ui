@@ -309,8 +309,8 @@ class CalendarWrapper extends PureComponent {
                     verticalShift={this.state.height}
                     minYear={minYear}
                     maxYear={maxYear}
-                    minDate={minDate}
-                    maxDate={maxDate}
+                    minDate={convertISOString(minDate)}
+                    maxDate={convertISOString(maxDate)}
                     highlight={highlight}
                     onPick={this.handlePick}
                     onClose={this.handlePickerClose}

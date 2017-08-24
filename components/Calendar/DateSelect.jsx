@@ -3,6 +3,7 @@ import { PureComponent } from "react";
 import dateSelectType from "./DateSelectType";
 import keyCodes from "../../helpers/KeyCodes";
 import { fixYPopupPosition } from "./PopupPositionHelper";
+import moment from "../../libs/moment";
 
 import cx from "classnames";
 import styles from "./DateSelect.scss";
@@ -86,6 +87,10 @@ class DateSelect extends PureComponent {
         const rect = evt.currentTarget.getBoundingClientRect();
         const y = evt.clientY - rect.top + this.state.top + this.state.pos;
         const value = this.props.value + Math.floor(y / HEIGHT);
+
+        if (!this._isValidValue(value)) {
+            return;
+        }
 
         this.close();
 
@@ -202,6 +207,7 @@ class DateSelect extends PureComponent {
 
     renderMenu() {
         const { top, height, pos, current, topCapped, botCapped } = this.state;
+        const { value } = this.props;
 
         let shift = pos % HEIGHT;
         if (shift < 0) {
@@ -212,11 +218,13 @@ class DateSelect extends PureComponent {
         const items = [];
 
         for (let i = from; i < to; ++i) {
+            const item = this.getItem(i);
+
             const itemClassNames = cx(styles.item, {
                 [styles.active]: i === current,
-                [styles.selected]: i === 0
+                [styles.selected]: i === 0,
+                [styles.disabled]: !this._isValidValue(value + i)
             });
-            const item = this.getItem(i);
 
             items.push(
                 <div key={i} className={itemClassNames} data-ft-id={`date-select-menu-item-${item}`}>
@@ -261,6 +269,16 @@ class DateSelect extends PureComponent {
         );
     }
 
+    _isValidValue = (value) => {
+        const { type, minDate, maxDate, year } = this.props;
+        switch (type) {
+            case dateSelectType.month:
+                return moment([year, value]).endOf("month") >= minDate && moment([year, value]).startOf("month") <= maxDate;
+            case dateSelectType.year:
+                return value >= minDate.year() && value <= maxDate.year();
+        }
+    };
+
     render() {
         const { type, width } = this.props;
         const rootProps = {
@@ -286,8 +304,12 @@ class DateSelect extends PureComponent {
 DateSelect.propTypes = {
     maxYear: PropTypes.number,
     minYear: PropTypes.number,
+    minDate: PropTypes.instanceOf(moment),
+    maxDate: PropTypes.instanceOf(moment),
+
     type: PropTypes.oneOf(Object.keys(dateSelectType).map(key => dateSelectType[key])).isRequired,
     value: PropTypes.number,
+    year: PropTypes.number,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChange: PropTypes.func
 };
