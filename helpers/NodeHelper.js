@@ -6,6 +6,8 @@ export const findContainerWithOverflowHidden = (node) => {
     return findContainer(node.parentElement, container => window.getComputedStyle(container).overflow === "hidden");
 };
 
+export const findScrollContainer = (node) => findContainer(node.parentElement, container => window.getComputedStyle(container)["overflow-y"] === "scroll");
+
 export const findContainer = (node, predicate) => {
     let container = node;
 
