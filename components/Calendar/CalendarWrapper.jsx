@@ -329,7 +329,7 @@ class CalendarWrapper extends PureComponent {
             [styles.disabled]: disabled
         });
 
-        const highlighted = highlightRange && inRange(date, convertISOString(highlightRange.minDate), convertISOString(highlightRange.maxDate));
+        const highlighted = highlightRange && inRange(date, highlightRange.minDate, highlightRange.maxDate);
 
         const inputStyle = {
             color: highlighted ? highlightRange.color : null

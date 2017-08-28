@@ -98,7 +98,7 @@ class Calendar extends PureComponent {
         if (weekDay < 7) {
             date.date(date.date() + weekDay);
 
-            if (!inRange(date, convertISOString(minDate), convertISOString(maxDate))) {
+            if (!inRange(date, minDate, maxDate)) {
                 return;
             }
 
@@ -180,7 +180,7 @@ class Calendar extends PureComponent {
             const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y + DAY_HEIGHT > mouseY;
             const disabled = !inRange(date, minDate, maxDate);
             const current = date.isSame(value, "day");
-            const highlighted = highlightRange && inRange(date, convertISOString(highlightRange.minDate), convertISOString(highlightRange.maxDate));
+            const highlighted = highlightRange && inRange(date, highlightRange.minDate, highlightRange.maxDate);
 
             const highlightedStyle = highlighted ? {
                 color: !current ? highlightRange.color : null,
