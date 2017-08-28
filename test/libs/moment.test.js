@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import moment, { formatDate, inRange, convertString } from "../../libs/moment";
+import moment, { formatDate, inRange } from "../../libs/moment";
 
 describe("moment formatDate helper", () => {
     it("should format with rule L", () => {
@@ -13,7 +13,7 @@ describe("moment formatDate helper", () => {
     });
 });
 
-describe.only("moment inRange helper", () => {
+describe("moment inRange helper", () => {
     const monday = moment([2017, 8, 28]);
     const tuesday = moment([2017, 8, 29]);
     const wednesday = moment([2017, 8, 30]);
