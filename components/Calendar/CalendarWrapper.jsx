@@ -16,7 +16,7 @@ import { filterObjectKeys } from "./../../helpers/ArrayHelper";
 
 import styles from "./CalendarWrapper.scss";
 
-const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName", "highlight", "defaultStartDate"];
+const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName", "highlightRange", "defaultStartDate"];
 
 class CalendarWrapper extends PureComponent {
     _selectionRanges = [{ start: 0, end: 2, type: "days" }, { start: 3, end: 5, type: "months" }, { start: 6, end: 10, type: "years" }];
@@ -299,7 +299,7 @@ class CalendarWrapper extends PureComponent {
             return;
         }
 
-        const { value, minYear, maxYear, pickerClassName, minDate, maxDate, highlight, defaultStartDate } = this.props;
+        const { value, minYear, maxYear, pickerClassName, minDate, maxDate, highlightRange, defaultStartDate } = this.props;
 
         return (
             <div className={cx(styles.picker, pickerClassName)} onKeyDown={this.handlePickerKey}>
@@ -311,7 +311,7 @@ class CalendarWrapper extends PureComponent {
                     maxYear={maxYear}
                     minDate={convertISOString(minDate)}
                     maxDate={convertISOString(maxDate)}
-                    highlight={highlight}
+                    highlightRange={highlightRange}
                     onPick={this.handlePick}
                     onClose={this.handlePickerClose}
                 />
@@ -320,7 +320,7 @@ class CalendarWrapper extends PureComponent {
     }
 
     render() {
-        const { className, width, disabled, highlight } = this.props;
+        const { className, width, disabled, highlightRange } = this.props;
         const { isValid, errorType, date } = this.state;
 
         const picker = this.renderPicker();
@@ -329,10 +329,10 @@ class CalendarWrapper extends PureComponent {
             [styles.disabled]: disabled
         });
 
-        const highlighted = highlight && inRange(date, convertISOString(highlight.minDate), convertISOString(highlight.maxDate));
+        const highlighted = highlightRange && inRange(date, convertISOString(highlightRange.minDate), convertISOString(highlightRange.maxDate));
 
         const inputStyle = {
-            color: highlighted ? highlight.color : null
+            color: highlighted ? highlightRange.color : null
         };
 
         const inputProps = filterObjectKeys({
@@ -373,7 +373,7 @@ CalendarWrapper.propTypes = {
     minYear: PropTypes.number,
     maxDate: CustomPropTypes.date,
     minDate: CustomPropTypes.date,
-    highlight: PropTypes.shape({
+    highlightRange: PropTypes.shape({
         minDate: CustomPropTypes.date,
         maxDate: CustomPropTypes.date,
         legend: PropTypes.string,

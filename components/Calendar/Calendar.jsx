@@ -51,7 +51,6 @@ class Calendar extends PureComponent {
         };
 
         this._today = moment();
-        this.moment = moment;
     }
 
     moveToDate(date) {
@@ -160,7 +159,7 @@ class Calendar extends PureComponent {
     }
 
     renderCells(offset, from, week) {
-        const { value, minDate, maxDate, highlight } = this.props;
+        const { value, minDate, maxDate, highlightRange } = this.props;
 
         const cells = [];
         const cellCount = Math.ceil((CALENDAR_HEIGHT + offset) / DAY_HEIGHT) * 7;
@@ -181,11 +180,11 @@ class Calendar extends PureComponent {
             const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y + DAY_HEIGHT > mouseY;
             const disabled = !inRange(date, minDate, maxDate);
             const current = date.isSame(value, "day");
-            const highlighted = highlight && inRange(date, convertISOString(highlight.minDate), convertISOString(highlight.maxDate));
+            const highlighted = highlightRange && inRange(date, convertISOString(highlightRange.minDate), convertISOString(highlightRange.maxDate));
 
             const highlightedStyle = highlighted ? {
-                color: !current ? highlight.color : null,
-                backgroundColor: current ? highlight.color : null
+                color: !current ? highlightRange.color : null,
+                backgroundColor: current ? highlightRange.color : null
             } : null;
 
             const cellClassNames = cx(styles.cell, {
@@ -263,7 +262,7 @@ Calendar.propTypes = {
     onPick: PropTypes.func,
     maxDate: CustomPropTypes.date,
     minDate: CustomPropTypes.date,
-    highlight: PropTypes.shape({
+    highlightRange: PropTypes.shape({
         minDate: CustomPropTypes.date,
         maxDate: CustomPropTypes.date,
         legend: PropTypes.string,

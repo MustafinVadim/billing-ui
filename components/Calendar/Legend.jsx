@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import styles from "./Legend.scss";
 
-class Legenda extends PureComponent {
+class Legend extends PureComponent {
     render() {
         const { text, color } = this.props;
 
@@ -19,9 +19,9 @@ class Legenda extends PureComponent {
     }
 }
 
-Legenda.propTypes = {
+Legend.propTypes = {
     text: PropTypes.string,
     color: PropTypes.string
 };
 
-export default Legenda;
+export default Legend;

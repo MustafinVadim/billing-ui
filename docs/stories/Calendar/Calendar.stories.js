@@ -28,7 +28,7 @@ storiesOf("Calendar", module)
             minYear={number("min year", 1900)}
             minDate={date("min date", DEFAULT_MIN_DATE)}
             maxDate={date("max date", DEFAULT_MAX_DATE)}
-            highlight={{
+            highlightRange={{
                 minDate: date("min highlighted date", DEFAULT_MIN_HL_DATE),
                 maxDate: date("max highlighted date", DEFAULT_MAX_HL_DATE),
                 legend: text("legend", "срок бронирования"),

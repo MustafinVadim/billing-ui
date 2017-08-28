@@ -83,7 +83,7 @@ class Picker extends PureComponent {
 
     render() {
         const { date } = this.state;
-        const { minYear, maxYear, minDate, maxDate, highlight, defaultStartDate, value } = this.props;
+        const { minYear, maxYear, minDate, maxDate, highlightRange, defaultStartDate, value } = this.props;
 
         const initialDate = value.isValid() || !defaultStartDate.isValid() ? moment(date).subtract(3, "weeks") : defaultStartDate;
 
@@ -116,8 +116,8 @@ class Picker extends PureComponent {
                           initialDate={initialDate}
                           onNav={(date) => this.setState({ date })}
                 />
-                {highlight && highlight.legend && (
-                    <Legenda text={highlight.legend} color={highlight.color} />
+                {highlightRange && highlightRange.legend && (
+                    <Legenda text={highlightRange.legend} color={highlightRange.color} />
                 )}
             </div>
         );
@@ -130,7 +130,7 @@ Picker.propTypes = {
     verticalShift: PropTypes.number,
     maxDate: PropTypes.instanceOf(moment),
     minDate: PropTypes.instanceOf(moment),
-    highlight: PropTypes.shape({
+    highlightRange: PropTypes.shape({
         minDate: CustomPropTypes.date,
         maxDate: CustomPropTypes.date,
         legend: PropTypes.string,
