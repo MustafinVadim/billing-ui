@@ -46,11 +46,11 @@ describe("moment inRange helper", () => {
         expect(inRange(undefined, monday, wednesday)).to.be.false;
     });
 
-    it("should handle null in minDate and maxDate parameters as open range", () => {
+    it("should handle null or undefined in minDate and maxDate parameters as open range", () => {
         expect(inRange(monday, null, tuesday)).to.be.true;
         expect(inRange(wednesday, null, tuesday)).to.be.false;
-        expect(inRange(wednesday, tuesday, null)).to.be.true;
-        expect(inRange(monday, tuesday, null)).to.be.false;
+        expect(inRange(wednesday, tuesday, undefined)).to.be.true;
+        expect(inRange(monday, tuesday, undefined)).to.be.false;
     });
 
     it("should handle invalid date in minDate and maxDate parameters as open range", () => {
