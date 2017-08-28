@@ -273,9 +273,9 @@ class DateSelect extends PureComponent {
         const { type, minDate, maxDate, year } = this.props;
         switch (type) {
             case dateSelectType.month:
-                return moment([year, value]).endOf("month") >= minDate && moment([year, value]).startOf("month") <= maxDate;
+                return moment([year, value]).isBetween(minDate, maxDate, "month", "[]");
             case dateSelectType.year:
-                return value >= minDate.year() && value <= maxDate.year();
+                return moment([value]).isBetween(minDate, maxDate, "year", "[]");
         }
     };
 
