@@ -48,12 +48,12 @@ class DateSelect extends PureComponent {
                     break;
 
                 case keyCodes.top:
-                    this.setState({ current: this.state.current - 1 });
+                    this.selectItem(this.state.current - 1);
                     evt.preventDefault();
                     break;
 
                 case keyCodes.bottom:
-                    this.setState({ current: this.state.current + 1 });
+                    this.selectItem(this.state.current + 1);
                     evt.preventDefault();
                     break;
             }
@@ -95,7 +95,7 @@ class DateSelect extends PureComponent {
         this.close();
 
         if (this.props.onChange) {
-            this.props.onChange({target: {value}}, value);
+            this.props.onChange({ target: { value } }, value);
         }
     };
 
@@ -103,11 +103,11 @@ class DateSelect extends PureComponent {
         const rect = evt.currentTarget.getBoundingClientRect();
         const y = evt.clientY - rect.top + this.state.top + this.state.pos;
         const current = Math.floor(y / HEIGHT);
-        this.setState({current});
+        this.selectItem(current);
     };
 
     handleMouseLeave = () => {
-        this.setState({current: null});
+        this.setState({ current: null });
     };
 
     handleWheel = (evt) => {
@@ -205,6 +205,14 @@ class DateSelect extends PureComponent {
         return value;
     }
 
+    selectItem(item) {
+        const value = this.props.value + item;
+
+        if (this._isValidValue(value)) {
+            this.setState({ current: item });
+        }
+    }
+
     renderMenu() {
         const { top, height, pos, current, topCapped, botCapped } = this.state;
         const { value } = this.props;
@@ -233,7 +241,6 @@ class DateSelect extends PureComponent {
             );
         }
 
-
         const style = {
             top: top - 3
         };
@@ -248,18 +255,20 @@ class DateSelect extends PureComponent {
         });
 
         return (
-            <div className={holderClassNames} style={style} onKeyDown={this.handleKey} ref={(c) => { this._holder = c }} data-ft-id="date-select-menu">
+            <div className={holderClassNames} style={style} onKeyDown={this.handleKey} ref={(c) => {
+                this._holder = c
+            }} data-ft-id="date-select-menu">
                 {!topCapped && (
                     <div className={styles.up} onMouseDown={this.handleUp} />
                 )}
-                <div className={styles.items} style={{height}}>
+                <div className={styles.items} style={{ height }}>
                     <div style={shiftStyle}>{items}</div>
                     <div className={styles.overlay}
-                        data-ft-id="date-select-menu_overlay"
-                        onMouseDown={this.handleItemClick}
-                        onMouseMove={this.handleMouseMove}
-                        onMouseLeave={this.handleMouseLeave}
-                        onWheel={this.handleWheel}
+                         data-ft-id="date-select-menu_overlay"
+                         onMouseDown={this.handleItemClick}
+                         onMouseMove={this.handleMouseMove}
+                         onMouseLeave={this.handleMouseLeave}
+                         onWheel={this.handleWheel}
                     />
                 </div>
                 {!botCapped && (
