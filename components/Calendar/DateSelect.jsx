@@ -3,6 +3,7 @@ import { PureComponent } from "react";
 import dateSelectType from "./DateSelectType";
 import keyCodes from "../../helpers/KeyCodes";
 import { fixYPopupPosition } from "./PopupPositionHelper";
+import moment from "../../libs/moment";
 
 import cx from "classnames";
 import styles from "./DateSelect.scss";
@@ -47,12 +48,12 @@ class DateSelect extends PureComponent {
                     break;
 
                 case keyCodes.top:
-                    this.setState({ current: this.state.current - 1 });
+                    this.selectItem(this.state.current - 1);
                     evt.preventDefault();
                     break;
 
                 case keyCodes.bottom:
-                    this.setState({ current: this.state.current + 1 });
+                    this.selectItem(this.state.current + 1);
                     evt.preventDefault();
                     break;
             }
@@ -87,10 +88,14 @@ class DateSelect extends PureComponent {
         const y = evt.clientY - rect.top + this.state.top + this.state.pos;
         const value = this.props.value + Math.floor(y / HEIGHT);
 
+        if (!this._isValidValue(value)) {
+            return;
+        }
+
         this.close();
 
         if (this.props.onChange) {
-            this.props.onChange({target: {value}}, value);
+            this.props.onChange({ target: { value } }, value);
         }
     };
 
@@ -98,11 +103,11 @@ class DateSelect extends PureComponent {
         const rect = evt.currentTarget.getBoundingClientRect();
         const y = evt.clientY - rect.top + this.state.top + this.state.pos;
         const current = Math.floor(y / HEIGHT);
-        this.setState({current});
+        this.selectItem(current);
     };
 
     handleMouseLeave = () => {
-        this.setState({current: null});
+        this.setState({ current: null });
     };
 
     handleWheel = (evt) => {
@@ -200,8 +205,17 @@ class DateSelect extends PureComponent {
         return value;
     }
 
+    selectItem(item) {
+        const value = this.props.value + item;
+
+        if (this._isValidValue(value)) {
+            this.setState({ current: item });
+        }
+    }
+
     renderMenu() {
         const { top, height, pos, current, topCapped, botCapped } = this.state;
+        const { value } = this.props;
 
         let shift = pos % HEIGHT;
         if (shift < 0) {
@@ -212,11 +226,13 @@ class DateSelect extends PureComponent {
         const items = [];
 
         for (let i = from; i < to; ++i) {
+            const item = this.getItem(i);
+
             const itemClassNames = cx(styles.item, {
                 [styles.active]: i === current,
-                [styles.selected]: i === 0
+                [styles.selected]: i === 0,
+                [styles.disabled]: !this._isValidValue(value + i)
             });
-            const item = this.getItem(i);
 
             items.push(
                 <div key={i} className={itemClassNames} data-ft-id={`date-select-menu-item-${item}`}>
@@ -224,7 +240,6 @@ class DateSelect extends PureComponent {
                 </div>
             );
         }
-
 
         const style = {
             top: top - 3
@@ -240,18 +255,20 @@ class DateSelect extends PureComponent {
         });
 
         return (
-            <div className={holderClassNames} style={style} onKeyDown={this.handleKey} ref={(c) => { this._holder = c }} data-ft-id="date-select-menu">
+            <div className={holderClassNames} style={style} onKeyDown={this.handleKey} ref={(c) => {
+                this._holder = c
+            }} data-ft-id="date-select-menu">
                 {!topCapped && (
                     <div className={styles.up} onMouseDown={this.handleUp} />
                 )}
-                <div className={styles.items} style={{height}}>
+                <div className={styles.items} style={{ height }}>
                     <div style={shiftStyle}>{items}</div>
                     <div className={styles.overlay}
-                        data-ft-id="date-select-menu_overlay"
-                        onMouseDown={this.handleItemClick}
-                        onMouseMove={this.handleMouseMove}
-                        onMouseLeave={this.handleMouseLeave}
-                        onWheel={this.handleWheel}
+                         data-ft-id="date-select-menu_overlay"
+                         onMouseDown={this.handleItemClick}
+                         onMouseMove={this.handleMouseMove}
+                         onMouseLeave={this.handleMouseLeave}
+                         onWheel={this.handleWheel}
                     />
                 </div>
                 {!botCapped && (
@@ -260,6 +277,16 @@ class DateSelect extends PureComponent {
             </div>
         );
     }
+
+    _isValidValue = (value) => {
+        const { type, minDate, maxDate, year } = this.props;
+        switch (type) {
+            case dateSelectType.month:
+                return moment([year, value]).isBetween(minDate, maxDate, "month", "[]");
+            case dateSelectType.year:
+                return moment([value]).isBetween(minDate, maxDate, "year", "[]");
+        }
+    };
 
     render() {
         const { type, width } = this.props;
@@ -286,8 +313,12 @@ class DateSelect extends PureComponent {
 DateSelect.propTypes = {
     maxYear: PropTypes.number,
     minYear: PropTypes.number,
+    minDate: PropTypes.instanceOf(moment),
+    maxDate: PropTypes.instanceOf(moment),
+
     type: PropTypes.oneOf(Object.keys(dateSelectType).map(key => dateSelectType[key])).isRequired,
     value: PropTypes.number,
+    year: PropTypes.number,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChange: PropTypes.func
 };

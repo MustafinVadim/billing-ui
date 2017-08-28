@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import ReactDOM from "react-dom";
 import cx from "classnames";
-import moment, { formatDate, convertString, convertISOString } from "../../libs/moment";
+import moment, { formatDate, convertString, convertISOString, inRange } from "../../libs/moment";
 
 import TextInput from "../TextInput";
 import Picker from "./Picker";
@@ -16,7 +16,7 @@ import { filterObjectKeys } from "./../../helpers/ArrayHelper";
 
 import styles from "./CalendarWrapper.scss";
 
-const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName"];
+const excludedInputProps = ["minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName", "highlightRange", "defaultStartDate"];
 
 class CalendarWrapper extends PureComponent {
     _selectionRanges = [{ start: 0, end: 2, type: "days" }, { start: 3, end: 5, type: "months" }, { start: 6, end: 10, type: "years" }];
@@ -142,7 +142,7 @@ class CalendarWrapper extends PureComponent {
         const { isValid, errorType } = this.validate(date);
 
         this.setState({
-            date: this._getTime(date),
+            date,
             isValid,
             errorType
         });
@@ -237,9 +237,8 @@ class CalendarWrapper extends PureComponent {
             return;
         }
 
-        const momentDate = convertISOString(date || this._emptyDate);
-        const { isValid, errorType } = this.validate(momentDate, minDate, maxDate);
-        const dateTime = this._getTime(momentDate);
+        const dateTime = convertISOString(date || this._emptyDate);
+        const { isValid, errorType } = this.validate(dateTime, minDate, maxDate);
         const dateHasChanged = !dateTime.isSame(convertISOString(value), "day");
         const validityHasChanged = this.state.isValid !== isValid;
 
@@ -287,11 +286,6 @@ class CalendarWrapper extends PureComponent {
         this._selectBlock(selectedBlock === 0 ? 0 : selectedBlock - 1);
     }
 
-    _getTime(date) {
-        const { type } = this.props;
-        return type === "time" ? date : date.set({ "hour": "00", "minute": "00", "second": "00" })
-    }
-
     _defineHeight() {
         const height = ReactDOM.findDOMNode(this).getBoundingClientRect().height;
 
@@ -305,23 +299,28 @@ class CalendarWrapper extends PureComponent {
             return;
         }
 
-        const { value, minYear, maxYear, pickerClassName } = this.props;
+        const { value, minYear, maxYear, pickerClassName, minDate, maxDate, highlightRange, defaultStartDate } = this.props;
 
         return (
             <div className={cx(styles.picker, pickerClassName)} onKeyDown={this.handlePickerKey}>
-                <Picker value={convertISOString(value)}
-                        verticalShift={this.state.height}
-                        minYear={minYear}
-                        maxYear={maxYear}
-                        onPick={this.handlePick}
-                        onClose={this.handlePickerClose}
+                <Picker
+                    defaultStartDate={convertISOString(defaultStartDate)}
+                    value={convertISOString(value)}
+                    verticalShift={this.state.height}
+                    minYear={minYear}
+                    maxYear={maxYear}
+                    minDate={convertISOString(minDate)}
+                    maxDate={convertISOString(maxDate)}
+                    highlightRange={highlightRange}
+                    onPick={this.handlePick}
+                    onClose={this.handlePickerClose}
                 />
             </div>
         );
     }
 
     render() {
-        const { className, width, disabled } = this.props;
+        const { className, width, disabled, highlightRange } = this.props;
         const { isValid, errorType, date } = this.state;
 
         const picker = this.renderPicker();
@@ -329,6 +328,12 @@ class CalendarWrapper extends PureComponent {
         const openButtonClassNames = cx(styles["open-button"], {
             [styles.disabled]: disabled
         });
+
+        const highlighted = highlightRange && inRange(date, highlightRange.minDate, highlightRange.maxDate);
+
+        const inputStyle = {
+            color: highlighted ? highlightRange.color : null
+        };
 
         const inputProps = filterObjectKeys({
             ...this.props,
@@ -346,7 +351,7 @@ class CalendarWrapper extends PureComponent {
 
         return (
             <span className={wrapperClassNames} style={{ width: width }}>
-                <TextInput {...inputProps} ref={(el) => {
+                <TextInput {...inputProps} style={inputStyle} ref={(el) => {
                     this._textInput = el
                 }} />
                 <span className={openButtonClassNames} onClick={this.open} data-ft-id="calendar-open-button">
@@ -368,7 +373,14 @@ CalendarWrapper.propTypes = {
     minYear: PropTypes.number,
     maxDate: CustomPropTypes.date,
     minDate: CustomPropTypes.date,
+    highlightRange: PropTypes.shape({
+        minDate: CustomPropTypes.date,
+        maxDate: CustomPropTypes.date,
+        legend: PropTypes.string,
+        color: PropTypes.string
+    }),
     value: CustomPropTypes.date,
+    defaultStartDate: CustomPropTypes.date,
     isNullable: PropTypes.bool,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,

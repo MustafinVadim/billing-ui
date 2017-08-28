@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
-import moment, { formatDate } from "../../libs/moment";
+import moment, { formatDate, convertISOString, inRange } from "../../libs/moment";
 import TimeConstants from "../../helpers/TimeConstants";
+import CustomPropTypes from "../../helpers/CustomPropTypes";
 
 import cx from "classnames";
 import styles from "./Calendar.scss";
@@ -18,6 +19,7 @@ const FIRST_WEEK_SHIFT = (new Date(0).getDay() - 1) * DAY;
 const DAY_HEIGHT = 31;
 const DAY_WIDTH = 28;
 const CALENDAR_HEIGHT = 210;
+const ROWS_COUNT = Math.ceil(CALENDAR_HEIGHT / DAY_HEIGHT);
 
 const getWeek = (time) => {
     return Math.floor((FIRST_WEEK_SHIFT + time) / WEEK);
@@ -33,11 +35,11 @@ const getDay = date => {
 };
 
 const dateToPos = date => {
-    return (Math.floor((+date - FIRST_WEEK_SHIFT - DAY) / WEEK) - 1) * DAY_HEIGHT;
+    return getWeek(+date) * DAY_HEIGHT;
 };
 
 const posToDate = pos => {
-    return moment(Math.floor(pos / DAY_HEIGHT + 2) * WEEK - FIRST_WEEK_SHIFT);
+    return moment(Math.floor(pos / DAY_HEIGHT) * WEEK - FIRST_WEEK_SHIFT);
 };
 
 class Calendar extends PureComponent {
@@ -45,7 +47,7 @@ class Calendar extends PureComponent {
         super(props, context);
 
         this.state = {
-            pos: dateToPos(props.initialDate)
+            pos: this._prettyfyPosition(dateToPos(props.initialDate))
         };
 
         this._today = moment();
@@ -55,7 +57,7 @@ class Calendar extends PureComponent {
         const newDate = moment(0);
         newDate.year(date.year());
         newDate.month(date.month());
-        this.setState({ pos: dateToPos(newDate) });
+        this.setState({ pos: this._prettyfyPosition(dateToPos(newDate)) });
     }
 
     handleWheel = (evt) => {
@@ -70,7 +72,8 @@ class Calendar extends PureComponent {
             deltaY = deltaY / Math.abs(deltaY) * DAY_HEIGHT * 5;
         }
 
-        const pos = this.state.pos + deltaY;
+        const pos = this._prettyfyPosition(this.state.pos + deltaY);
+
         this.setState({ pos });
 
         const date = posToDate(pos);
@@ -79,6 +82,8 @@ class Calendar extends PureComponent {
     };
 
     handleMouseDown = (evt) => {
+        const { onPick, minDate, maxDate } = this.props;
+
         if (evt.button !== 0) {
             return;
         }
@@ -87,15 +92,17 @@ class Calendar extends PureComponent {
         const x = evt.clientX - rect.left;
         const y = evt.clientY - rect.top;
 
-        const time = Math.floor((this.state.pos + y) / DAY_HEIGHT) * WEEK - FIRST_WEEK_SHIFT;
+        const time = posToDate(this.state.pos + y);
         const date = moment(time);
         const weekDay = Math.floor(x / DAY_WIDTH);
         if (weekDay < 7) {
             date.date(date.date() + weekDay);
 
-            if (this.props.onPick) {
-                this.props.onPick(date);
+            if (!inRange(date, minDate, maxDate)) {
+                return;
             }
+
+            onPick && onPick(date);
         }
     };
 
@@ -152,6 +159,8 @@ class Calendar extends PureComponent {
     }
 
     renderCells(offset, from, week) {
+        const { value, minDate, maxDate, highlightRange } = this.props;
+
         const cells = [];
         const cellCount = Math.ceil((CALENDAR_HEIGHT + offset) / DAY_HEIGHT) * 7;
 
@@ -169,17 +178,25 @@ class Calendar extends PureComponent {
             const mouseX = this.state.mouseX;
             const mouseY = this.state.mouseY;
             const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y + DAY_HEIGHT > mouseY;
+            const disabled = !inRange(date, minDate, maxDate);
+            const current = date.isSame(value, "day");
+            const highlighted = highlightRange && inRange(date, highlightRange.minDate, highlightRange.maxDate);
+
+            const highlightedStyle = highlighted ? {
+                color: !current ? highlightRange.color : null,
+                backgroundColor: current ? highlightRange.color : null
+            } : null;
 
             const cellClassNames = cx(styles.cell, {
                 [styles.active]: active,
                 [styles.today]: date.isSame(this._today, "day"),
-                [styles.current]: date.isSame(this.props.value, "day"),
+                [styles.current]: current,
                 [styles.grey]: date.month() % 2,
-                [styles.holy]: date.day() === 0 || date.day() === 6
+                [styles.disabled]: disabled
             });
             cells.push((
                 <span key={cur} className={cellClassNames} style={style} data-ft-id={`calendar-day_${formatDate(date)}`}>
-                    <span className={styles["cell-inner"]}>{date.date()}</span>
+                    <span className={styles["cell-inner"]} style={highlightedStyle}>{date.date()}</span>
                 </span>
             ));
         }
@@ -187,12 +204,37 @@ class Calendar extends PureComponent {
         return cells;
     }
 
+    _prettyfyPosition(pos) {
+        const { minDate: minDateISO, maxDate: maxDateISO } = this.props;
+
+        let date = posToDate(pos);
+
+        const minDate = convertISOString(minDateISO);
+        const maxDate = convertISOString(maxDateISO);
+
+        const minWeek = getWeek(minDate);
+        const maxWeek = getWeek(maxDate);
+
+        const firstShowingWeek = getWeek(date);
+        const lastShowingWeek = getWeek(date) + ROWS_COUNT - 1;
+
+        if (maxWeek - minWeek <= ROWS_COUNT - 1) {
+            date = moment((minDate + maxDate) / 2).subtract(Math.floor(ROWS_COUNT / 2), "weeks");
+        } else if (firstShowingWeek <= minWeek) {
+            date = minDate;
+        } else if (lastShowingWeek >= maxWeek) {
+            date = moment(maxDate).subtract(ROWS_COUNT - 1, "weeks");
+        }
+
+        return dateToPos(date);
+    }
+
     render() {
         let offset = this.state.pos % DAY_HEIGHT;
         if (offset < 0) {
             offset += DAY_HEIGHT;
         }
-        const from = (this.state.pos - offset) / DAY_HEIGHT * WEEK - FIRST_WEEK_SHIFT;
+        const from = posToDate(this.state.pos - offset);
         const week = getWeek(from);
 
         const months = this.renderMonth(offset, from, week);
@@ -203,10 +245,10 @@ class Calendar extends PureComponent {
                 {cells}
                 {months}
                 <div className={styles.mask}
-                    data-ft-id="calendar-days_overlay"
-                    onMouseMove={this.handleMouseMove}
-                    onMouseLeave={this.handleMouseLeave}
-                    onMouseDown={this.handleMouseDown}
+                     data-ft-id="calendar-days_overlay"
+                     onMouseMove={this.handleMouseMove}
+                     onMouseLeave={this.handleMouseLeave}
+                     onMouseDown={this.handleMouseDown}
                 />
             </div>
         );
@@ -217,7 +259,15 @@ Calendar.propTypes = {
     initialDate: PropTypes.oneOfType([PropTypes.instanceOf(moment), PropTypes.string]),
     value: PropTypes.instanceOf(moment),
     onNav: PropTypes.func,
-    onPick: PropTypes.func
+    onPick: PropTypes.func,
+    maxDate: PropTypes.instanceOf(moment),
+    minDate: PropTypes.instanceOf(moment),
+    highlightRange: PropTypes.shape({
+        minDate: CustomPropTypes.date,
+        maxDate: CustomPropTypes.date,
+        legend: PropTypes.string,
+        color: PropTypes.string
+    })
 };
 
 export default Calendar;

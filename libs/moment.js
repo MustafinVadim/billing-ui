@@ -1,5 +1,6 @@
 import moment from "moment";
 import "moment/locale/ru";
+
 moment.locale("ru");
 
 export const formatDate = (date, format = "L") => moment(date).format(format);
@@ -12,5 +13,9 @@ export const convertToISO = (date) => {
         ? momentDate.toISOString()
         : convertString(date).toISOString();
 };
+
+export const inRange = (date, minDate, maxDate) =>
+    moment(date).isValid()
+    && moment(date).isBetween(minDate || null, maxDate || null, "day", "[]");
 
 export default moment;

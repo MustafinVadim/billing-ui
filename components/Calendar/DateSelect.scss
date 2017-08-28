@@ -110,6 +110,10 @@
 
             color: $textWhiteColor;
         }
+
+        &.disabled {
+            color: $textDisabledColor;
+        }
     }
 
     .up,

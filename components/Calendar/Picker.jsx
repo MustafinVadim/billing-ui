@@ -6,6 +6,8 @@ import moment from "../../libs/moment";
 
 import Calendar from "./Calendar";
 import DateSelect from "./DateSelect";
+import Legenda from "./Legend";
+import CustomPropTypes from "../../helpers/CustomPropTypes";
 
 import styles from "./Picker.scss";
 
@@ -22,7 +24,6 @@ const isDetached = element => {
 
     return true;
 };
-
 
 class Picker extends PureComponent {
     _handleDocClick = this.handleDocClick.bind(this);
@@ -82,7 +83,10 @@ class Picker extends PureComponent {
 
     render() {
         const { date } = this.state;
-        const { minYear, maxYear } = this.props;
+        const { minYear, maxYear, minDate, maxDate, highlightRange, defaultStartDate, value } = this.props;
+
+        const initialDate = value.isValid() || !defaultStartDate.isValid() ? moment(date).subtract(3, "weeks") : defaultStartDate;
+
         return (
             <div className={styles.root} data-ft-id="calendar-picker">
 
@@ -92,21 +96,29 @@ class Picker extends PureComponent {
                                     value={date.year()}
                                     minYear={minYear}
                                     maxYear={maxYear}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
                                     width={60}
                                     onChange={this.handleYearChange}
                         />
                         <DateSelect type="month"
                                     value={date.month()}
+                                    year={date.year()}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
                                     width={95}
                                     onChange={this.handleMonthChange}
                         />
                     </div>
                 </div>
                 <Calendar ref="calendar"
-                    {...this.props}
-                    initialDate={date}
-                    onNav={(date) => this.setState({date})}
+                          {...this.props}
+                          initialDate={initialDate}
+                          onNav={(date) => this.setState({ date })}
                 />
+                {highlightRange && highlightRange.legend && (
+                    <Legenda text={highlightRange.legend} color={highlightRange.color} />
+                )}
             </div>
         );
     }
@@ -114,7 +126,16 @@ class Picker extends PureComponent {
 
 Picker.propTypes = {
     value: PropTypes.instanceOf(moment),
+    defaultStartDate: PropTypes.instanceOf(moment),
     verticalShift: PropTypes.number,
+    maxDate: PropTypes.instanceOf(moment),
+    minDate: PropTypes.instanceOf(moment),
+    highlightRange: PropTypes.shape({
+        minDate: CustomPropTypes.date,
+        maxDate: CustomPropTypes.date,
+        legend: PropTypes.string,
+        color: PropTypes.string
+    }),
     minYear: PropTypes.number,
     maxYear: PropTypes.number,
     onPick: PropTypes.func,
