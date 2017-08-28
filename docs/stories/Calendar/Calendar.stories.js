@@ -11,10 +11,8 @@ const HIGHLIGHTED_DATE_RANGE = 5;
 const DEFAULT_MIN_DATE = moment().subtract(ENABLED_DATE_RANGE, "days").toDate();
 const DEFAULT_MAX_DATE = moment().add(ENABLED_DATE_RANGE, "days").toDate();
 
-const DEFAULT_MIN_HL_DATE = moment().subtract(HIGHLIGHTED_DATE_RANGE, "days").toDate();
+const DEFAULT_MIN_HL_DATE = moment().toDate();
 const DEFAULT_MAX_HL_DATE = moment().add(HIGHLIGHTED_DATE_RANGE, "days").toDate();
-
-const DEFAULT_INITIAL_DATE = moment().toDate();
 
 storiesOf("Calendar", module)
     .add("main", () => (
@@ -26,15 +24,25 @@ storiesOf("Calendar", module)
             isOpened={boolean("is opened", false)}
             maxYear={number("max year", 2100)}
             minYear={number("min year", 1900)}
+            width={number("width", 115)}
+        />
+    ))
+    .add("with disabling dates", () => (
+        <CalendarWrapper
+            onChange={action("changed")}
             minDate={date("min date", DEFAULT_MIN_DATE)}
             maxDate={date("max date", DEFAULT_MAX_DATE)}
+        />
+    ))
+    .add("with highlighted range", () => (
+        <CalendarWrapper
+            onChange={action("changed")}
             highlightRange={{
                 minDate: date("min highlighted date", DEFAULT_MIN_HL_DATE),
                 maxDate: date("max highlighted date", DEFAULT_MAX_HL_DATE),
                 legend: text("legend", "срок бронирования"),
                 color: color("highlight color", "#1d9d00")
             }}
-            defaultStartDate={date("initial date", DEFAULT_INITIAL_DATE)}
-            width={number("width", 115)}
+            defaultStartDate={date("default start date", DEFAULT_MIN_HL_DATE)}
         />
     ));

@@ -260,8 +260,8 @@ Calendar.propTypes = {
     value: PropTypes.instanceOf(moment),
     onNav: PropTypes.func,
     onPick: PropTypes.func,
-    maxDate: CustomPropTypes.date,
-    minDate: CustomPropTypes.date,
+    maxDate: PropTypes.instanceOf(moment),
+    minDate: PropTypes.instanceOf(moment),
     highlightRange: PropTypes.shape({
         minDate: CustomPropTypes.date,
         maxDate: CustomPropTypes.date,
