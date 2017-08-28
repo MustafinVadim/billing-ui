@@ -17,6 +17,8 @@
         &.button-disabled:hover,
         &.button-disabled:focus {
             box-shadow: none;
+
+            pointer-events: none;
         }
     }
 
