@@ -83,7 +83,7 @@ class Picker extends PureComponent {
 
     render() {
         const { date } = this.state;
-        const { minYear, maxYear, minDate, maxDate, highlightRange, defaultStartDate, value } = this.props;
+        const { minYear, maxYear, minDate, maxDate, highlightRange, defaultStartDate, disableInvalidDates, value } = this.props;
 
         const initialDate = value.isValid() || !defaultStartDate.isValid() ? moment(date).subtract(3, "weeks") : defaultStartDate;
 
@@ -93,6 +93,7 @@ class Picker extends PureComponent {
                 <div className={styles.header}>
                     <div>
                         <DateSelect type="year"
+                                    disableInvalidDates={disableInvalidDates}
                                     value={date.year()}
                                     minYear={minYear}
                                     maxYear={maxYear}
@@ -102,6 +103,7 @@ class Picker extends PureComponent {
                                     onChange={this.handleYearChange}
                         />
                         <DateSelect type="month"
+                                    disableInvalidDates={disableInvalidDates}
                                     value={date.month()}
                                     year={date.year()}
                                     minDate={minDate}
@@ -127,6 +129,7 @@ class Picker extends PureComponent {
 Picker.propTypes = {
     value: PropTypes.instanceOf(moment),
     defaultStartDate: PropTypes.instanceOf(moment),
+    disableInvalidDates: PropTypes.bool,
     verticalShift: PropTypes.number,
     maxDate: PropTypes.instanceOf(moment),
     minDate: PropTypes.instanceOf(moment),

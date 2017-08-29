@@ -32,6 +32,7 @@ storiesOf("Calendar", module)
             onChange={action("changed")}
             minDate={date("min date", DEFAULT_MIN_DATE)}
             maxDate={date("max date", DEFAULT_MAX_DATE)}
+            disableInvalidDates={boolean("disable invalid dates", true)}
         />
     ))
     .add("with highlighted range", () => (

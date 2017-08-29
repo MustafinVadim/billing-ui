@@ -80,6 +80,8 @@ class DateSelect extends PureComponent {
     };
 
     handleItemClick = (evt) => {
+        const { disableInvalidDates } = this.props;
+
         if (evt.button !== 0) {
             return;
         }
@@ -88,7 +90,7 @@ class DateSelect extends PureComponent {
         const y = evt.clientY - rect.top + this.state.top + this.state.pos;
         const value = this.props.value + Math.floor(y / HEIGHT);
 
-        if (!this._isValidValue(value)) {
+        if (!this._isValidValue(value) && disableInvalidDates) {
             return;
         }
 
@@ -206,16 +208,17 @@ class DateSelect extends PureComponent {
     }
 
     selectItem(item) {
+        const { disableInvalidDates } = this.props;
         const value = this.props.value + item;
 
-        if (this._isValidValue(value)) {
+        if (this._isValidValue(value) || !disableInvalidDates) {
             this.setState({ current: item });
         }
     }
 
     renderMenu() {
         const { top, height, pos, current, topCapped, botCapped } = this.state;
-        const { value } = this.props;
+        const { value, disableInvalidDates } = this.props;
 
         let shift = pos % HEIGHT;
         if (shift < 0) {
@@ -231,7 +234,7 @@ class DateSelect extends PureComponent {
             const itemClassNames = cx(styles.item, {
                 [styles.active]: i === current,
                 [styles.selected]: i === 0,
-                [styles.disabled]: !this._isValidValue(value + i)
+                [styles.disabled]: disableInvalidDates && !this._isValidValue(value + i)
             });
 
             items.push(
@@ -315,6 +318,7 @@ DateSelect.propTypes = {
     minYear: PropTypes.number,
     minDate: PropTypes.instanceOf(moment),
     maxDate: PropTypes.instanceOf(moment),
+    disableInvalidDates: PropTypes.bool,
 
     type: PropTypes.oneOf(Object.keys(dateSelectType).map(key => dateSelectType[key])).isRequired,
     value: PropTypes.number,

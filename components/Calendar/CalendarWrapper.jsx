@@ -299,12 +299,13 @@ class CalendarWrapper extends PureComponent {
             return;
         }
 
-        const { value, minYear, maxYear, pickerClassName, minDate, maxDate, highlightRange, defaultStartDate } = this.props;
+        const { value, minYear, maxYear, pickerClassName, minDate, maxDate, highlightRange, defaultStartDate, disableInvalidDates } = this.props;
 
         return (
             <div className={cx(styles.picker, pickerClassName)} onKeyDown={this.handlePickerKey}>
                 <Picker
                     defaultStartDate={convertISOString(defaultStartDate)}
+                    disableInvalidDates={disableInvalidDates}
                     value={convertISOString(value)}
                     verticalShift={this.state.height}
                     minYear={minYear}
@@ -367,8 +368,9 @@ CalendarWrapper.propTypes = {
     isOpened: PropTypes.bool,
     isValid: PropTypes.bool,
     forceInvalid: PropTypes.bool,
-    onChange: PropTypes.func,
     disabled: PropTypes.bool,
+    disableInvalidDates: PropTypes.bool,
+    onChange: PropTypes.func,
     maxYear: PropTypes.number,
     minYear: PropTypes.number,
     maxDate: CustomPropTypes.date,
@@ -390,6 +392,7 @@ CalendarWrapper.propTypes = {
 
 CalendarWrapper.defaultProps = {
     isOpened: false,
+    disableInvalidDates: false,
     value: moment(),
     width: 115,
     minYear: 1900,

@@ -82,7 +82,7 @@ class Calendar extends PureComponent {
     };
 
     handleMouseDown = (evt) => {
-        const { onPick, minDate, maxDate } = this.props;
+        const { onPick, minDate, maxDate, disableInvalidDates } = this.props;
 
         if (evt.button !== 0) {
             return;
@@ -98,7 +98,7 @@ class Calendar extends PureComponent {
         if (weekDay < 7) {
             date.date(date.date() + weekDay);
 
-            if (!inRange(date, minDate, maxDate)) {
+            if (!inRange(date, minDate, maxDate) && disableInvalidDates) {
                 return;
             }
 
@@ -159,7 +159,7 @@ class Calendar extends PureComponent {
     }
 
     renderCells(offset, from, week) {
-        const { value, minDate, maxDate, highlightRange } = this.props;
+        const { value, minDate, maxDate, highlightRange, disableInvalidDates } = this.props;
 
         const cells = [];
         const cellCount = Math.ceil((CALENDAR_HEIGHT + offset) / DAY_HEIGHT) * 7;
@@ -178,7 +178,7 @@ class Calendar extends PureComponent {
             const mouseX = this.state.mouseX;
             const mouseY = this.state.mouseY;
             const active = x < mouseX && x + DAY_WIDTH > mouseX && y < mouseY && y + DAY_HEIGHT > mouseY;
-            const disabled = !inRange(date, minDate, maxDate);
+            const disabled = !inRange(date, minDate, maxDate) && disableInvalidDates;
             const current = date.isSame(value, "day");
             const highlighted = highlightRange && inRange(date, highlightRange.minDate, highlightRange.maxDate);
 
@@ -205,7 +205,11 @@ class Calendar extends PureComponent {
     }
 
     _prettyfyPosition(pos) {
-        const { minDate: minDateISO, maxDate: maxDateISO } = this.props;
+        const { minDate: minDateISO, maxDate: maxDateISO, disableInvalidDates } = this.props;
+
+        if (!disableInvalidDates) {
+            return pos;
+        }
 
         let date = posToDate(pos);
 
@@ -257,6 +261,7 @@ class Calendar extends PureComponent {
 
 Calendar.propTypes = {
     initialDate: PropTypes.oneOfType([PropTypes.instanceOf(moment), PropTypes.string]),
+    disableInvalidDates: PropTypes.bool,
     value: PropTypes.instanceOf(moment),
     onNav: PropTypes.func,
     onPick: PropTypes.func,
