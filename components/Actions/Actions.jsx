@@ -15,6 +15,12 @@ class Actions extends PureComponent {
         isOpened: false
     };
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.isActive && !this.props.isActive) {
+            this._handleClose();
+        }
+    }
+
     _handleClickContent = () => {
         const { shouldCloseOnClick } = this.props;
 
@@ -103,6 +109,7 @@ Actions.propTypes = {
     className: PropTypes.string,
     popupClassName: PropTypes.string,
     actionsButtonClassName: PropTypes.string,
+    isActive: PropTypes.bool,
 
     shouldCloseOnClick: PropTypes.bool,
     offsetPosition: PropTypes.object,
@@ -115,7 +122,8 @@ Actions.propTypes = {
 
 Actions.defaultProps = {
     theme: ActionsTheme.row,
-    shouldCloseOnClick: true
+    shouldCloseOnClick: true,
+    isActive: true
 };
 
 export default Actions;
