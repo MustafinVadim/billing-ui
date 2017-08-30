@@ -1,8 +1,10 @@
-import PropTypes from "prop-types";
 import { PureComponent } from "react";
-import Icon from "../Icon";
-import Link from "../Link";
-import styles from "./Actions.scss";
+import PropTypes from "prop-types";
+
+import Icon from "billing-ui/components/Icon";
+import Link from "billing-ui/components/Link";
+
+import styles from "./Action.scss";
 import cx from "classnames";
 
 class Action extends PureComponent {
@@ -20,7 +22,6 @@ class Action extends PureComponent {
 
 Action.propTypes = {
     onClick: PropTypes.func,
-    asLink: PropTypes.bool,
     href: PropTypes.string,
     target: PropTypes.string,
     iconType: PropTypes.string.isRequired,
@@ -30,9 +31,7 @@ Action.propTypes = {
 };
 
 Action.defaultProps = {
-    className: "",
-    onClick: () => {},
-    asLink: false
+    className: ""
 };
 
 export default Action;

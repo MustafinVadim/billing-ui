@@ -1,0 +1,38 @@
+﻿@import "~billing-ui/styles/bourbon";
+@import "~billing-ui/styles/variables";
+@import "~billing-ui/styles/mixins";
+
+:local {
+    .button {
+        @include position(absolute, -1px 0 -1px null);
+
+        display: flex;
+        width: 40px;
+
+        transition: $transitionDefault;
+
+        justify-content: center;
+        cursor: pointer;
+
+        :global(.global__actions-button-wrapper:hover) &,
+        &.active {
+            background-color: $bgActiveActionsColor;
+        }
+    }
+
+    .dots {
+        @include position(relative, 13px 0 null null);
+        @extend %as-inline-block;
+
+        padding: 0 9px;
+
+        transition: color .2s ease-in;
+
+        font-size: $fontSizeTextDotsActions;
+
+        :global(.global__actions-button-wrapper:hover) &,
+        :local(.active) & {
+            color: $textWhiteColor;
+        }
+    }
+}

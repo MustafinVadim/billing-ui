@@ -1,0 +1,12 @@
+﻿@import "~billing-ui/styles/variables";
+@import "~billing-ui/styles/mixins";
+
+:local {
+    .dots {
+        @extend %as-inline-block;
+
+        padding: 0 9px;
+
+        font-size: $fontSizeTextDotsActions;
+    }
+}
