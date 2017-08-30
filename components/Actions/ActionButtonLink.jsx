@@ -5,13 +5,14 @@ import Link from "billing-ui/components/Link";
 import SpecialCharacters from "billing-ui/helpers/SpecialCharacters";
 
 import styles from "./ActionButtonLink.scss";
+import cx from "classnames";
 
 class ActionButtonLink extends PureComponent {
     render() {
         const { onClick, className } = this.props;
 
         return (
-            <Link className={className} onMouseDown={onClick}>
+            <Link className={cx(styles.link, className)} onMouseDown={onClick}>
                 <div className={styles.dots}>
                     {SpecialCharacters.Ellipsis}
                 </div>
