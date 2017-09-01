@@ -1,10 +1,15 @@
 import { PureComponent } from "react";
 import PropTypes from "prop-types";
 
+import { svgAnimateSupport } from "../../helpers/FeaturesDetector";
 import { SpinnerTypes, sizeMaps } from "./SpinnerTypes";
+
+import SpinnerFallback from "./SpinnerFallback";
 
 import styles from "./Spinner.scss";
 import classnames from "classnames";
+
+const hasSvgAnimationSupport = svgAnimateSupport();
 
 class Spinner extends PureComponent {
     _renderCloud() {
@@ -71,9 +76,12 @@ class Spinner extends PureComponent {
     }
 
     render() {
+        const { type } = this.props;
+
         return (
             <div className={styles.spinner}>
-                {this._renderSpinner()}
+                {hasSvgAnimationSupport && this._renderSpinner()}
+                {!hasSvgAnimationSupport && <SpinnerFallback type={type} />}
                 {this._renderCaption()}
             </div>
         );
