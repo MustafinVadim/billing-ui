@@ -21,10 +21,10 @@
     }
 
     .dots {
-        @include position(relative, 13px 0 null null);
+        @include position(relative, 0 0 null null);
         @extend %as-inline-block;
 
-        padding: 0 9px;
+        padding: 13px 9px;
 
         transition: color .2s ease-in;
 
