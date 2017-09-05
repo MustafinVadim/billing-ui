@@ -28,6 +28,7 @@ $transparentIcons: (
     zakupki: 0 -240px,
     ofd: 0 -560px,
     kmservice: 0 -580px,
+    alcoreport: 0 -180px
 );
 
 //diadoc-custom, kep, kepegais, dopuc, rosreestr, smev - выглядят как transparent
@@ -52,6 +53,7 @@ $filledIcons: (
     zakupki: -20px -240px,
     ofd: -20px -560px,
     kmservice: -20px -580px,
+    alcoreport: -20px -180px
 );
 
 $halfFilledIcons: (
@@ -75,6 +77,7 @@ $halfFilledIcons: (
     zakupki: -40px -240px,
     ofd: -40px -560px,
     kmservice: -40px -580px,
+    alcoreport: -40px -180px
 );
 
 @function getProducts($type) {
