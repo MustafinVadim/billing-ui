@@ -7,7 +7,7 @@ import moment, { formatDate, convertString, convertISOString, inRange } from "..
 import TextInput from "../TextInput";
 import Picker from "./Picker";
 import Icon, { IconTypes } from "../Icon";
-import rangeSelector from "./StartInputSelection";
+import rangeSelector from "../../helpers/SmartInputSelection";
 import validationErrorType from "./ValidationErrorType";
 
 import keyCodes from "../../helpers/KeyCodes";

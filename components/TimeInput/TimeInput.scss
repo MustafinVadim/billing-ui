@@ -1,0 +1,18 @@
+@import "~billing-ui/styles/variables";
+
+:local {   
+    .wrapper {
+        width: 44px;
+        margin-left: 21px;
+    }
+    
+    .placeholder {
+        padding: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .input {
+        text-align: center;
+    }
+}
