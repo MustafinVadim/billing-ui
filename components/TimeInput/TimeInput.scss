@@ -1,14 +1,15 @@
-@import "~billing-ui/styles/variables";
+﻿@import "~billing-ui/styles/variables";
 
-:local {   
+:local {
     .wrapper {
         width: 44px;
         margin-left: 21px;
     }
-    
+
     .placeholder {
-        padding: 0;
         width: 100%;
+        padding: 0;
+
         text-align: center;
     }
 
