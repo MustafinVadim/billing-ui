@@ -4,24 +4,17 @@ import TextInput from "billing-ui/components/TextInput";
 import rangeSelector from "../../helpers/SmartInputSelection";
 import styles from "./TimeInput.scss";
 import keyCodes from "../../helpers/KeyCodes";
-import validationErrorType from "./ValidationErrorType";
-import CustomPropTypes from "../../helpers/CustomPropTypes";
-import moment, { convertString, convertISOString } from "../../libs/moment";
 import { filterObjectKeys } from "../../helpers/ArrayHelper";
-import { getTimeFromDate } from "../../helpers/DateHelper";
+import { validate } from "../../helpers/ValidationHelpers";
+import { hours, minutes, changeValue } from "./helpers";
 
-const excludedInputProps = ["time", "changeTime", "minDate", "date"];
+const excludedInputProps = ["time", "onChangeTime", "minDate", "validationFunction"];
 
 class TimeInput extends PureComponent {
     _selectionRanges = [{ start: 0, end: 2, type: "hours" }, { start: 3, end: 5, type: "minutes" }];
     _emptyTime = "__:__";
 
     _focused = false;
-
-    componentDidMount() {
-        const { changeTime, time, date } = this.props;
-        changeTime(getTimeFromDate(date, time));
-    }
 
     handleClick = () => {
         if (this._focused) {
@@ -36,114 +29,58 @@ class TimeInput extends PureComponent {
         }, 1);
     };
 
-    handleBlur = () => {
-        const { time, changeTime } = this.props;
+    handleBlur = value => {
+        const { time, onBlur, validationFunction } = this.props;
         this._focused = false;
 
         if (time === this._emptyTime) {
-            changeTime("");
+            onBlur("", {
+                validationResult: {
+                    isValid: true,
+                    errorType: null
+                }
+            });
         } else if (time.indexOf("_") !== -1) {
-            changeTime(time, {
-                isValid: false,
-                errorType: validationErrorType.unfilledDate
+            onBlur(time, {
+                validationResult: {
+                    isValid: false,
+                    error: "Некорректное время"
+                }
             });
         } else {
-            this.changeTime(time);
+            const newTime = this._getBuildTime(time);
+            onBlur(newTime, {
+                validationResult: validate(newTime, validationFunction)
+            })
         }
     };
 
-    validate(time, minDate = this.props.minDate, maxDate = this.props.maxDate) {
-        const { date } = this.props;
-        const dateWithTime = convertISOString(`${date.split("T")[0]}T${time._i}:00`);
-
-        if (minDate && dateWithTime.isBefore(convertISOString(minDate))) {
-            return {
-                isValid: false,
-                errorType: validationErrorType.minTimeExceed
-            }
-        }
-
-        if (maxDate && dateWithTime.isAfter(convertISOString(maxDate))) {
-            return {
-                isValid: false,
-                errorType: validationErrorType.maxDateExceed
-            }
-        }
-
-        return {
-            isValid: true,
-            errorType: null
-        }
-    }
-
-    handleChange = textValue => {
-        this.changeTime(convertString(textValue, "HH:mm"));
+    handleChange = value => {
+        const { onChangeTime } = this.props;
+        onChangeTime(this._getBuildTime(value));
     };
 
-    changeTime = data => {
-        const { changeTime } = this.props;
-        const rawTime = data.format().split("T")[1] || convertISOString(data || this._emptyTime)._i;
-        const input = this.timeInput._inputDom;
-        const setCursorTo = (input, end) => {
-            setTimeout(() => {
-                input.selectionStart = input.selectionEnd = end;
-            }, 30);
-        };
+    _getBuildTime = textValue => {
+        const input = this.timeInput.getDomNode();
 
-        const [rawHours, rawMinutes] = rawTime.split(":").slice(0, 2);
+        const [rawHours, rawMinutes] = textValue.split(":");
 
-        const toArr = string => {
-            if (!string) {
-                return [0, 0];
-            }
-            return string.split("").map(el => parseInt(el)).filter(el => !isNaN(el));
-        };
-
-        const hours = hrs => {
-            const hoursArr = toArr(hrs);
-            if (hoursArr[0] > 2) {
-                setCursorTo(input, 3);
-                return [0, hoursArr[0]].join("");
-            }
-
-            if (hoursArr[0] === 2 && hoursArr[1] > 3) {
-                return "23";
-            }
-            return hrs;
-        }
-
-        const minutes = mins => {
-            const minutesArr = toArr(mins);
-            if (minutesArr[0] > 5) {
-                setCursorTo(input, 5);
-                return [0, minutesArr[0]].join("");
-            }
-            return mins;
-        }
-
-        const time = `${hours(rawHours)}:${minutes(rawMinutes)}`;
-        const convertedTime = convertISOString(convertString(time, "HH:mm"));
-
-        const { isValid, errorType } = this.validate(convertedTime);
-        changeTime(time, {
-            isValid,
-            errorType
-        });
+        return `${hours(rawHours, input)}:${minutes(rawMinutes, input)}`;
     };
 
     _increase() {
         const { time } = this.props;
-        const isoTime = convertISOString(convertString(time, "HH:mm"));
-        const nextTime = moment(isoTime).add(1, this._selectionRanges[this._selectedBlock].type);
-        this.changeTime(nextTime);
+
+        const nextTime = changeValue(time)(1, this._selectionRanges[this._selectedBlock].type);
+        this.handleChange(nextTime);
         this._selectBlock(this._selectedBlock);
     }
 
     _decrease() {
         const { time } = this.props;
-        const isoTime = convertISOString(convertString(time, "HH:mm"));
-        const prevTime = moment(isoTime).subtract(1, this._selectionRanges[this._selectedBlock].type);
-        this.changeTime(prevTime);
+
+        const prevTime = changeValue(time)(-1, this._selectionRanges[this._selectedBlock].type);
+        this.handleChange(prevTime);
         this._selectBlock(this._selectedBlock);
     }
 
@@ -183,7 +120,7 @@ class TimeInput extends PureComponent {
         setTimeout(() => {
             rangeSelector.setSelection(this.timeInput.getDomNode(), this._selectionRanges[blockNumber]);
             this._selectedBlock = blockNumber;
-        }, 0);
+        }, 1);
     }
 
     handleSelectBlock = () => {
@@ -204,8 +141,9 @@ class TimeInput extends PureComponent {
         }
     }
 
-    _getRef = input => { this.timeInput = input };
-
+    _getRef = input => {
+        this.timeInput = input
+    };
 
     render() {
         const { time } = this.props;
@@ -235,10 +173,9 @@ class TimeInput extends PureComponent {
 
 TimeInput.propTypes = {
     time: PropTypes.string,
-    changeTime: PropTypes.func,
-    minDate: CustomPropTypes.date,
-    maxDate: CustomPropTypes.date,
-    date: CustomPropTypes.date
+    onChangeTime: PropTypes.func,
+    onBlur: PropTypes.func,
+    validationFunction: PropTypes.func
 };
 
 export default TimeInput;
