@@ -64,7 +64,7 @@ class TimeInput extends PureComponent {
         const input = this.timeInput.getDomNode();
 
         const [rawHours, rawMinutes] = textValue.split(":");
-        
+
         return `${getHours(rawHours, input)}:${getMinutes(rawMinutes, input)}`;
     };
 
