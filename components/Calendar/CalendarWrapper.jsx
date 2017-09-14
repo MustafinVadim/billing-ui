@@ -17,7 +17,17 @@ import { filterObjectKeys } from "./../../helpers/ArrayHelper";
 import styles from "./CalendarWrapper.scss";
 
 const excludedInputProps = [
-    "minYear", "maxYear", "minDate", "maxDate", "isNullable", "isOpened", "className", "pickerClassName", "highlightRange", "defaultStartDate"
+    "minYear",
+    "maxYear",
+    "minDate",
+    "maxDate",
+    "isOpened",
+    "className",
+    "isNullable",
+    "highlightRange",
+    "pickerClassName",
+    "defaultStartDate",
+    "disableInvalidDates"
 ];
 
 class CalendarWrapper extends PureComponent {
