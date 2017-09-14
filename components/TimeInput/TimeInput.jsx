@@ -6,7 +6,7 @@ import styles from "./TimeInput.scss";
 import keyCodes from "../../helpers/KeyCodes";
 import { filterObjectKeys } from "../../helpers/ArrayHelper";
 import { validate } from "../../helpers/ValidationHelpers";
-import { hours, minutes, changeValue } from "./helpers";
+import { getHours, getMinutes, changeValue } from "./helpers";
 
 const excludedInputProps = ["time", "onChangeTime", "minDate", "validationFunction"];
 
@@ -64,8 +64,8 @@ class TimeInput extends PureComponent {
         const input = this.timeInput.getDomNode();
 
         const [rawHours, rawMinutes] = textValue.split(":");
-
-        return `${hours(rawHours, input)}:${minutes(rawMinutes, input)}`;
+        
+        return `${getHours(rawHours, input)}:${getMinutes(rawMinutes, input)}`;
     };
 
     _increase() {
