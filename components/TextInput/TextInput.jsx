@@ -106,7 +106,7 @@ class TextInput extends PureComponent {
                 this._input = el
             },
             value,
-            title: value,
+            title: inputType === InputTypes.password ? null : value,
             style: {
                 ...others.style,
                 "width": width,
