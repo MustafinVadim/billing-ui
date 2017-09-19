@@ -3,6 +3,7 @@ import { PureComponent } from "react";
 import MaskedInput from "react-input-mask";
 import Tooltip, { TriggerTypes, PositionTypes, TooltipTypes } from "../Tooltip";
 import { validate } from "../../helpers/ValidationHelpers";
+import InputTypes from "./InputTypes";
 import classnames from "classnames";
 
 class TextInput extends PureComponent {
@@ -67,6 +68,7 @@ class TextInput extends PureComponent {
             clearable,
             forceInvalid,
             maxCounter,
+            inputType,
             ...others
         } = this.props;
 
@@ -110,7 +112,7 @@ class TextInput extends PureComponent {
                 "width": width,
                 "height": height
             },
-            type: "text",
+            type: inputType,
             ["data-ft-id"]: "text-input",
             className: inputClassNames,
             onChange: this._handleOnChange,
@@ -188,7 +190,8 @@ TextInput.propTypes = {
     tooltipProps: PropTypes.object,
     tooltipType: PropTypes.oneOf(Object.keys(TooltipTypes).map((key) => TooltipTypes[key])),
     tooltipPosition: PropTypes.oneOf(Object.keys(PositionTypes).map((key) => PositionTypes[key])),
-    tooltipClassName: PropTypes.string
+    tooltipClassName: PropTypes.string,
+    inputType: PropTypes.oneOf(Object.keys(InputTypes).map((key) => InputTypes[key]))
 };
 
 TextInput.defaultProps = {
@@ -197,7 +200,8 @@ TextInput.defaultProps = {
     tooltipClassName: "",
     forceInvalid: false,
     validateOnMount: false,
-    tooltipProps: {}
+    tooltipProps: {},
+    inputType: InputTypes.text
 };
 
 export default TextInput;
