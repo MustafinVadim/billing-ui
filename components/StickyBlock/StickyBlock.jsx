@@ -1,7 +1,6 @@
 import { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { hasCssFeature } from "../../helpers/FeaturesDetector";
-import LegacyStickyBlock from "./LegacyStickyBlock";
 import styles from "./StickyBlock.scss";
 import cx from "classnames";
 
@@ -20,9 +19,9 @@ class StickyBlock extends PureComponent {
         }
 
         return (
-            <LegacyStickyBlock className={className}>
+            <div className={className}>
                 {children}
-            </LegacyStickyBlock>
+            </div>
         );
     }
 }
