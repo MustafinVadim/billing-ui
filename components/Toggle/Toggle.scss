@@ -1,0 +1,105 @@
+﻿@import "~billing-ui/styles/bourbon";
+
+:local {
+    $toggleCheckedColor: #00b359;
+
+    .wrapper {
+        max-width: 300px;
+    }
+
+    .checkbox {
+        max-width: 0;
+        max-height: 0;
+
+        opacity: 0;
+    }
+
+    .wrapper {
+        position: relative;
+    }
+
+    %label-background {
+        @include position(absolute, 0 null null 0);
+
+        content: "";
+
+        width: 18px;
+        height: 18px;
+
+        transition: .25s ease-in-out;
+
+        border-radius: 15px;
+    }
+
+    .label {
+        position: relative;
+
+        display: inline-block;
+        width: 33px;
+        height: 18px;
+
+        border-radius: 15px;
+        box-shadow: inset 0 0 0 1px #d5d5d5;
+
+        cursor: pointer;
+
+        &:before {
+            @extend %label-background;
+
+            background: rgba(19, 191, 17, 0);
+
+            :local(.checkbox:checked) + & {
+                width: 33px;
+            }
+        }
+
+        &:after {
+            @extend %label-background;
+
+            background: white;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .2), 0 1px 2px rgba(0, 0, 0, .2);
+
+            :local(.checkbox:checked) + & {
+                left: 15px;
+            }
+        }
+
+        :local(.checkbox:checked) + &.green:before {
+            background: $toggleCheckedColor;
+        }
+
+        :local(.checkbox:checked) + &.red:before {
+            background: red;
+        }
+
+        :local(.checkbox:checked) + &.blue:before {
+            background: #3072c4;
+        }
+
+        :local(.checkbox:checked) + &.orange:before {
+            background: #ff8000;
+        }
+
+        :local(.checkbox:checked) + &.green:after {
+            box-shadow: inset 0 0 0 1px $toggleCheckedColor, 0 1px 2px rgba(0, 0, 0, .2);
+        }
+
+        :local(.checkbox:checked) + &.red:after {
+            box-shadow: inset 0 0 0 1px red, 0 1px 2px rgba(0, 0, 0, .2);
+        }
+
+        :local(.checkbox:checked) + &.blue:after {
+            box-shadow: inset 0 0 0 1px #3072c4, 0 1px 2px rgba(0, 0, 0, .2);
+        }
+
+        :local(.checkbox:checked) + &.orange:after {
+            box-shadow: inset 0 0 0 1px #ff8000, 0 1px 2px rgba(0, 0, 0, .2);
+        }
+    }
+
+    .disabled {
+        opacity: .3;
+
+        pointer-events: none;
+    }
+}
