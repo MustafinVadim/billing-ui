@@ -3,12 +3,13 @@ import { PureComponent, Children, cloneElement } from "react";
 
 import CustomPropTypes from "billing-ui/helpers/CustomPropTypes";
 import Tab from "./Tab";
+import TabButton from "./TabButton";
 
 import styles from "./Tabs.scss";
 import cx from "classnames";
 
 class Tabs extends PureComponent {
-    _handleTabClick = (evt) => {
+    _handleTabClick = evt => {
         this.props.onChange({ tab: evt.target.getAttribute("name") });
     };
 
@@ -20,25 +21,25 @@ class Tabs extends PureComponent {
                 return;
             }
 
-            return cloneElement(tab || {}, { key: `${tab.props.tab}-${index}` })
+            return cloneElement(tab || {}, { key: `${tab.props.tab}-${index}` });
         });
     }
 
     render() {
-        const { wrapperClassNames, tabs, tabClassNames, headerClassNames, activeTab, ftId } = this.props;
+        const { wrapperClassNames, tabs, tabClassNames, headerClassNames, activeTab, ftId, onChange } = this.props;
 
         return (
             <div className={wrapperClassNames} data-ft-id={ftId}>
                 <div className={cx(styles.header, headerClassNames)}>
                     {tabs.map(({ tab, title }) => (
-                        <span className={cx(styles.tab, tabClassNames, { [styles.active]: activeTab === tab })}
-                            name={tab}
+                        <TabButton
                             key={`${tab}-tab-button`}
-                            data-ft-id={`${tab}-tab-button`}
-                            onClick={this._handleTabClick}
-                        >
-                            {title}
-                        </span>
+                            className={tabClassNames}
+                            isActive={activeTab === tab}
+                            onClick={onChange}
+                            tab={tab}
+                            title={title}
+                        />
                     ))}
                 </div>
                 <div className={styles.content}>
@@ -55,10 +56,12 @@ Tabs.propTypes = {
     headerClassNames: PropTypes.string,
     tabClassNames: PropTypes.string,
     activeTab: PropTypes.string.isRequired,
-    tabs: PropTypes.arrayOf(PropTypes.shape({
-        tab: PropTypes.string,
-        title: PropTypes.string
-    })),
+    tabs: PropTypes.arrayOf(
+        PropTypes.shape({
+            tab: PropTypes.string,
+            title: PropTypes.string
+        })
+    ),
     onChange: PropTypes.func,
     children: CustomPropTypes.children(Tab)
 };

@@ -11,48 +11,4 @@
         text-align-last: justify;
         white-space: nowrap;
     }
-
-    .tab {
-        position: relative;
-
-        display: inline-block;
-        margin-left: 30px;
-        padding: 10px 0;
-        box-sizing: border-box;
-
-        cursor: pointer;
-        user-select: none;
-
-        &,
-        &:hover,
-        &:visited,
-        &:active,
-        &:focus {
-            color: $textBaseColor;
-        }
-
-        &:first-child {
-            margin-left: 0;
-        }
-
-        &:after {
-            content: " ";
-
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-
-            width: 0;
-            height: 2px;
-
-            transition: width .1s $transitionBaseTimingFunction;
-
-            background: $themeMainColor;
-        }
-
-        &:hover:after,
-        &.active:after {
-            width: 100%;
-        }
-    }
 }
