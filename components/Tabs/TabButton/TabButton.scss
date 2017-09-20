@@ -1,6 +1,12 @@
-﻿@import "./../../../styles/variables";
+﻿@import "./../../../styles/bourbon";
+@import "./../../../styles/variables";
 
 :local {
+    %as-inactive {
+        pointer-events: none;
+        cursor: default;
+    }
+
     .tab {
         position: relative;
 
@@ -25,11 +31,9 @@
         }
 
         &:after {
-            content: " ";
+            @include position(absolute, null null -1px 0);
 
-            position: absolute;
-            bottom: -1px;
-            left: 0;
+            content: " ";
 
             width: 0;
             height: 2px;
@@ -44,11 +48,14 @@
             width: 100%;
         }
 
-        &.disabled {
-            opacity: .3;
+        &.active {
+            @extend %as-inactive;
+        }
 
-            pointer-events: none;
-            cursor: default;
+        &.disabled {
+            @extend %as-inactive;
+
+            opacity: .3;
         }
     }
 }

@@ -6,9 +6,9 @@ import cx from "classnames";
 
 class TabButton extends PureComponent {
     _handleClick = (evt) => {
-        const { onClick, isDisabled } = this.props;
+        const { onClick, isDisabled, isActive } = this.props;
 
-        if (!isDisabled) {
+        if (!isDisabled && !isActive) {
             onClick({ tab: evt.target.getAttribute("name") });
         }
     };
