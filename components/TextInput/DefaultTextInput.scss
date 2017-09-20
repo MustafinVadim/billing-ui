@@ -51,6 +51,8 @@
 
     .placeholder {
         color: $textSecondaryColor;
+
+        user-select: none;
     }
 
     .clear {
