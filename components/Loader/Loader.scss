@@ -27,11 +27,16 @@
         display: block;
         margin: auto;
 
-        opacity: .8;
-
         background: $bgWhiteColor;
 
         text-align: center;
+
+        :global {
+            animation: loaderFadeIn;
+            animation-duration: 1000ms;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+        }
 
         &:before {
             content: " ";
@@ -42,5 +47,19 @@
 
             vertical-align: middle;
         }
+    }
+}
+
+@keyframes loaderFadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: .1;
+    }
+
+    100% {
+        opacity: .8;
     }
 }

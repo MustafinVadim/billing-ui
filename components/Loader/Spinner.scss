@@ -5,6 +5,9 @@
         color: rgb(128, 128, 128);
         font-size: $fontSizeRegular;
         line-height: 20px;
+
+        user-select: none;
+        cursor: default;
     }
 
     .spinner {
