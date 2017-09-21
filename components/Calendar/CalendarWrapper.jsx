@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import ReactDOM from "react-dom";
 import cx from "classnames";
-import moment, { formatDate, convertString, convertISOString, inRange } from "../../libs/moment";
+import moment, { formatDate, convertString, convertISOString } from "../../libs/moment";
 
 import TextInput from "../TextInput";
 import Picker from "./Picker";
@@ -333,7 +333,7 @@ class CalendarWrapper extends PureComponent {
     }
 
     render() {
-        const { className, width, disabled, highlightRange } = this.props;
+        const { className, width, disabled } = this.props;
         const { isValid, errorType, date } = this.state;
 
         const picker = this.renderPicker();
@@ -341,12 +341,6 @@ class CalendarWrapper extends PureComponent {
         const openButtonClassNames = cx(styles["open-button"], {
             [styles.disabled]: disabled
         });
-
-        const highlighted = highlightRange && inRange(date, highlightRange.minDate, highlightRange.maxDate);
-
-        const inputStyle = {
-            color: highlighted ? highlightRange.color : null
-        };
 
         const inputProps = filterObjectKeys({
             ...this.props,
@@ -364,7 +358,7 @@ class CalendarWrapper extends PureComponent {
 
         return (
             <span className={wrapperClassNames} style={{ width: width }}>
-                <TextInput {...inputProps} style={inputStyle} ref={(el) => {
+                <TextInput {...inputProps} ref={(el) => {
                     this._textInput = el
                 }} />
                 <span className={openButtonClassNames} onClick={this.open} data-ft-id="calendar-open-button">
