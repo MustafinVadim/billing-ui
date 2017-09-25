@@ -20,7 +20,7 @@ class Toggle extends PureComponent {
 
         return (
             <div className={cx(styles.wrapper, { [styles.disabled]: isDisabled })}>
-                <label className={styles.wrapper}>
+                <label>
                     <input type="checkbox" className={styles.checkbox} checked={isChecked} onChange={this._handleChange} />
                     <span className={cx(styles.label, styles[color])} />
                 </label>
