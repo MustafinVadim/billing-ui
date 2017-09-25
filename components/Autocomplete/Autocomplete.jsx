@@ -18,9 +18,10 @@ import cx from "classnames";
 
 class Autocomplete extends PureComponent {
     _valueCreator = null;
+    _textInput = null;
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
         const { value, defaultValue, disableOnClickOutside } = props;
 
         disableOnClickOutside();
@@ -37,6 +38,10 @@ class Autocomplete extends PureComponent {
         };
 
         this.showNewOptions = debounce(this.showNewOptions, 200);
+    }
+
+    focus() {
+        this._textInput.focus();
     }
 
     componentWillReceiveProps(props) {
@@ -181,6 +186,10 @@ class Autocomplete extends PureComponent {
         });
     };
 
+    _setTextInputNode = (el) => {
+        this._textInput = el;
+    };
+
     showNewOptions(text) {
         const { openIfEmpty, enableOnClickOutside } = this.props;
         const value = text || "";
@@ -322,11 +331,12 @@ class Autocomplete extends PureComponent {
             <div className={cx(styles.root, this.props.autocompleteWrapperClassName)} data-ft-id={ftId}>
                 {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
-                           inputClassName={cx(styles.input, inputClassName, { [styles["with-icon"]]: hasSearchIcon })}
-                           placeholderClassName={cx(styles.placeholder, { [styles["with-icon"]]: hasSearchIcon })}
-                           isValid={isValid}
-                           tooltipCaption={tooltipErrorMessage}
-                           onBlur={this._handleBlur}
+                    ref={this._setTextInputNode}
+                    inputClassName={cx(styles.input, inputClassName, { [styles["with-icon"]]: hasSearchIcon })}
+                    placeholderClassName={cx(styles.placeholder, { [styles["with-icon"]]: hasSearchIcon })}
+                    isValid={isValid}
+                    tooltipCaption={tooltipErrorMessage}
+                    onBlur={this._handleBlur}
                 />
 
                 {shouldRenderMenu && (
