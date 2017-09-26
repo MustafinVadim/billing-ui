@@ -8,10 +8,10 @@ import cx from "classnames";
 
 class Loader extends PureComponent {
     _renderSpinner() {
-        const { type, caption, spinnerContainerClassName } = this.props;
+        const { type, caption, spinnerContainerClassName, isSmooth } = this.props;
 
         return (
-            <span className={cx(styles.spinnerContainerCenter, spinnerContainerClassName)}>
+            <span className={cx(styles.spinnerContainerCenter, spinnerContainerClassName, { [styles.smooth]: isSmooth })}>
                 <Spinner type={type} caption={caption} />
             </span>
         );
@@ -38,11 +38,13 @@ Loader.propTypes = {
     className: PropTypes.string,
     spinnerContainerClassName: PropTypes.string,
     type: PropTypes.oneOf(Object.keys(SpinnerTypes)),
+    isSmooth: PropTypes.bool,
     children: PropTypes.node
 };
 
 Loader.defaultProps = {
-    type: SpinnerTypes.normal
+    type: SpinnerTypes.normal,
+    isSmooth: false
 };
 
 export default Loader;

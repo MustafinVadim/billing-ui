@@ -31,11 +31,13 @@
 
         text-align: center;
 
-        :global {
-            animation: loaderFadeIn;
-            animation-duration: 1000ms;
-            animation-timing-function: linear;
-            animation-fill-mode: forwards;
+        &.smooth {
+            :global {
+                animation: loaderFadeIn;
+                animation-duration: 1000ms;
+                animation-timing-function: linear;
+                animation-fill-mode: forwards;
+            }
         }
 
         &:before {
