@@ -29,7 +29,7 @@ class TimeInput extends PureComponent {
         }, 1);
     };
 
-    handleBlur = value => {
+    handleBlur = () => {
         const { time, onBlur, validationFunction } = this.props;
         this._focused = false;
 
@@ -121,7 +121,7 @@ class TimeInput extends PureComponent {
             rangeSelector.setSelection(this.timeInput.getDomNode(), this._selectionRanges[blockNumber]);
             this._selectedBlock = blockNumber;
         }, 1);
-    }
+    };
 
     handleSelectBlock = () => {
         const selection = rangeSelector.getSelection(this.timeInput.getDomNode()).start;
@@ -139,7 +139,7 @@ class TimeInput extends PureComponent {
                 }
             }
         }
-    }
+    };
 
     _getRef = input => {
         this.timeInput = input
@@ -150,6 +150,7 @@ class TimeInput extends PureComponent {
         const inputProps = filterObjectKeys({
             ...this.props
         }, excludedInputProps);
+
         return (
             <TextInput
                 {...inputProps}
