@@ -2,9 +2,11 @@ import { compose, createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import thunk from "redux-thunk";
 
-import { init } from "./actions";
 import analyticsMiddleware from "./analyticsMiddleware";
 import sentryMiddleware from "./sentryMiddleware";
+
+import { withInit } from "./configureStoreDecorators";
+
 const __DEV__ = process.env.NODE_ENV !== "production";
 
 if (__DEV__) {
@@ -33,7 +35,7 @@ const _createStore = (initialState, rootReducer, outerMiddleware = []) => {
     );
 };
 
-export const configureStore = (initialState, rootReducer, rootSaga = null) => {
+const _configureStore = (initialState, rootReducer, rootSaga = null) => {
     if (rootSaga === null) {
         return _createStore(initialState, rootReducer);
     }
@@ -41,9 +43,10 @@ export const configureStore = (initialState, rootReducer, rootSaga = null) => {
     const sagaMiddleware = createSagaMiddleware();
     const store = _createStore(initialState, rootReducer, [sagaMiddleware]);
     sagaMiddleware.run(rootSaga);
-    store.dispatch(init());
 
     return store;
 };
+
+export const configureStore = withInit(_configureStore);
 
 export default configureStore;
