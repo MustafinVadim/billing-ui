@@ -1,6 +1,6 @@
 {
   "name": "billing-ui",
-  "version": "1.56.9",
+  "version": "1.56.10",
   "description": "KonturBilling UI components",
   "scripts": {
     "test:ci": "npm run eslint && npm run stylelint && npm test -- --reporter min",
