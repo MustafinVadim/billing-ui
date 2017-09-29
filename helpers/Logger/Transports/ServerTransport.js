@@ -57,7 +57,7 @@ class ServerTransport {
 
     destroy() {
         this._detachEvents();
-        this._logsInQueue = [];
+        this._logsInQueue.length = 0;
         this._wasDisabled = true;
     }
 }

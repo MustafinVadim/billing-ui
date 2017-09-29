@@ -2,10 +2,12 @@ import { LogLevel } from "./constants";
 
 import { createLog } from "./utils";
 import ServerTransport from "./Transports/ServerTransport";
+import SentryTransport from "./Transports/SentryTransport";
 
 export const createDefaultOptions = () => ({
     transports: [
-        new ServerTransport()
+        new ServerTransport(),
+        new SentryTransport()
     ]
 });
 

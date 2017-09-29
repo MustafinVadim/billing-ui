@@ -20,3 +20,18 @@ export const LogSeverity = {
     [LogLevel.ERROR]: Severity.CRITICAL,
     [LogLevel.FATAL]: Severity.CRITICAL
 };
+
+export const sentryLogLevel = {
+    error: "error",
+    warning: "warning",
+    info: "info",
+    debug: "debug"
+};
+
+export const LogSentryLevel = {
+    [LogLevel.DEBUG]: sentryLogLevel.debug,
+    [LogLevel.INFO]: sentryLogLevel.info,
+    [LogLevel.WARN]: sentryLogLevel.warning,
+    [LogLevel.ERROR]: sentryLogLevel.error,
+    [LogLevel.FATAL]: sentryLogLevel.error
+};

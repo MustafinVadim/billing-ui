@@ -1,12 +1,7 @@
 import Raven from "raven-js";
+import { sentryLogLevel } from "../Logger/constants";
 
 const BREADCRUMB_CATEGORY = "redux-action";
-const level = {
-    error: "error",
-    warning: "warning",
-    info: "info",
-    debug: "debug"
-};
 
 const sentryMiddleware = (store) => (next) => (action) => {
     const { type, payload } = action;
@@ -20,7 +15,7 @@ const sentryMiddleware = (store) => (next) => (action) => {
             payload,
             state: store.getState()
         },
-        level: isPossibleError ? level.error : level.info
+        level: isPossibleError ? sentryLogLevel.error : sentryLogLevel.info
     };
 
     Raven.captureBreadcrumb(breadcrumb);

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { generateAjaxErrorMessage } from "../../../helpers/Logger/helpers";
+import { generateAjaxErrorMessage } from "../../../helpers/Logger/utils";
 
 describe("logger generateAjaxErrorMessage helper", () => {
     it("should return an array", () => {
