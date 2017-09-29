@@ -4,6 +4,7 @@ import thunk from "redux-thunk";
 
 import { init } from "./actions";
 import analyticsMiddleware from "./analyticsMiddleware";
+import sentryMiddleware from "./sentryMiddleware";
 const __DEV__ = process.env.NODE_ENV !== "production";
 
 if (__DEV__) {
@@ -20,8 +21,9 @@ const includeDevTools = () => {
 };
 
 const _createStore = (initialState, rootReducer, outerMiddleware = []) => {
-    const middleware = [thunk, analyticsMiddleware].concat(outerMiddleware);
-    const store = createStore(
+    const middleware = [thunk, analyticsMiddleware, sentryMiddleware].concat(outerMiddleware);
+
+    return createStore(
         rootReducer,
         initialState,
         compose(
@@ -29,8 +31,6 @@ const _createStore = (initialState, rootReducer, outerMiddleware = []) => {
             includeDevTools()
         )
     );
-
-    return store;
 };
 
 export const configureStore = (initialState, rootReducer, rootSaga = null) => {

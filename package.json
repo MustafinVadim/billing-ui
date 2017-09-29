@@ -89,6 +89,7 @@
     "jquery": "1.11.3",
     "moment": ">=2.12.0",
     "prop-types": ">=15.5.8",
+    "raven-js": ">= 3.17.0",
     "react": ">= 0.14.6",
     "react-addons-perf": ">= 0.14.8",
     "react-custom-scrollbars": ">= 4.0.1",
