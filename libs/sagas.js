@@ -155,7 +155,11 @@ export function* fetchData({
         const errorHandlers = mergeHandlers(statusHandlers[error.response.status], onError);
 
         if (errorHandlers.length > 0) {
-            const errorData = additionalResponseData ? { ...additionalResponseData, error } : error;
+            const errorData = {
+                ...additionalResponseData,
+                error,
+                errorMessage
+            };
             yield* createPutEffects(errorHandlers, errorData);
         }
 
