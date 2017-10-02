@@ -102,6 +102,18 @@ const mergeHandlers = (statusHandlers, requestResultHandlers) => {
     return handlers;
 };
 
+export const extractMessageFromError = (error) => {
+    if (error.response && error.response.data && error.response.data.message) {
+        return error.response.data.message;
+    }
+
+    if (error.message) {
+        return error.message;
+    }
+
+    return DEFAULT_ERROR_MESSAGE;
+};
+
 export function* fetchData({
     url,
     data = null,
@@ -135,15 +147,15 @@ export function* fetchData({
             responseData
         };
     } catch (error) {
-        let errorMessage = error.message || DEFAULT_ERROR_MESSAGE;
+        const errorMessage = extractMessageFromError(error);
 
         Informer.showError(errorMessage);
-        Logger.error(generateAjaxErrorMessage({ url, requestMethod, data, errorMessage: error.message }));
+        Logger.error(generateAjaxErrorMessage({ url, requestMethod, data, errorMessage }));
 
         const errorHandlers = mergeHandlers(statusHandlers[error.response.status], onError);
 
         if (errorHandlers.length > 0) {
-            const errorData = additionalResponseData ? { ...additionalResponseData, error: error } : error;
+            const errorData = additionalResponseData ? { ...additionalResponseData, error } : error;
             yield* createPutEffects(errorHandlers, errorData);
         }
 
