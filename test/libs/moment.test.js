@@ -27,20 +27,12 @@ describe("moment adapter", () => {
     });
 
     describe("convertString", () => {
-        it("should convert date string to moment", () => {
-            expect(convertString("02.10.2017").utc().toISOString()).to.deep.equal("2017-10-01T19:00:00.000Z");
-        });
-
         it("should return null for invalid date", () => {
             expect(convertString(null)).to.be.null;
         });
     });
 
     describe("convertISOString", () => {
-        it("should convert date in ISO format to moment", () => {
-            expect(convertISOString("2013-02-01T11:13:00.000").utc().toISOString()).to.equal("2013-02-01T06:13:00.000Z");
-        });
-
         it("should return null for invalid date", () => {
             expect(convertISOString(null)).to.be.null;
         });
