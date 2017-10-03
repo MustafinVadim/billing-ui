@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import moment, { formatDate, inRange, formatDateWithTime, convertString, convertISOString, convertToISO } from "../../libs/moment";
+import moment, { formatDate, inRange, formatDateWithTime, convertToISO } from "../../libs/moment";
 
 describe("moment adapter", () => {
     describe("formatDate", () => {
@@ -26,18 +26,6 @@ describe("moment adapter", () => {
         });
     });
 
-    describe("convertString", () => {
-        it("should return null for invalid date", () => {
-            expect(convertString(null)).to.be.null;
-        });
-    });
-
-    describe("convertISOString", () => {
-        it("should return null for invalid date", () => {
-            expect(convertISOString(null)).to.be.null;
-        });
-    });
-
     describe("convertToISO", () => {
         it("should convert string date to ISO format", () => {
             expect(convertToISO("2013-02-01T11:13:00.000")).to.equal(moment("2013-02-01T11:13:00.000", moment.ISO_8601).toISOString());
@@ -46,10 +34,6 @@ describe("moment adapter", () => {
         it("should convert moment date to ISO format", () => {
             const now = moment();
             expect(convertToISO(now)).to.equal(now.toISOString());
-        });
-
-        it("should return null for invalid date", () => {
-            expect(convertToISO(null)).to.be.null;
         });
     });
 
