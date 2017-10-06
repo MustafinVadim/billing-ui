@@ -28,6 +28,7 @@ Highlighter.propTypes = {
     textToHighlight: PropTypes.string.isRequired,
     searchWords: PropTypes.oneOfType([PropTypes.array, PropTypes.string]).isRequired,
     highlightClassName: PropTypes.string,
+    unhighlightClassName: PropTypes.string,
 
     activeClassName: PropTypes.string,
     autoEscape: PropTypes.bool
@@ -35,7 +36,8 @@ Highlighter.propTypes = {
 
 Highlighter.defaultProps = {
     autoEscape: true,
-    highlightClassName: styles.highlight
+    highlightClassName: styles.highlight,
+    unhighlightClassName: styles.unhighlight
 };
 
 export default Highlighter;

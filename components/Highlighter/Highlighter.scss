@@ -1,7 +1,15 @@
 ﻿@import "../../styles/variables";
 
 :local {
+    .unhighlight {
+        position: relative;
+        z-index: 2;
+    }
+
     .highlight {
-        background: $bgAutocompleteHighlightColor;
+        position: relative;
+        z-index: 1;
+
+        background-color: $bgAutocompleteHighlightColor;
     }
 }
