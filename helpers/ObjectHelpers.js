@@ -10,10 +10,14 @@ export const justConstants = (obj = {}) =>
         .filter(isUpperCase)
         .reduce((result, key) => addValueByKey(key, obj[key], result), {});
 
-export const enumInfoMapper = (descriptions = {}) => type => {
+export const enumInfoMapper = (descriptions = {}) => (type, defaultResult) => {
     const description = descriptions[type];
     if (description !== undefined) {
         return description;
+    }
+
+    if (defaultResult !== undefined) {
+        return defaultResult;
     }
 
     return type;

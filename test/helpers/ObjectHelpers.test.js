@@ -27,23 +27,37 @@ describe("Object helper", () => {
     });
 
     describe("object description creator", () => {
-        it("should return proper description", () => {
-            const initialObject = {
-                Test: "Test",
-                Mock: "Mock"
-            };
-            const testDescription = "testDescription";
-            const mockDescription = "mockDescription";
-            initialObject.getDescription = enumInfoMapper({
-                [initialObject.Test]: testDescription,
-                [initialObject.Mock]: mockDescription
-            });
+        const initialObject = {
+            Test: "Test",
+            Mock: "Mock"
+        };
+        const testDescription = "testDescription";
+        const mockDescription = "mockDescription";
+        initialObject.getDescription = enumInfoMapper({
+            [initialObject.Test]: testDescription,
+            [initialObject.Mock]: mockDescription
+        });
 
+        it("should return proper description", () => {
             const actualTestDescription = initialObject.getDescription(initialObject.Test);
             const actualMockDescription = initialObject.getDescription(initialObject.Mock);
 
             expect(actualTestDescription).to.equal(testDescription);
             expect(actualMockDescription).to.equal(mockDescription);
+        });
+
+        it("should return type if not found in enum", () => {
+            const unknownType = "unknownType";
+            const actualDescription = initialObject.getDescription(unknownType);
+
+            expect(actualDescription).to.equal(unknownType);
+        });
+
+        it("should return default type if passed", () => {
+            const defaultType = "defaultType";
+            const actualDescription = initialObject.getDescription(null, defaultType);
+
+            expect(actualDescription).to.equal(defaultType);
         });
     });
 });
