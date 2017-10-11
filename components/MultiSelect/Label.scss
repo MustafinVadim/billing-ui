@@ -1,6 +1,4 @@
-﻿@import "../../styles/placeholders";
-@import "../../styles/variables";
-@import "../../styles/bourbon";
+﻿@import "../../styles/variables";
 
 :local {
     .wrapper {
@@ -35,37 +33,9 @@
         line-height: $lineHeightRegular;
     }
 
-    .content {
-        @extend %as-inline-block;
-
-        position: relative;
-
-        max-width: 100%;
-        padding: 0 25px 2px 10px;
-        box-sizing: border-box;
-
-        overflow: hidden;
-
-        border-radius: 20px;
-        background: $bgElementActiveLightColor;
-
-        font-size: $fontSizeBig;
-        line-height: $lineHeightSmall;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-
-        user-select: none;
-
+    .label {
         :local(.active) & {
             box-shadow: 0 0 0 2px $borderFocusColor;
         }
-    }
-
-    .icon {
-        @include position(absolute, 2px 5px null null);
-
-        color: $textSecondaryColor;
-
-        cursor: pointer;
     }
 }

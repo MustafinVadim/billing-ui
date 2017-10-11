@@ -2,7 +2,7 @@ import { PureComponent } from "react";
 import { findDOMNode } from "react-dom";
 import PropTypes from "prop-types";
 
-import Icon, { IconTypes } from "../Icon";
+import Chip from "../Chip";
 import Tooltip, { TriggerTypes, PositionTypes } from "../Tooltip";
 import { calculateContentWidth } from "../../helpers/NodeHelper";
 
@@ -107,7 +107,7 @@ class Label extends PureComponent {
     };
 
     _setTooltipTarget = el => {
-        this._tooltipTarget = el;
+        this._tooltipTarget = findDOMNode(el);
     };
 
     _setInputDOMNode = el => {
@@ -148,16 +148,15 @@ class Label extends PureComponent {
                     )
 
                     : (
-                        <span
-                            className={cx(styles.content, className)}
+                        <Chip
+                            className={cx(className, styles.label)}
+                            iconClassName={LABEL_REMOVE_ICON_CLASS_NAME}
                             ref={this._setTooltipTarget}
+                            onRemove={this._handleClickRemove}
                             onMouseDown={this._handleMouseDown}
                         >
                             {children}
-                            <Icon onClick={this._handleClickRemove}
-                                  className={cx(styles.icon, LABEL_REMOVE_ICON_CLASS_NAME)}
-                                  type={IconTypes.Delete} />
-                        </span>
+                        </Chip>
                     )
                 }
                 {hasTooltip && (
