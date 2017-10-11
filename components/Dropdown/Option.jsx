@@ -23,7 +23,9 @@ class Option extends PureComponent {
     }
 
     render() {
-        const { styles, caption, children, additionalData, wrapperClassName, captionClassName, isActive, isSelected, disabled, beforeCaption } = this.props;
+        const {
+            styles, caption, children, additionalData, wrapperClassName, captionClassName, isActive, isSelected, disabled, beforeCaption, title
+        } = this.props;
         const wrapperClassNames = classnames(styles.option, wrapperClassName, {
             [styles.disabled]: disabled,
             [styles["as-active"]]: isActive,
@@ -35,7 +37,7 @@ class Option extends PureComponent {
             <div className={wrapperClassNames}
                  onClick={this.handleClick.bind(this)}
                  onMouseOver={this.handleHover.bind(this)}
-                 title={caption}
+                 title={title === undefined ? caption : title}
                  data-ft-id="dropdown-option"
                  ref={ node => {
                      this._optionNode = node
@@ -54,8 +56,9 @@ Option.propTypes = {
     isActive: PropTypes.bool,
     isSelected: PropTypes.bool,
     disabled: PropTypes.bool,
+    title: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]),
-    caption: PropTypes.string,
+    caption: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.element]),
     beforeCaption: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.element]),
     children: PropTypes.node,
     additionalData: PropTypes.string,

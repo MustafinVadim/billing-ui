@@ -202,7 +202,7 @@ class Dropdown extends PureComponent {
     }
 
     render() {
-        const { value, additionalData, width, disabled, styles, className, attributes, fadeCaption } = this.props;
+        const { value, additionalData, width, disabled, styles, className, attributes, fadeCaption, title } = this.props;
         const wrapperClassNames = classnames(styles.wrapper, className, {"with-fade": fadeCaption});
         const selectClassNames = classnames(styles.select, {
             [styles.disabled]: disabled,
@@ -211,7 +211,7 @@ class Dropdown extends PureComponent {
 
         return (
             <div className={wrapperClassNames} { ...attributes }>
-                <div className={selectClassNames} onClick={this.handleClick} title={this._caption}>
+                <div className={selectClassNames} onClick={this.handleClick} title={title === undefined ? this._caption : title}>
                     <div className={styles["select-input"]} style={{"width": width}}>
                         <div className={styles.caption}>{this._caption}</div>
                         <div className={styles["additional-text"]}>{additionalData}</div>
@@ -228,6 +228,7 @@ class Dropdown extends PureComponent {
 Dropdown.propTypes = {
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]),
+    title: PropTypes.string,
     defaultCaption: PropTypes.string,
     fadeCaption: PropTypes.bool,
     additionalData: PropTypes.string,
