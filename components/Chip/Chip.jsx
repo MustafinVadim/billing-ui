@@ -35,8 +35,7 @@ Chip.propTypes = {
 
     children: PropTypes.string,
 
-    onRemove: PropTypes.func,
-    onMouseDown: PropTypes.func
+    onRemove: PropTypes.func
 };
 
 export default Chip;

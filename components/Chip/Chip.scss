@@ -31,5 +31,9 @@
         color: $textSecondaryColor;
 
         cursor: pointer;
+
+        &:hover {
+            color: $textBaseColor;
+        }
     }
 }
