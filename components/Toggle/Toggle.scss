@@ -7,6 +7,12 @@
         display: inline-block;
     }
 
+    .label {
+        display: flex;
+
+        align-items: center;
+    }
+
     .checkbox {
         display: none;
         max-width: 0;
@@ -15,7 +21,7 @@
         opacity: 0;
     }
 
-    %label-background {
+    %switch-background {
         @include position(absolute, 0 null null 0);
 
         content: "";
@@ -28,12 +34,13 @@
         border-radius: 15px;
     }
 
-    .label {
+    .switch {
         position: relative;
 
         display: inline-block;
         width: 33px;
         height: 18px;
+        margin-right: 10px;
 
         border-radius: 15px;
         box-shadow: inset 0 0 0 1px #d5d5d5;
@@ -45,7 +52,7 @@
         }
 
         &:before {
-            @extend %label-background;
+            @extend %switch-background;
 
             background: rgba(19, 191, 17, 0);
 
@@ -55,7 +62,7 @@
         }
 
         &:after {
-            @extend %label-background;
+            @extend %switch-background;
 
             background: white;
             box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .2), 0 1px 2px rgba(0, 0, 0, .2);
