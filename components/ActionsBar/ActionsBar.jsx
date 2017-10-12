@@ -102,31 +102,33 @@ class ActionsBar extends PureComponent {
                     this._actionsBarNode = ReactDOM.findDOMNode(el)
                 }}>
                     <div className={contentClassName}>
-                        {showSubmit && (
-                            <Button
-                                type={ButtonType.button}
-                                onClick={onSubmitClick}
-                                disabled={submitDisabled}
-                                className={cx(styles.actionSubmit, submitClassName, { [styles.disabled]: submitDisabled })}
-                                attributes={{
-                                    "data-ft-id": "submit-button",
-                                    ...submitAttributes
-                                }}
-                            >
-                                {submitText}
-                            </Button>
-                        )}
-                        {showCancel && (
-                            <button
-                                type="button"
-                                onClick={this.handleCancelClick}
-                                className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
-                                data-ft-id="cancel-button"
-                                {...cancelAttributes}
-                            >
-                                {cancelText}
-                            </button>
-                        )}
+                        <div>
+                            {showSubmit && (
+                                <Button
+                                    type={ButtonType.button}
+                                    onClick={onSubmitClick}
+                                    disabled={submitDisabled}
+                                    className={cx(styles.actionSubmit, submitClassName, { [styles.disabled]: submitDisabled })}
+                                    attributes={{
+                                        "data-ft-id": "submit-button",
+                                        ...submitAttributes
+                                    }}
+                                >
+                                    {submitText}
+                                </Button>
+                            )}
+                            {showCancel && (
+                                <button
+                                    type="button"
+                                    onClick={this.handleCancelClick}
+                                    className={cx(styles.actionCancel, cancelClassName, { [styles.disabled]: cancelDisabled })}
+                                    data-ft-id="cancel-button"
+                                    {...cancelAttributes}
+                                >
+                                    {cancelText}
+                                </button>
+                            )}
+                        </div>
                         {children}
                     </div>
                 </div>
@@ -136,8 +138,8 @@ class ActionsBar extends PureComponent {
 }
 
 ActionsBar.propTypes = {
-    showSubmit: PropTypes.bool.isRequired,
-    showCancel: PropTypes.bool.isRequired,
+    showSubmit: PropTypes.bool,
+    showCancel: PropTypes.bool,
 
     submitAttributes: PropTypes.object,
     cancelAttributes: PropTypes.object,
