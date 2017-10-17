@@ -1,7 +1,9 @@
 import { call, put } from "redux-saga/effects";
-import axios from "./axios";
+import axios, { httpMethod, prepareRequestData } from "./axios";
 import Logger, { generateAjaxErrorMessage } from "../helpers/Logger";
 import Informer from "Informer";
+
+export { httpMethod } from "./axios";
 
 export const httpStatusCodes = {
     CONTINUE: 100,
@@ -66,18 +68,6 @@ export const httpStatusCodes = {
     NETWORK_AUTHENTICATION_REQUIRED: 511
 };
 
-export const httpMethod = {
-    "get": "get",
-    "post": "post",
-    "put": "put",
-    "delete": "delete",
-    "patch": "patch",
-    "trace": "trace",
-    "connect": "connect",
-    "options": "options",
-    "head": "head"
-};
-
 export const DEFAULT_ERROR_MESSAGE = "Ошибка сервера. Попробуйте чуть позже.";
 
 function* createPutEffects(actionCreators, payload) {
@@ -129,7 +119,7 @@ export function* fetchData({
     }
 
     try {
-        const params = requestMethod === httpMethod.get ? { params: data } : data;
+        const params = prepareRequestData(requestMethod, data);
         const response = yield call(axios[requestMethod], url, params);
         const responseData = additionalResponseData ? {
             ...response.data,
