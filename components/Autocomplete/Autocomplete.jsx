@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import onClickOutside from "react-onclickoutside";
 import debounce from "lodash/debounce";
 import omit from "lodash/omit";
-import axios from "../../libs/axios";
+import { httpMethod } from "../../libs/sagas";
+import axios, { prepareRequestData } from "../../libs/axios";
 import throttle from "lodash/throttle";
 
 import TryAgain from "./TryAgain";
@@ -227,18 +228,14 @@ class Autocomplete extends PureComponent {
     }
 
     search(value) {
-        const { requestData, url } = this.props;
+        const { requestData, requestMethod, enableOnClickOutside, url } = this.props;
 
-        return axios
-            .get(url, {
-                params: {
-                    ...requestData,
-                    value
-                }
-            })
+        const requestParams = prepareRequestData(requestMethod, { ...requestData, value });
+
+        return axios[requestMethod](url, requestParams)
             .then(({ data }) => data)
             .catch(() => {
-                this.props.enableOnClickOutside();
+                enableOnClickOutside();
                 this.setState({
                     isRequestFailed: true,
                     isMenuOpened: true,
@@ -303,7 +300,7 @@ class Autocomplete extends PureComponent {
             "url", "ftId", "hasSearchIcon", "notFoundText", "requestData", "onSelect", "defaultValue", "clearOnSelect", "enableOnClickOutside",
             "autocompleteWrapperClassName", "optionItemClassName", "optionActiveItemClassName", "menuClassName", "menuWidth", "maxMenuHeight",
             "optionClassName", "valueCreator", "renderItem", "disableOnClickOutside", "outsideClickIgnoreClass", "openIfEmpty", "closeOnSelect",
-            "openIfNotFound"
+            "openIfNotFound", "requestMethod"
         ];
 
         const inputProps = omit({
@@ -396,6 +393,7 @@ Autocomplete.propTypes = {
 
     url: PropTypes.string.isRequired,
     requestData: PropTypes.object,
+    requestMethod: PropTypes.oneOf(Object.keys(httpMethod)),
     valueCreator: PropTypes.func,
 
     autocompleteWrapperClassName: PropTypes.string,
@@ -411,6 +409,7 @@ Autocomplete.propTypes = {
 
 Autocomplete.defaultProps = {
     requestData: {},
+    requestMethod: httpMethod.get,
     hasSearchIcon: false,
     clearOnSelect: false,
     closeOnSelect: true,
