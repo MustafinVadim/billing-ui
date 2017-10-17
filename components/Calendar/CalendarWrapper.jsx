@@ -113,7 +113,7 @@ class CalendarWrapper extends PureComponent {
     handleChange = (textValue) => {
         let date;
         if (textValue === this._emptyDate && this.props.isNullable) {
-            date = null;
+            date = this._emptyDate;
         } else {
             date = convertString(textValue);
         }
@@ -233,7 +233,7 @@ class CalendarWrapper extends PureComponent {
     changeDate(date, minDate, maxDate) {
         const { onChange, value, isNullable } = this.props;
 
-        if (isNullable && !date) {
+        if (isNullable && date === this._emptyDate) {
             onChange(null, {
                 date: null,
                 isValid: true,
@@ -241,7 +241,7 @@ class CalendarWrapper extends PureComponent {
             });
 
             this.setState({
-                date: null,
+                date,
                 isValid: true,
                 errorType: null
             });
