@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import onClickOutside from "react-onclickoutside";
 import debounce from "lodash/debounce";
 import omit from "lodash/omit";
-import { httpMethod } from "../../libs/sagas";
+import { httpMethod } from "../../libs/axios";
 import axios, { prepareRequestData } from "../../libs/axios";
 import throttle from "lodash/throttle";
 

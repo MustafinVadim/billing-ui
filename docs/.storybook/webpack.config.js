@@ -19,6 +19,10 @@ module.exports = (storybookBaseConfig) => {
 
         devtool: "#inline-source-map",
 
+        externals: [{
+            Informer: "Informer"
+        }],
+
         module: {
             rules: [
                 {
