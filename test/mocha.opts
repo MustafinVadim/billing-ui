@@ -1,6 +1,7 @@
---compilers js:babel-register
 --require jsdom-global/register
+--require babel-register
 --reporter nyan
 --ui bdd
 --colors
 --inline-diffs
+--recursive
