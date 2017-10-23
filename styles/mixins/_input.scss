@@ -1,4 +1,4 @@
-﻿@import "../variables";
+@import "../variables";
 
 %input-base {
     transition: border-color, box-shadow .2s ease-in-out;
@@ -40,7 +40,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 
-    // todo: либо потерялось, либо нужно выпилить
+    /* todo: либо потерялось, либо нужно выпилить*/
     & .placeholder {
         position: relative;
         top: 2px;
