@@ -5,7 +5,7 @@
     "scripts": {
         "test:ci": "npm run eslint && npm run stylelint && npm test -- --reporter min",
         "test": "mocha \"./test/**/*.test.js\"",
-        "test:tmp": "mocha $(find ./test -name '*.test.js' ! -ipath '*node_modules*')",
+        "test:mac": "mocha $(find ./test -name '*.test.js' ! -ipath '*node_modules*')",
         "test:watch": "mocha watch \"./test/**/*.test.js\"",
         "eslint": "eslint \"./**/**.js\" --cache && eslint \"./**/**.jsx\" --cache",
         "stylelint": "stylelint \"./**/*.scss\" --color --syntax scss",
