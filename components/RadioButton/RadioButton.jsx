@@ -3,7 +3,7 @@ import { PureComponent } from "react";
 import radioStyles from "./RadioButton.scss";
 import classnames from "classnames";
 
-export const valuePropType = PropTypes.oneOf([PropTypes.string, PropTypes.number, PropTypes.bool]);
+export const valuePropType = PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]);
 
 class RadioButton extends PureComponent {
     render() {
