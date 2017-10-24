@@ -10,7 +10,7 @@
         "eslint": "eslint \"./**/**.js\" --cache && eslint \"./**/**.jsx\" --cache",
         "stylelint": "stylelint \"./**/*.scss\" --color --syntax scss",
         "stylefmt": "stylefmt --recursive ./styles & stylefmt --recursive ./components",
-        "comb": "postcss **/*.scss !**/_product_icons.scss !**/_**-settings.scss !node_modules/**/*.scss !**/node_modules/**/*.scss --replace --config postcss.config.js",
+        "comb": "postcss **/*.scss !**/_product_icons.scss !**/_**-settings.scss !node_modules/**/*.scss !**/node_modules/**/*.scss --replace --config comb-postcss.js",
         "prettier": "prettier --print-width 160 --tab-width 4 --write '{components,libs,helpers,test}/**/*.js*'",
         "precommit": "yarn comb",
         "preversion": "yarn eslint && yarn stylelint && yarn test",
