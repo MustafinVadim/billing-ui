@@ -1,1 +1,1 @@
-export { default as default } from "./RadioButton.jsx";
+export { default, valuePropType } from "./RadioButton.jsx";

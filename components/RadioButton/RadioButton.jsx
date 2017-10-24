@@ -3,6 +3,8 @@ import { PureComponent } from "react";
 import radioStyles from "./RadioButton.scss";
 import classnames from "classnames";
 
+export const valuePropType = PropTypes.oneOf([PropTypes.string, PropTypes.number, PropTypes.bool]);
+
 class RadioButton extends PureComponent {
     render() {
         const { checked, value, onChange, radioClassName, labelClassName, wrapperClassName,
@@ -34,7 +36,7 @@ class RadioButton extends PureComponent {
 
 RadioButton.propTypes = {
     onChange: PropTypes.func,
-    value: PropTypes.string.isRequired,
+    value: valuePropType.isRequired,
     checked: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
     readonly: PropTypes.bool,

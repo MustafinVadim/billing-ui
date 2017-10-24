@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { PureComponent, Children, cloneElement } from "react";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
-import RadioButton from "../RadioButton";
+import RadioButton, { valuePropType } from "../RadioButton";
 import radioGroupStyles from "./RadioGroup.scss";
 import classnames from "classnames";
 
@@ -34,7 +34,7 @@ class RadioGroup extends PureComponent {
 
 RadioGroup.propTypes = {
     onChange: PropTypes.func,
-    value: PropTypes.string,
+    value: valuePropType,
     className: PropTypes.string,
     styles: PropTypes.object,
     children: CustomPropTypes.children(RadioButton)
