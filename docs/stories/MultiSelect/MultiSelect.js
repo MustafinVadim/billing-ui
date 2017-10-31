@@ -4,6 +4,8 @@ import MultiSelect from "../../../components/MultiSelect";
 import Validation, { validate } from "../../../helpers/ValidationHelpers";
 
 export class MultiSelectWrapper extends React.Component {
+    static propTypes = MultiSelect.propTypes;
+
     constructor(props, context) {
         super(props, context);
         this.state = {

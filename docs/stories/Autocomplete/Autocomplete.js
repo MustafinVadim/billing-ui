@@ -3,6 +3,8 @@ import React from "react";
 import Autocomplete from "../../../components/Autocomplete";
 
 export class AutocompleteWrapper extends React.Component {
+    static propTypes = Autocomplete.propTypes;
+
     constructor(props, context) {
         super(props, context);
         this.state = {

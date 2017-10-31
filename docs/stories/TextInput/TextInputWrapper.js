@@ -2,6 +2,7 @@ import React from "react";
 
 import "./../../src/css/icon-fonts.scss";
 import TextInput from "./../../../components/TextInput";
+import styles from "../../styles/TextInputWrapper.scss";
 
 export class TextInputWrapper extends React.Component {
     static propTypes = TextInput.propTypes;
@@ -26,10 +27,12 @@ export class TextInputWrapper extends React.Component {
 
     render() {
         return (
-            <TextInput {...this.props}
-                       value={this.state.value}
-                       onChange={this.handleOnChange}
-            />
+            <div className={styles.wrapper}>
+                <TextInput {...this.props}
+                    value={this.state.value}
+                    onChange={this.handleOnChange}
+                />
+            </div>
         );
     }
 }

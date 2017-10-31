@@ -15,7 +15,7 @@ const DEFAULT_MIN_HL_DATE = moment().toDate();
 const DEFAULT_MAX_HL_DATE = moment().add(HIGHLIGHTED_DATE_RANGE, "days").toDate();
 
 storiesOf("Calendar", module)
-    .add("main", () => (
+    .addWithInfo("main", () => (
         <CalendarWrapper
             onChange={action("changed")}
             isValid={boolean("is valid", true)}
@@ -27,7 +27,7 @@ storiesOf("Calendar", module)
             width={number("width", 115)}
         />
     ))
-    .add("with disabling dates", () => (
+    .addWithInfo("с задизабленными датами", () => (
         <CalendarWrapper
             onChange={action("changed")}
             minDate={date("min date", DEFAULT_MIN_DATE)}
@@ -35,7 +35,7 @@ storiesOf("Calendar", module)
             disableInvalidDates={boolean("disable invalid dates", true)}
         />
     ))
-    .add("with highlighted range", () => (
+    .addWithInfo("с подсветкой периода", () => (
         <CalendarWrapper
             onChange={action("changed")}
             highlightRange={{

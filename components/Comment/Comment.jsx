@@ -5,7 +5,7 @@ import cx from "classnames";
 
 import { safeDecodeURI } from "../../helpers/EncodeHelpers";
 import { formatDateWithTime } from "../../libs/moment";
-import Icon, { IconTypes } from "billing-ui/components/Icon";
+import Icon, { IconTypes } from "../Icon";
 import ReadComment from "./ReadComment.jsx";
 import EditComment from "./EditComment.jsx";
 import styles from "./Comment.scss";

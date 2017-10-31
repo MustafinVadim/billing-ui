@@ -1,4 +1,5 @@
 import { configure, setAddon, addDecorator } from "@storybook/react";
+import { setOptions } from "@storybook/addon-options";
 import infoAddon from "@storybook/addon-info";
 import { withKnobs } from "@storybook/addon-knobs";
 import backgrounds from "@storybook/addon-backgrounds";
@@ -8,7 +9,11 @@ import "../src/css/icon-fonts.scss";
 
 setAddon(infoAddon);
 
-addDecorator(story => <div style={{ padding: "20px", fontFamily: "Segoe UI,Helvetica Neue,Arial,Tahoma,sans-serif" }}>{story()}</div>);
+addDecorator(story => (
+    <div style={{ padding: "20px", fontFamily: "Segoe UI,Helvetica Neue,Arial,Tahoma,sans-serif" }}>
+        {story()}
+    </div>
+));
 addDecorator(withKnobs);
 addDecorator(backgrounds([
     { name: "main", value: "#ffffff", default: true },
@@ -18,8 +23,13 @@ addDecorator(backgrounds([
     { name: "body", value: "#e8e8e8" }
 ]));
 
-const req = require.context("../stories", true, /.stories.js$/);
+setOptions({
+    name: "billing-ui",
+    url: "https://github.com/storybooks/storybook",
+    downPanelInRight: true
+});
 
+const req = require.context("../stories", true, /.stories.js$/);
 configure(() => {
     req.keys().forEach((filename) => req(filename));
 }, module);

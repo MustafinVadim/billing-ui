@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Checkbox from "./../../../components/Checkbox";
 
@@ -26,8 +27,8 @@ export class CheckboxWrapper extends React.Component {
     render() {
         return (
             <Checkbox {...this.props}
-                      checked={this.state.checked}
-                      onChange={this.handleOnChange}
+                checked={this.state.checked}
+                onChange={this.handleOnChange}
             >
                 Checkbox
             </Checkbox>

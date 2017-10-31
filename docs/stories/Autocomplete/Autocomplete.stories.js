@@ -4,7 +4,7 @@ import { text, boolean, number } from "@storybook/addon-knobs";
 import { AutocompleteWrapper } from "./Autocomplete";
 
 storiesOf("Autocomplete", module)
-    .add("main", () => (
+    .addWithInfo("main", () => (
         <AutocompleteWrapper
             hasSearchIcon={boolean("has search icon", false)}
             clearOnSelect={boolean("clear on select", false)}

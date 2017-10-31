@@ -4,7 +4,7 @@ import { text } from "@storybook/addon-knobs";
 import { MultiSelectWrapper } from "./MultiSelect";
 
 storiesOf("MultiSelect", module)
-    .add("main", () => (
+    .addWithInfo("main", () => (
         <MultiSelectWrapper
             onAddLabel={action("add label")}
             onRemoveLabel={action("remove label")}

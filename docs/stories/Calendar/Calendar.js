@@ -5,6 +5,8 @@ import Calendar from "../../../components/Calendar";
 import moment from "../../../libs/moment";
 
 export class CalendarWrapper extends React.Component {
+    static propTypes = Calendar.propTypes;
+
     constructor(props, context) {
         super(props, context);
         this.state = {
