@@ -108,7 +108,7 @@ $halfFilledIcons: (
         box-sizing: border-box;
 
         border-radius: 2px;
-        background: $bgElementActiveColor;
+        background-color: $bgElementActiveColor;
 
         color: $textDarkColor;
         font-size: 11px;
@@ -127,6 +127,7 @@ $halfFilledIcons: (
             background-image: url($productIconSpriteUrl);
             background-repeat: no-repeat;
             background-position: #{$position};
+            background-color: transparent;
 
             &:before {
                 display: none;
@@ -144,6 +145,7 @@ $halfFilledIcons: (
         background-image: url($productIconSpriteUrl);
         background-repeat: no-repeat;
         background-position: #{map-get($products, $product)};
+        background-color: transparent;
 
         &:before {
             display: none;
