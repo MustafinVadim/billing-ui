@@ -3902,6 +3902,12 @@ pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
 
+postcss-bom@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/postcss-bom/-/postcss-bom-0.0.4.tgz#b1ebc503e6729355e901678fabd8f8dfd2028886"
+  dependencies:
+    postcss "^6.0.1"
+
 postcss-cli@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/postcss-cli/-/postcss-cli-4.1.1.tgz#b94bd8fffbb7ac1f62f2607e78fc9397f7f63a5d"

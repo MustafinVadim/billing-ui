@@ -1,4 +1,4 @@
-const csscombOptions = require("./.csscomb.json");
+const csscombOptions = require("../.csscomb.json");
 const sortOrder = csscombOptions["sort-order"];
 
 module.exports = {
@@ -24,6 +24,7 @@ module.exports = {
             "sort-order": sortOrder,
             "empty-lines-between-children-rules": 1
         }),
-        require("postcss-eol")
+        require("postcss-eol"),
+        require("postcss-bom")
     ]
 };
