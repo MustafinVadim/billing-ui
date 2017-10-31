@@ -1,4 +1,4 @@
-@import "../variables";
+﻿@import "../variables";
 
 @mixin baseFade($baseColor: $bgWhiteColor, $hoverColor: null, $width: 30px, $rightSide: true) {
     @if type-of($hoverColor) != "null" {
