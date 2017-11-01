@@ -1,0 +1,60 @@
+﻿@import "../../styles/bourbon";
+@import "../../styles/variables";
+@import "./settings";
+$informerWidth: ($verticalPadding * 2) + $verticalSize;
+
+:local {
+    .informer {
+        @include position(fixed, null null null 0);
+
+        z-index: 2000;
+
+        width: 100%;
+        padding: $verticalPadding 20px;
+
+        overflow: hidden;
+
+        transition: top $transitionBaseTime cubic-bezier(.22, .61, .36, 1);
+
+        color: $textWhiteColor;
+        font-size: $verticalSize;
+        font-weight: bold;
+        text-align: center;
+
+        &.success {
+            background: rgba(76, 175, 80, .85);
+        }
+
+        &.error {
+            background: rgba(191, 54, 12, .85);
+        }
+
+        &.expectation {
+            background: rgba(232, 162, 20, .85);
+        }
+    }
+
+    .icon {
+        margin-right: 5px;
+
+        font-size: $fontSizeBig;
+    }
+
+    .enter,
+    .appear {
+        top: -$informerWidth;
+    }
+
+    .enter-active,
+    .appear-active {
+        top: 0;
+    }
+
+    .leave {
+        top: 0;
+    }
+
+    .leave-active {
+        top: -$informerWidth;
+    }
+}

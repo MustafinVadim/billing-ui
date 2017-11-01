@@ -1,7 +1,7 @@
 import { call, put } from "redux-saga/effects";
 import axios, { httpMethod, prepareRequestData } from "./axios";
 import Logger, { generateAjaxErrorMessage } from "../helpers/Logger";
-import Informer from "Informer";
+import Informer from "../components/Informer";
 
 export { httpMethod } from "./axios";
 

@@ -73,6 +73,7 @@
         "react-dom": "latest",
         "react-highlight-words": "^0.8.1",
         "react-onclickoutside": "^5.7.1",
+        "react-transition-group": "^2.2.1",
         "reduce-reducers": "^0.1.2",
         "redux-saga": ">= 0.10.4 < 1",
         "stylefmt": "^4.3.1",

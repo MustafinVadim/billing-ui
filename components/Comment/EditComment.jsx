@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import cx from "classnames";
 import axios from "../../libs/axios";
-import Informer from "Informer";
 
 import KeyCodes from "../../helpers/KeyCodes";
+import Informer from "../Informer";
 import TextArea from "../TextArea";
 import Icon, { IconTypes } from "../Icon";
 import Link from "../Link";
