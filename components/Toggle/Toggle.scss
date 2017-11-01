@@ -24,11 +24,10 @@
         display: flex;
 
         cursor: pointer;
-        
+
         :local(.disabled) & {
             cursor: default;
         }
-
     }
 
     .checkbox {
