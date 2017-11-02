@@ -1,6 +1,7 @@
-﻿@import "./../../styles/materialdesign";
+﻿@import "./../../styles/bourbon";
+@import "./../../styles/materialdesign";
 @import "./../../styles/placeholders";
-@import "./../../styles/bourbon";
+@import "./../../styles/variables";
 $textStageDoneColor: #23d160;
 
 :local {
@@ -83,6 +84,26 @@ $textStageDoneColor: #23d160;
 
     .label {
         @extend %stylized-checkBox-label;
+
+        &.partially {
+            &:after {
+                @include position(absolute, 11px null null 4px);
+
+                width: 12px;
+                height: 3px;
+
+                opacity: 1;
+
+                transform: rotate(0deg);
+
+                border: none;
+                background-color: $textInactiveColor;
+            }
+
+            &:hover:after {
+                background-color: $textBaseColor;
+            }
+        }
     }
 
     .content {

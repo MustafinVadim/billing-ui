@@ -1,2 +1,2 @@
-import Checkbox from "./Checkbox.jsx";
-export default Checkbox;
+export default from "./Checkbox";
+export { default as CheckboxStates } from "./CheckboxStates";

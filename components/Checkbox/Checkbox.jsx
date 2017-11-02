@@ -1,5 +1,8 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
+
+import CheckboxStates from "./CheckboxStates";
+
 import checkboxStyles from "./Checkbox.scss";
 import cx from "classnames";
 
@@ -18,7 +21,7 @@ class Checkbox extends PureComponent {
         const { checked, onChange } = this.props;
 
         if (onChange) {
-            onChange(!checked, evt)
+            onChange(checked === CheckboxStates.unchecked, evt);
         }
     };
 
@@ -27,7 +30,9 @@ class Checkbox extends PureComponent {
             checked, checkboxClassName, labelClassName, wrapperClassName, styles,
             children, disabled, readonly, ftId, withLineStrikethrough, ...checkboxProps
         } = this.props;
-        const labelClassNames = cx(styles.label, labelClassName);
+        const labelClassNames = cx(styles.label, labelClassName, {
+            [styles.partially]: checked === CheckboxStates.partiallyChecked
+        });
         const wrapperClassNames = cx(styles.wrapper, wrapperClassName, {
             [styles.strikethrough]: withLineStrikethrough,
             [styles["with-animation"]]: withLineStrikethrough && this._needAnimation
@@ -40,7 +45,7 @@ class Checkbox extends PureComponent {
         return (
             <label className={wrapperClassNames} data-ft-id={ftId}>
                 <input {...checkboxProps}
-                    checked={checked}
+                    checked={checked === CheckboxStates.checked}
                     disabled={disabled}
                     readOnly={readonly}
                     className={checkboxClassNames}
@@ -57,10 +62,10 @@ class Checkbox extends PureComponent {
 
 Checkbox.propTypes = {
     onChange: PropTypes.func,
-    checked: PropTypes.bool.isRequired,
-    disabled: PropTypes.bool.isRequired,
-    withLineStrikethrough: PropTypes.bool.isRequired,
-    readonly: PropTypes.bool.isRequired,
+    checked: PropTypes.oneOf(Object.values(CheckboxStates)),
+    disabled: PropTypes.bool,
+    withLineStrikethrough: PropTypes.bool,
+    readonly: PropTypes.bool,
     labelClassName: PropTypes.string,
     wrapperClassName: PropTypes.string,
     checkboxClassName: PropTypes.string,
@@ -74,7 +79,7 @@ Checkbox.defaultProps = {
     labelClassName: "",
     wrapperClassName: "",
     checkboxClassName: "",
-    checked: false,
+    checked: CheckboxStates.unchecked,
     disabled: false,
     readonly: false,
     withLineStrikethrough: false,
