@@ -12,6 +12,7 @@ class Highlighter extends PureComponent {
         let highlightProps = {
             ...this.props
         };
+        highlightProps.textToHighlight = highlightProps.textToHighlight || "";
         delete highlightProps.searchWords;
 
         if (typeof searchWords === "string") {
