@@ -174,7 +174,7 @@ class Dropdown extends PureComponent {
     }
 
     getOptionsList() {
-        const { value, styles, children } = this.props;
+        const { value, styles, children, optionsClassName } = this.props;
 
         const options = Children.map(children, option => {
             if (option && option.type === Option) {
@@ -190,9 +190,11 @@ class Dropdown extends PureComponent {
             return option;
         });
 
+        const optionsStyles = classnames(styles.options, optionsClassName);
+
         if (options) {
             return (
-                <div className={styles.options} ref={node => { this._optionsListNode = node }} data-ft-id="dropdown-popup">
+                <div className={optionsStyles} ref={node => { this._optionsListNode = node }} data-ft-id="dropdown-popup">
                     {options}
                 </div>
             )
@@ -235,6 +237,7 @@ Dropdown.propTypes = {
     onSelect: PropTypes.func,
     disabled: PropTypes.bool,
     className: PropTypes.string,
+    optionsClassName: PropTypes.string,
     styles: PropTypes.object,
     attributes: PropTypes.object,
     children: PropTypes.node.isRequired
