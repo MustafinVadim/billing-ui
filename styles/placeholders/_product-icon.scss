@@ -1,13 +1,12 @@
-@import "../mixins/product_icons";
+﻿@import "../mixins/product_icons";
 
 %product-icon {
     @include product_icons();
-    
-    display: inline-block;
-    position: relative;
 
+    position: relative;
     top: 4px;
 
+    display: inline-block;
     width: 20px;
     height: 20px;
     margin-right: 5px;
