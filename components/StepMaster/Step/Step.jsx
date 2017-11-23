@@ -10,13 +10,18 @@ class Step extends PureComponent {
     state = {
         isHidden: false
     };
+    _timer = null;
 
     componentDidUpdate() {
         if (this.props.type === StepType.next || this.props.type === StepType.previous) {
-            setTimeout(() => {
+            this._timer = setTimeout(() => {
                 this.setState({ isHidden: true });
             }, 300)
         }
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this._timer);
     }
 
     render() {
