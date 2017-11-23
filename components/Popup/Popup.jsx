@@ -90,11 +90,12 @@ class Popup extends PureComponent {
     }
 
     render() {
-        const { children, className, onClose, showCross, isLoading, spinnerType, isOpened } = this.props;
+        const { children, className, onClose, showCross, isLoading, spinnerType, isOpened, wrapperClassName } = this.props;
         const { positionType, position } = this.state;
 
         const [tooltipPos, arrowPos] = positionType.split(" ");
         const wrapperClassNames = cx(
+            wrapperClassName,
             styles.wrapper,
             styles.tooltip,
             styles[tooltipPos],
@@ -133,6 +134,7 @@ Popup.propTypes = {
 
     positionType: PropTypes.oneOf(Object.values(PositionTypes)),
     offsetPosition: PropTypes.object,
+    wrapperClassName: PropTypes.string,
     className: PropTypes.string,
 
     disableOnClickOutside: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]), // onClickOutside API
