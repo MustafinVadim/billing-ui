@@ -67,7 +67,7 @@ class StepMaster extends PureComponent {
     }
 
     render() {
-        const { steps, currentStepIndex, submitText, isValidCurrentStep, submitDisabled, classNames } = this.props;
+        const { steps, currentStepIndex, submitText, isValidCurrentStep, submitDisabled, classNames, contentClassNames } = this.props;
 
         const availableNextStep = currentStepIndex !== steps.length - 1 && isValidCurrentStep;
         return (
@@ -79,23 +79,29 @@ class StepMaster extends PureComponent {
                         </span>
                     ))}
                 </div>
-                <div className={styles.content}>
+                <div className={cx(styles.content, contentClassNames)}>
                     {this._renderSteps()}
                 </div>
                 <div className={styles.actions}>
-                    <div className={cx(styles["previous-button"], {[styles["action-button-disabled"]]: currentStepIndex === 0 })}
+                    <div
+                        className={cx(styles["previous-button"], {[styles["action-button-disabled"]]: currentStepIndex === 0 })}
                         data-ft-id="previous-button"
-                        onClick={this._handlePreviousStepClick}>
+                        onClick={this._handlePreviousStepClick}
+                    >
                         Назад
                     </div>
-                    <div className={cx(styles["submit-button"], {[styles["action-button-disabled"]]: submitDisabled })}
+                    <div
+                        className={cx(styles["submit-button"], {[styles["action-button-disabled"]]: submitDisabled })}
                         data-ft-id="submit-button"
-                        onClick={this._handleSubmit}>
+                        onClick={this._handleSubmit}
+                    >
                         {submitText}
                     </div>
-                    <div className={cx(styles["next-button"], {[styles["action-button-disabled"]]: !availableNextStep })}
+                    <div
+                        className={cx(styles["next-button"], {[styles["action-button-disabled"]]: !availableNextStep })}
                         data-ft-id="next-button"
-                        onClick={this._handleNextStepClick}>
+                        onClick={this._handleNextStepClick}
+                    >
                         Далее
                     </div>
                 </div>
@@ -111,6 +117,7 @@ StepMaster.propTypes = {
     steps: PropTypes.arrayOf(PropTypes.string).isRequired,
     currentStepIndex: PropTypes.number,
     isValidCurrentStep: PropTypes.bool,
+    contentClassNames: PropTypes.string,
     classNames: PropTypes.string,
     children: CustomPropTypes.children(Step),
     onSubmitClick: PropTypes.func,
