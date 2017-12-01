@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { prepareRequestData, httpMethod } from "../../libs/axios";
+import { prepareRequestData, httpMethod } from "../../libs/axios-utils";
 
-describe("axios wrapper", () => {
+describe("axios utils", () => {
     describe("prepareRequestData", () => {
         const requestData = {
             some: "thing",
