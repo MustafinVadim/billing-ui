@@ -26,11 +26,8 @@ class Informer extends PureComponent {
                 appear={true}
                 classNames={{
                     enter: styles.enter,
-                    enterActive: styles["enter-active"],
                     appear: styles.appear,
-                    appearActive: styles["appear-active"],
-                    exit: styles.leave,
-                    exitActive: styles["leave-active"]
+                    exit: styles.leave
                 }}
                 timeout={ANIMATION_DURATION}
             >

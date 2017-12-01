@@ -5,7 +5,7 @@ $informerWidth: ($verticalPadding * 2) + $verticalSize;
 
 :local {
     .informer {
-        @include position(fixed, null null null 0);
+        @include position(fixed, 0 null null 0);
 
         z-index: 2000;
 
@@ -41,20 +41,8 @@ $informerWidth: ($verticalPadding * 2) + $verticalSize;
     }
 
     .enter,
-    .appear {
-        top: -$informerWidth;
-    }
-
-    .enter-active,
-    .appear-active {
-        top: 0;
-    }
-
+    .appear,
     .leave {
-        top: 0;
-    }
-
-    .leave-active {
         top: -$informerWidth;
     }
 }
