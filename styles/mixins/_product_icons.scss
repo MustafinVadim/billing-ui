@@ -31,7 +31,7 @@ $transparentIcons: (
     alcoreport: 0 -180px
 );
 
-//diadoc-custom, kep, kepegais, dopuc, rosreestr, smev - выглядят как transparent
+//diadoc-custom, dopuc, rosreestr - выглядят как transparent
 $filledIcons: (
     customs: -20px -460px,
     diadoc: -20px -20px,
@@ -42,12 +42,12 @@ $filledIcons: (
     kemb: -20px 0,
     focus: -20px -40px,
     fms: -20px -480px,
-    kep: 0 -300px,
-    kepegais: 0 -300px,
+    kep: -20px -300px,
+    kepegais: -20px -300px,
     dopuc: 0 -300px,
     sertum: -20px -300px,
     rosreestr: 0 -300px,
-    smev: 0 -300px,
+    smev: -20px -300px,
     egais: -20px -280px,
     edi: -20px -220px,
     zakupki: -20px -240px,
