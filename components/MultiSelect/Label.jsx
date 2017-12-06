@@ -154,6 +154,8 @@ class Label extends PureComponent {
                             ref={this._setTooltipTarget}
                             onRemove={this._handleClickRemove}
                             onMouseDown={this._handleMouseDown}
+                            data-ft-id="multiselect-chip"
+                            closeIconFtId="multiselect-close-icon"
                         >
                             {children}
                         </Chip>

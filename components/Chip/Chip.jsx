@@ -9,7 +9,7 @@ import cx from "classnames";
 
 class Chip extends PureComponent {
     render() {
-        const { className, children, iconClassName, onRemove } = this.props;
+        const { className, children, iconClassName, onRemove, closeIconFtId } = this.props;
         const fieldsToOmit = ["className", "children", "iconClassName", "onRemove", "ref", "key"];
         const spanProps = omit(this.props, fieldsToOmit);
 
@@ -23,6 +23,7 @@ class Chip extends PureComponent {
                     onClick={onRemove}
                     className={cx(styles.icon, iconClassName)}
                     type={IconTypes.Delete}
+                    data-ft-id={closeIconFtId}
                 />
             </span>
         );
@@ -32,6 +33,7 @@ class Chip extends PureComponent {
 Chip.propTypes = {
     className: PropTypes.string,
     iconClassName: PropTypes.string,
+    closeIconFtId: PropTypes.string,
 
     children: PropTypes.string,
 
