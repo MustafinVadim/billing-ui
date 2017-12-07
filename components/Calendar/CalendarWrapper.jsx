@@ -233,23 +233,24 @@ class CalendarWrapper extends PureComponent {
     changeDate(date, minDate, maxDate) {
         const { onChange, value, isNullable } = this.props;
 
-        if (isNullable && date === this._emptyDate) {
+        const dateTime = convertISOString(date || this._emptyDate);
+
+        if (isNullable && (date === this._emptyDate || !date)) {
             onChange(null, {
                 date: null,
                 isValid: true,
-                errorType: null
+                errorType: validationErrorType.unfilledDate
             });
 
             this.setState({
-                date,
+                date: dateTime,
                 isValid: true,
-                errorType: null
+                errorType: validationErrorType.unfilledDate
             });
 
             return;
         }
 
-        const dateTime = convertISOString(date || this._emptyDate);
         const { isValid, errorType } = this.validate(dateTime, minDate, maxDate);
         const dateHasChanged = !dateTime.isSame(convertISOString(value), "day");
         const validityHasChanged = this.state.isValid !== isValid;
