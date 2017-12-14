@@ -16,11 +16,11 @@ class Toggle extends PureComponent {
     };
 
     render() {
-        const { color, isChecked, isDisabled, children, className } = this.props;
+        const { color, isChecked, isDisabled, children, className, labelAttributes } = this.props;
 
         return (
             <div className={cx(styles.wrapper, className, { [styles.disabled]: isDisabled })}>
-                <label className={styles.label}>
+                <label className={styles.label} { ...labelAttributes }>
                     <input type="checkbox" className={styles.checkbox} checked={isChecked} onChange={this._handleChange} />
                     <span className={cx(styles.switch, styles[color])} />
                     <span>{children}</span>
@@ -32,10 +32,14 @@ class Toggle extends PureComponent {
 
 Toggle.propTypes = {
     className: PropTypes.string,
+    labelAttributes: PropTypes.object,
     color: PropTypes.oneOf(Object.keys(ToggleColors)),
+
     isChecked: PropTypes.bool,
     isDisabled: PropTypes.bool,
+
     onChange: PropTypes.func,
+
     children: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
 };
 
