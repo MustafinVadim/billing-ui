@@ -7,6 +7,7 @@ import isEqual from "lodash/isEqual";
 
 import Loader, { SpinnerTypes } from "../Loader";
 
+import KeyCodes from "../../helpers/KeyCodes";
 import { findContainer } from "../../helpers/NodeHelper";
 import { calcPosition, adjustPositionType } from "../Tooltip/PositionHandler";
 import { PositionTypes, TooltipTypes } from "../Tooltip";
@@ -58,15 +59,27 @@ class Popup extends PureComponent {
     }
 
     _attachEventListeners() {
+        const { closeOnEsc } = this.props;
+
         this._detachEventListeners();
 
         events.addEventListener(window, "resize", this._redraw);
         events.addEventListener(this._wrapper, "scroll", this._redraw);
+
+        if (closeOnEsc) {
+            events.addEventListener(window, "keydown", this._handleKeydown);
+        }
     }
 
     _detachEventListeners() {
+        const { closeOnEsc } = this.props;
+
         events.removeEventListener(window, "resize", this._redraw);
         events.removeEventListener(this._wrapper, "scroll", this._redraw);
+
+        if (closeOnEsc) {
+            events.removeEventListener(window, "keydown", this._handleKeydown);
+        }
     }
 
     _redraw = () => {
@@ -78,6 +91,14 @@ class Popup extends PureComponent {
             this._tryUpdatePosition();
             delete this._timer;
         }, 100);
+    };
+
+    _handleKeydown = (evt) => {
+        const { onClose } = this.props;
+
+        if (evt.keyCode === KeyCodes.esc) {
+            onClose();
+        }
     };
 
     _tryUpdatePosition() {
@@ -127,6 +148,7 @@ Popup.propTypes = {
     isOpened: PropTypes.bool,
     getTarget: PropTypes.func.isRequired,
     showCross: PropTypes.bool,
+    closeOnEsc: PropTypes.bool,
     isLoading: PropTypes.bool,
     spinnerType: PropTypes.oneOf(Object.values(SpinnerTypes)),
 
@@ -145,6 +167,7 @@ Popup.propTypes = {
 
 Popup.defaultProps = {
     isOpened: true,
+    closeOnEsc: true,
     positionType: PositionTypes.bottomCenter,
     showCross: true,
     isLoading: false,
