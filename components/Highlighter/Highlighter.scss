@@ -4,6 +4,8 @@
     .unhighlight {
         position: relative;
         z-index: 2;
+
+        line-height: $lineHeightRegular;
     }
 
     .highlight {
@@ -11,5 +13,7 @@
         z-index: 1;
 
         background-color: $bgAutocompleteHighlightColor;
+
+        line-height: $lineHeightRegular;
     }
 }
