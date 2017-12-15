@@ -40,4 +40,8 @@ Chip.propTypes = {
     onRemove: PropTypes.func
 };
 
+Chip.defaultProps = {
+    closeIconFtId: "remove-chip-icon"
+};
+
 export default Chip;
