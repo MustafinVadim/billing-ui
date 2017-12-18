@@ -10,7 +10,7 @@ import cx from "classnames";
 class Chip extends PureComponent {
     render() {
         const { className, children, iconClassName, onRemove, closeIconFtId } = this.props;
-        const fieldsToOmit = ["className", "children", "iconClassName", "onRemove", "ref", "key"];
+        const fieldsToOmit = ["className", "children", "iconClassName", "onRemove", "ref", "key", "closeIconFtId"];
         const spanProps = omit(this.props, fieldsToOmit);
 
         return (
