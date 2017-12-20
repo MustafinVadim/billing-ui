@@ -145,6 +145,11 @@ const Validation = {
         };
     },
 
+    NonNegativeInt: (value) => ({
+        isValid: (/^\d+$/).test(value),
+        error: "Введите целое число не\u00A0меньше нуля"
+    }),
+
     ArrayMaxLength: (maxLength, error = "Превышено максимальное количество элементов") => (value) => {
         return {
             isValid: !value || value.length <= maxLength,
