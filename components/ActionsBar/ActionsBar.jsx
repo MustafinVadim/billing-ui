@@ -8,7 +8,7 @@ import isEqual from "lodash/isEqual";
 
 import Button, { ButtonType } from "../Button";
 import NavigatorResolver from "../../helpers/NavigatorResolver";
-import { containerNodeSelector } from "./StickyActionBarContainer";
+import { CONTAINER_NODE_SELECTOR } from "./StickyActionBarContainer";
 import { findContainer, findContainerBySelector, getAbsoluteHeight, findScrollContainer } from "../../helpers/NodeHelper";
 
 import styles from "./ActionsBar.scss";
@@ -34,11 +34,13 @@ class ActionsBar extends PureComponent {
 
         this._scrollContainer = findScrollContainer(this._actionsBarNode);
 
-        const containerNode = findContainerBySelector(this._actionsBarNode, containerNodeSelector);
-        this._observer.observe(containerNode, {
-            childList: true,
-            subtree: true
-        });
+        const containerNode = findContainerBySelector(this._actionsBarNode, CONTAINER_NODE_SELECTOR);
+        if (containerNode) {
+            this._observer.observe(containerNode, {
+                childList: true,
+                subtree: true
+            });
+        }
 
         this._handleRender();
         events.addEventListener(window, "resize", this._handleResize);
@@ -60,7 +62,7 @@ class ActionsBar extends PureComponent {
             return;
         }
 
-        this._containerNode = findContainerBySelector(this._actionsBarNode, containerNodeSelector);
+        this._containerNode = findContainerBySelector(this._actionsBarNode, CONTAINER_NODE_SELECTOR);
         this._mainWrapperNode = this._containerNode && findContainer(this._containerNode);
 
         if (!this._containerNode) {
