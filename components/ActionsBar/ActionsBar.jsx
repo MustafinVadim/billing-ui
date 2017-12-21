@@ -24,7 +24,7 @@ class ActionsBar extends PureComponent {
             heightActionsBar: 0
         };
 
-        this._observer = new MutationObserver(debounce(this._renderStickyActionsBar.bind(this), 60));
+        this._observer = new MutationObserver(throttle(this._renderStickyActionsBar.bind(this), 60));
     }
 
     componentDidMount() {
@@ -38,6 +38,7 @@ class ActionsBar extends PureComponent {
         if (containerNode) {
             this._observer.observe(containerNode, {
                 childList: true,
+                attributes: true,
                 subtree: true
             });
         }
