@@ -1,6 +1,9 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
+import { findDOMNode } from "react-dom";
 import ReactScrollbar from "react-custom-scrollbars";
+import throttle from "lodash/throttle";
+import omit from "lodash/omit";
 
 import styles from "./Scrollbar.scss";
 import cx from "classnames";
@@ -9,11 +12,22 @@ class Scrollbar extends PureComponent {
     constructor(props) {
         super(props);
         this._scrollbar = null;
-        this._autoUpdateInterval = setInterval(this._forceUpdate, 60);
+        this._scrollbarNode = null;
+        this._observer = new MutationObserver(throttle(this._forceUpdate.bind(this), 50));
+    }
+
+    componentDidMount() {
+        if (this._scrollbar) {
+            this._observer.observe(this._scrollbarNode, {
+                childList: true,
+                attributes: true,
+                subtree: true
+            });
+        }
     }
 
     componentWillUnmount() {
-        clearInterval(this._autoUpdateInterval);
+        this._observer.disconnect();
     }
 
     getScrollbar() {
@@ -25,6 +39,12 @@ class Scrollbar extends PureComponent {
             this._scrollbar.forceUpdate();
         }
     };
+
+    _getFilteredProps(props) {
+        const fieldsToOmit = ["hideOnHoverOut", "isVisible", "containerClassName"];
+
+        return omit(props, fieldsToOmit);
+    }
 
     _renderTrackHorizontal = props => {
         const { isVisible, hideOnHoverOut } = this.props;
@@ -41,7 +61,7 @@ class Scrollbar extends PureComponent {
             }
         );
 
-        return <div { ...props } style={resetStyle} className={trackClassNames} />;
+        return <div { ...this._getFilteredProps(props) } style={resetStyle} className={trackClassNames} />;
     };
 
     _renderTrackVertical = props => {
@@ -59,7 +79,7 @@ class Scrollbar extends PureComponent {
             }
         );
 
-        return <div { ...props } style={resetStyle} className={trackClassNames} />;
+        return <div { ...this._getFilteredProps(props) } style={resetStyle} className={trackClassNames} />;
     };
 
     _renderThumbHorizontal = props => {
@@ -69,7 +89,7 @@ class Scrollbar extends PureComponent {
             width: null
         };
 
-        return <div { ...props } style={resetStyle} className={cx(styles.thumb, styles["is-horizontal"])} />;
+        return <div { ...this._getFilteredProps(props) } style={resetStyle} className={cx(styles.thumb, styles["is-horizontal"])} />;
     };
 
     _renderThumbVertical = props => {
@@ -79,11 +99,12 @@ class Scrollbar extends PureComponent {
             height: null
         };
 
-        return <div { ...props } style={resetStyle} className={cx(styles.thumb, styles["is-vertical"])} />;
+        return <div { ...this._getFilteredProps(props) } style={resetStyle} className={cx(styles.thumb, styles["is-vertical"])} />;
     };
 
     _saveScrollbarRef = el => {
-        this._scrollbar = el
+        this._scrollbar = el;
+        this._scrollbarNode = findDOMNode(el);
     };
 
     render() {
@@ -97,6 +118,7 @@ class Scrollbar extends PureComponent {
         };
 
         delete scrollbarProps.isVisible;
+        delete scrollbarProps.hideOnHoverOut;
 
         return (
             <ReactScrollbar
