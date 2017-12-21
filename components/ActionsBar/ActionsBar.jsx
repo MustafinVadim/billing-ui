@@ -1,17 +1,18 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import ReactDOM from "react-dom";
-import cx from "classnames";
-import debounce from "lodash/debounce";
 import events from "add-event-listener";
+import debounce from "lodash/debounce";
+import throttle from "lodash/throttle";
 import isEqual from "lodash/isEqual";
 
 import Button, { ButtonType } from "../Button";
 import NavigatorResolver from "../../helpers/NavigatorResolver";
 import { containerNodeSelector } from "./StickyActionBarContainer";
-import { findContainer, findContainerBySelector, getAbsoluteHeight } from "../../helpers/NodeHelper";
+import { findContainer, findContainerBySelector, getAbsoluteHeight, findScrollContainer } from "../../helpers/NodeHelper";
 
 import styles from "./ActionsBar.scss";
+import cx from "classnames";
 
 class ActionsBar extends PureComponent {
     constructor(props) {
@@ -22,16 +23,26 @@ class ActionsBar extends PureComponent {
             fixed: false,
             heightActionsBar: 0
         };
+
+        this._observer = new MutationObserver(debounce(this._renderStickyActionsBar.bind(this), 60));
     }
 
     componentDidMount() {
         this._handleResize = debounce(this._renderStickyActionsBar.bind(this), 100);
+        this._handleScroll = throttle(this._renderStickyActionsBar.bind(this), 60);
         this._handleRender = debounce(this._renderStickyActionsBar.bind(this), 50);
 
-        this._autoUpdateInterval = setInterval(this._renderStickyActionsBar.bind(this), 60);
+        this._scrollContainer = findScrollContainer(this._actionsBarNode);
+
+        const containerNode = findContainerBySelector(this._actionsBarNode, containerNodeSelector);
+        this._observer.observe(containerNode, {
+            childList: true,
+            subtree: true
+        });
 
         this._handleRender();
         events.addEventListener(window, "resize", this._handleResize);
+        events.addEventListener(this._scrollContainer, "scroll", this._handleScroll);
     }
 
     componentDidUpdate() {
@@ -40,10 +51,15 @@ class ActionsBar extends PureComponent {
 
     componentWillUnmount() {
         events.removeEventListener(window, "resize", this._handleResize);
-        clearInterval(this._autoUpdateInterval);
+        events.removeEventListener(this._scrollContainer, "scroll", this._handleScroll);
+        this._observer.disconnect();
     }
 
     _renderStickyActionsBar() {
+        if (!this.props.isSticky) {
+            return;
+        }
+
         this._containerNode = findContainerBySelector(this._actionsBarNode, containerNodeSelector);
         this._mainWrapperNode = this._containerNode && findContainer(this._containerNode);
 
@@ -144,6 +160,8 @@ ActionsBar.propTypes = {
     submitAttributes: PropTypes.object,
     cancelAttributes: PropTypes.object,
 
+    isSticky: PropTypes.bool,
+
     wrapperClassName: PropTypes.string,
     barClassName: PropTypes.string,
     contentClassName: PropTypes.string,
@@ -165,6 +183,8 @@ ActionsBar.propTypes = {
 ActionsBar.defaultProps = {
     showSubmit: true,
     showCancel: true,
+
+    isSticky: false,
 
     submitDisabled: false,
     cancelDisabled: false,
