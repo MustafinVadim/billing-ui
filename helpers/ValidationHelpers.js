@@ -157,15 +157,36 @@ const Validation = {
         }
     },
 
+    IsDigit: (error = "Значение должно быть числом") => (value) => {
+        return {
+            isValid: DIGITS_ONLY_REGEXP.test(value),
+            error
+        }
+    },
+
+    MaxCount: (maxCount, error = `Максимум — ${maxCount}`) => (value) => {
+        return {
+            isValid: value && DIGITS_ONLY_REGEXP.test(value) && value <= maxCount,
+            error
+        };
+    },
+
+    MinCount: (minCount, error = `Минимум — ${minCount}`) => (value) => {
+        return {
+            isValid: value && DIGITS_ONLY_REGEXP.test(value) && value >= minCount,
+            error
+        };
+    },
+
     Inn: (error = "Некорректный ИНН") => (value) => {
         return {
             isValid: !value
-                        || value.trim() === ""
-                        || ((value.length === LEGAL_INN_LENGTH || value.length === INDIVIDUAL_INN_LENGTH)
-                            && DIGITS_ONLY_REGEXP.test(value)
-                            && (value !== "0000000000" && value !== "000000000000")
-                            && matchInnCheckSum(value))
-                            && (value[0] + value[1] !== "00"),
+            || value.trim() === ""
+            || ((value.length === LEGAL_INN_LENGTH || value.length === INDIVIDUAL_INN_LENGTH)
+                && DIGITS_ONLY_REGEXP.test(value)
+                && (value !== "0000000000" && value !== "000000000000")
+                && matchInnCheckSum(value))
+            && (value[0] + value[1] !== "00"),
             error
         };
     },
