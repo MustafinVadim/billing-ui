@@ -4,8 +4,9 @@
 $triangleHeight: 8px;
 $triangleWidth: 2 * $triangleHeight;
 $borderWidth: 1px;
-$validationBorderWidth: 2px;
-$validationBorder: $validationBorderWidth solid $borderErrorColor;
+$borderWidth: 2px;
+$validationBorder: $borderWidth solid $borderErrorColor;
+$warningBorder: $borderWidth solid $borderWarningColor;
 $crossBorderColor: #d9d9d9;
 
 :local {
@@ -72,7 +73,19 @@ $crossBorderColor: #d9d9d9;
                 }
 
                 &:after {
-                    top: -$triangleHeight + $validationBorderWidth + 1;
+                    top: -$triangleHeight + $borderWidth + 1;
+                }
+            }
+
+            &.warning {
+                border-top: $warningBorder;
+
+                &:before {
+                    @include triangle($triangleWidth, $borderWarningColor, up);
+                }
+
+                &:after {
+                    top: -$triangleHeight + $borderWidth + 1;
                 }
             }
         }
@@ -94,6 +107,30 @@ $crossBorderColor: #d9d9d9;
                 @include triangle($triangleWidth, $bgWhiteColor, down);
 
                 bottom: -$triangleHeight + $borderWidth;
+            }
+
+            &.validation {
+                border-bottom: $validationBorder;
+
+                &:before {
+                    @include triangle($triangleWidth, $borderErrorColor, bottom);
+                }
+
+                &:after {
+                    bottom: -$triangleHeight + $borderWidth + 1;
+                }
+            }
+
+            &.warning {
+                border-bottom: $warningBorder;
+
+                &:before {
+                    @include triangle($triangleWidth, $borderWarningColor, bottom);
+                }
+
+                &:after {
+                    bottom: -$triangleHeight + $borderWidth + 1;
+                }
             }
         }
 
@@ -124,7 +161,19 @@ $crossBorderColor: #d9d9d9;
                 }
 
                 &:after {
-                    right: -$triangleHeight + $validationBorderWidth + 1;
+                    right: -$triangleHeight + $borderWidth + 1;
+                }
+            }
+
+            &.warning {
+                border-right: $warningBorder;
+
+                &:before {
+                    @include triangle($triangleWidth, $borderWarningColor, right);
+                }
+
+                &:after {
+                    right: -$triangleHeight + $borderWidth + 1;
                 }
             }
         }
@@ -156,11 +205,24 @@ $crossBorderColor: #d9d9d9;
                 }
 
                 &:after {
-                    left: -$triangleHeight + $validationBorderWidth + 1;
+                    left: -$triangleHeight + $borderWidth + 1;
+                }
+            }
+
+            &.warning {
+                border-left: $warningBorder;
+
+                &:before {
+                    @include triangle($triangleWidth, $borderWarningColor, left);
+                }
+
+                &:after {
+                    left: -$triangleHeight + $borderWidth + 1;
                 }
             }
         }
 
+        &.warning,
         &.validation {
             animation-duration: .2s;
 

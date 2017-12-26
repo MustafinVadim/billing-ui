@@ -8,9 +8,11 @@ import {
 } from "./index";
 
 export const getTooltipPositionType = (tooltipPos, positionTarget, tooltip, type, mainWrapper, positionContainer) => {
+    const stickyTooltip = type === tooltipType.validation || type === tooltipType.warning;
+
     switch (tooltipPos) {
         case "bottom": {
-            const margin = type === tooltipType.validation ? -1 : MARGIN;
+            const margin = stickyTooltip ? -1 : MARGIN;
             const tooltipBottomBorder = positionTarget.top + positionTarget.height + tooltip.offsetHeight + margin;
             const containerBottomBorder = positionContainer ? positionContainer.top + positionContainer.offsetHeight : mainWrapper.clientHeight;
 
@@ -27,7 +29,7 @@ export const getTooltipPositionType = (tooltipPos, positionTarget, tooltip, type
                 : "bottom";
         }
         case "right": {
-            const margin = type === tooltipType.validation ? ARROW_HEIGHT : MARGIN;
+            const margin = stickyTooltip ? ARROW_HEIGHT : MARGIN;
             const tooltipRightBorder = positionTarget.left + positionTarget.width + tooltip.offsetWidth + margin;
             const containerRightBorder = positionContainer ? positionContainer.left + positionContainer.offsetWidth : mainWrapper.clientWidth;
 
@@ -36,7 +38,7 @@ export const getTooltipPositionType = (tooltipPos, positionTarget, tooltip, type
                 : "left";
         }
         case "left": {
-            const margin = type === tooltipType.validation ? ARROW_HEIGHT : MARGIN;
+            const margin = stickyTooltip ? ARROW_HEIGHT : MARGIN;
             const tooltipLeftBorder = positionTarget.left - (tooltip.offsetWidth + margin);
             const containerLeftBorder = positionContainer ? positionContainer.left : 0;
 
@@ -48,6 +50,8 @@ export const getTooltipPositionType = (tooltipPos, positionTarget, tooltip, type
 };
 
 export const getArrowPositionType = (arrowPos, positionTarget, tooltip, type, mainWrapper, positionContainer) => {
+    const stickyTooltip = type === tooltipType.validation || type === tooltipType.warning;
+
     switch (arrowPos) {
         case "center": {
             const tooltipRightBorder = positionTarget.left + positionTarget.width / 2 + tooltip.offsetWidth / 2;
@@ -66,7 +70,7 @@ export const getArrowPositionType = (arrowPos, positionTarget, tooltip, type, ma
             )
         }
         case "left": {
-            const leftMargin = type === tooltipType.validation ? 0 : ARROW_LEFT_MARGIN;
+            const leftMargin = stickyTooltip ? 0 : ARROW_LEFT_MARGIN;
 
             const tooltipRightBorder = positionTarget.left - leftMargin + tooltip.offsetWidth;
             const containerRightBorder = positionContainer ? positionContainer.left + positionContainer.offsetWidth : mainWrapper.clientWidth;
@@ -76,7 +80,7 @@ export const getArrowPositionType = (arrowPos, positionTarget, tooltip, type, ma
                 : "right";
         }
         case "right": {
-            const rightMargin = type === tooltipType.validation ? 0 : ARROW_RIGHT_MARGIN;
+            const rightMargin = stickyTooltip ? 0 : ARROW_RIGHT_MARGIN;
 
             const tooltipLeftBorder = positionTarget.left + positionTarget.width - tooltip.offsetWidth + rightMargin;
             const containerLeftBorder = positionContainer ? positionContainer.left : 0;
@@ -86,7 +90,7 @@ export const getArrowPositionType = (arrowPos, positionTarget, tooltip, type, ma
                 : "left";
         }
         case "middle": {
-            const arrowPoints = type === tooltipType.validation ? positionTarget.height : positionTarget.height / 2;
+            const arrowPoints = stickyTooltip ? positionTarget.height : positionTarget.height / 2;
 
             const tooltipBottomBorder = positionTarget.top + arrowPoints + tooltip.offsetHeight / 2;
             const containerBottomBorder = positionContainer ? positionContainer.top + positionContainer.offsetHeight : mainWrapper.clientHeight;
@@ -104,7 +108,7 @@ export const getArrowPositionType = (arrowPos, positionTarget, tooltip, type, ma
             )
         }
         case "top": {
-            const arrowPoints = type === tooltipType.validation ? positionTarget.height : positionTarget.height / 2;
+            const arrowPoints = stickyTooltip ? positionTarget.height : positionTarget.height / 2;
 
             const tooltipBottomBorder = positionTarget.top + arrowPoints + tooltip.offsetHeight - ARROW_VERTICAL_MARGIN - ARROW_HEIGHT;
             const containerBottomBorder = positionContainer ? positionContainer.top + positionContainer.offsetHeight : mainWrapper.clientHeight;
@@ -114,7 +118,7 @@ export const getArrowPositionType = (arrowPos, positionTarget, tooltip, type, ma
                 : "bottom";
         }
         case "bottom": {
-            const arrowPoints = type === tooltipType.validation ? positionTarget.height : positionTarget.height / 2;
+            const arrowPoints = stickyTooltip ? positionTarget.height : positionTarget.height / 2;
 
             const tooltipTopBorder = positionTarget.top + arrowPoints - tooltip.offsetHeight + ARROW_VERTICAL_MARGIN + ARROW_HEIGHT;
             const containerTopBorder = positionContainer ? positionContainer.top : 0;

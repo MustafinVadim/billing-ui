@@ -1,5 +1,6 @@
 const type = {
     tip: "tip",
+    warning: "warning",
     validation: "validation"
 };
 

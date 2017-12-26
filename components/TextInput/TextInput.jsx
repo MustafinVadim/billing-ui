@@ -88,9 +88,11 @@ class TextInput extends PureComponent {
         const hasCounter = !!maxCounter;
         const valueLength = value.trim().length;
         const counter = maxCounter - valueLength;
+        const showWarning = tooltipType === TooltipTypes.warning && tooltipCaption;
 
         const inputClassNames = classnames(styles.input, inputClassName, {
             [styles["input-validation-error"]]: isInvalid,
+            [styles["input-warning"]]: showWarning,
             [styles.readonly]: others.readonly,
             [styles.disabled]: others.disabled,
             [styles.clearable]: clearable
@@ -122,7 +124,12 @@ class TextInput extends PureComponent {
         };
         delete inputProps.validateFunction;
 
-        const hasTooltip = ((tooltipType !== TooltipTypes.validation || isInvalid)) && !!tooltipCaption;
+        const hasTooltip
+            = ((tooltipType !== TooltipTypes.validation && tooltipType !== TooltipTypes.warning)
+                || isInvalid
+                || showWarning
+            )
+            && !!tooltipCaption;
         const ftId = others["data-ft-id"];
 
         return (
@@ -133,8 +140,8 @@ class TextInput extends PureComponent {
 
                 {!isTextArea && mask && (
                     <MaskedInput {...inputProps} mask={mask}
-                                                 maskChar={maskChar || "_"}
-                                                 alwaysShowMask={alwaysShowMask} />
+                                 maskChar={maskChar || "_"}
+                                 alwaysShowMask={alwaysShowMask} />
                 )}
 
                 {!isTextArea && !mask && (
@@ -151,7 +158,7 @@ class TextInput extends PureComponent {
                     <Tooltip
                         getTarget={() => this._input}
                         trigger={TriggerTypes.focus}
-                        { ...tooltipProperties }
+                        {...tooltipProperties}
                     >
                         {tooltipCaption}
                     </Tooltip>

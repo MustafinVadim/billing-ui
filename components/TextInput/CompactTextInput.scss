@@ -67,6 +67,15 @@
         &.clearable {
             padding-right: 30px;
         }
+
+        &.input-warning,
+        &.input-warning:focus {
+            border-bottom: 1px solid $borderWarningColor;
+            border-radius: 0;
+            outline: none;
+            outline-offset: 0;
+            box-shadow: 0 1px $borderWarningColor;
+        }
     }
 
     .label {
