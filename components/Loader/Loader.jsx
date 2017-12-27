@@ -1,6 +1,5 @@
 import { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { findDOMNode } from "react-dom";
 
 import Spinner from "./Spinner";
 import { SpinnerTypes } from "./SpinnerTypes";
