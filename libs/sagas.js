@@ -2,6 +2,7 @@ import { call, put } from "redux-saga/effects";
 import axios, { httpMethod, prepareRequestData } from "./axios";
 import Logger, { generateAjaxErrorMessage } from "../helpers/Logger";
 import Informer from "../components/Informer";
+import isEmpty from "lodash/isEmpty";
 
 export { httpMethod } from "./axios";
 
@@ -104,6 +105,13 @@ export const extractMessageFromError = (error) => {
     return DEFAULT_ERROR_MESSAGE;
 };
 
+export const extractResponseObjectFromError = (error) => {
+    if (error.response && error.response.data && error.response.data.obj) {
+        return error.response.data.obj;
+    }
+    return {};
+};
+
 export function* fetchData({
     url,
     data = null,
@@ -112,7 +120,8 @@ export function* fetchData({
     onError = null,
     requestMethod = httpMethod.post,
     additionalResponseData = null,
-    statusHandlers = {}
+    statusHandlers = {},
+    showInformer = true
 }) {
     if (onBegin) {
         yield* createPutEffects(onBegin, additionalResponseData);
@@ -138,8 +147,12 @@ export function* fetchData({
         };
     } catch (error) {
         const errorMessage = extractMessageFromError(error);
+        const errorObject = extractResponseObjectFromError(error);
 
-        Informer.showError(errorMessage);
+        if (showInformer || isEmpty(errorObject)) {
+            Informer.showError(errorMessage);
+        }
+
         Logger.error(generateAjaxErrorMessage({ url, requestMethod, data, errorMessage }));
 
         const errorHandlers = mergeHandlers(statusHandlers[error.response.status], onError);
@@ -148,6 +161,7 @@ export function* fetchData({
             const errorData = {
                 ...additionalResponseData,
                 error,
+                errorObject,
                 errorMessage
             };
             yield* createPutEffects(errorHandlers, errorData);
@@ -156,6 +170,7 @@ export function* fetchData({
         return {
             isSuccess: false,
             errorMessage,
+            errorObject,
             error
         };
     }
