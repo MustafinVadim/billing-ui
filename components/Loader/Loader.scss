@@ -27,11 +27,11 @@
         display: block;
         margin: auto;
 
+        opacity: .7;
+
         background: $bgWhiteColor;
 
         text-align: center;
-
-        opacity: .7;
 
         &.smooth {
             :global {
