@@ -76,10 +76,10 @@ class Spinner extends PureComponent {
     }
 
     render() {
-        const { type } = this.props;
+        const { type, spinnerClassName, style } = this.props;
 
         return (
-            <div className={styles.spinner}>
+            <div style={style} className={classnames(styles.spinner, spinnerClassName)}>
                 {hasSvgAnimationSupport && this._renderSpinner()}
                 {!hasSvgAnimationSupport && <SpinnerFallback type={type} />}
                 {this._renderCaption()}
@@ -91,7 +91,11 @@ class Spinner extends PureComponent {
 Spinner.propTypes = {
     caption: PropTypes.string,
     dimmed: PropTypes.bool,
-    type: PropTypes.oneOf(Object.keys(SpinnerTypes))
+    type: PropTypes.oneOf(Object.keys(SpinnerTypes)),
+    spinnerClassName: PropTypes.string,
+    style: PropTypes.shape({
+        top: PropTypes.string
+    })
 };
 
 Spinner.defaultProps = {
