@@ -9,11 +9,6 @@ import { withInit } from "./configureStoreDecorators";
 
 const __DEV__ = process.env.NODE_ENV !== "production";
 
-if (__DEV__) {
-    const reactPerf = require("react-addons-perf");
-    window.ReactPerf = reactPerf;
-}
-
 const includeDevTools = () => {
     if (__DEV__ && window && window.devToolsExtension) {
         return window.devToolsExtension();
