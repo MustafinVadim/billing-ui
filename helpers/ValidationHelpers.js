@@ -154,10 +154,14 @@ const Validation = {
         };
     },
 
-    NonNegativeInt: (value) => ({
-        isValid: (/^\d+$/).test(value),
-        error: "Введите целое число не\u00A0меньше нуля"
-    }),
+    NonNegativeInt: (error = "Введите целое число не\u00A0меньше нуля") => (value) => {
+        const INT_MAX_VALUE = 2147483647;
+
+        return {
+            isValid: (/^\d+$/).test(value) && parseInt(value, 10) <= INT_MAX_VALUE,
+            error
+        };
+    },
 
     ArrayMaxLength: (maxLength, error = "Превышено максимальное количество элементов") => (value) => {
         return {
