@@ -51,3 +51,8 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+%as-uppercase {
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
