@@ -280,3 +280,6 @@ export const getPreparedNumber = (number, prefix) => {
     return prefix + replacedNumber;
 };
 
+export const normalizeSearchString = (string) => (string || "")
+    .replace(/[^\wА-ЯЁа-яё]+/g, "")
+    .toLowerCase();

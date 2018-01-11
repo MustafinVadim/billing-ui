@@ -8,7 +8,8 @@ import {
     translite,
     switchToRusLanguage,
     switchToEngLanguage,
-    getPreparedNumber
+    getPreparedNumber,
+    normalizeSearchString
 } from "../../helpers/StringHelpers";
 
 describe("String helper", () => {
@@ -156,6 +157,18 @@ describe("String helper", () => {
         });
         it("Сохраняет православное форматирование телефончика", () => {
             expect(getPreparedNumber("8 (922)-125-26-32", prefix)).to.equal("+7 (922)-125-26-32");
+        });
+    });
+
+    describe("normalizeSearchString", () => {
+        it("should trim non-alphanumeric characters", () => {
+            expect(normalizeSearchString("hello! world")).to.equal("helloworld");
+        });
+        it("should make string lowercase", () => {
+            expect(normalizeSearchString("HELLO")).to.equal("hello");
+        });
+        it("should handle correctly cyrillic symbols", () => {
+            expect(normalizeSearchString("привет ё")).to.equal("приветё");
         });
     });
 });
