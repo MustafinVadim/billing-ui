@@ -3,6 +3,7 @@ import { PureComponent } from "react";
 import ReactDOM from "react-dom";
 import Input from "./TextInput";
 import Clear from "./Clear";
+import Icon, { IconTypes } from "../Icon";
 
 import { validate } from "../../helpers/ValidationHelpers";
 import textInputStyles from "./DefaultTextInput.scss";
@@ -29,20 +30,25 @@ class DefaultTextInput extends PureComponent {
     };
 
     render() {
-        const { styles, wrapperClassName, placeholderClassName, placeholderWrapperClassName, placeholder, value, clearable, ...inputProps } = this.props;
+        const {
+            styles, wrapperClassName, placeholderClassName, placeholderWrapperClassName, placeholder, value, clearable, iconType, ...inputProps
+        } = this.props;
 
         const wrapperClassNames = classnames(styles.wrapper, wrapperClassName);
-        const placeholderClassNames = classnames(styles.placeholder, placeholderClassName);
+        const placeholderClassNames = classnames(styles.placeholder, placeholderClassName, { [styles["with-icon"]]: !!iconType });
         const placeholderWrapperClassNames = classnames(styles["placeholder-wrapper"], placeholderWrapperClassName, {
             [styles["as-hidden"]]: value
         });
 
         return (
             <span className={wrapperClassNames}>
+                {!!iconType && <Icon type={iconType} className={styles.search} />}
                 <span className={placeholderWrapperClassNames} onClick={this.handlePlaceholderClick} onContextMenu={this.handlePlaceholderClick}>
                     <span className={placeholderClassNames}>{placeholder}</span>
                 </span>
-                <Input {...inputProps}
+                <Input
+                    {...inputProps}
+                    iconType={iconType}
                     value={value}
                     clearable={clearable}
                     styles={styles}
@@ -65,6 +71,7 @@ DefaultTextInput.propTypes = {
     onKeyDown: PropTypes.func,
     isTextArea: PropTypes.bool,
     clearable: PropTypes.bool,
+    iconType: PropTypes.oneOf(Object.values(IconTypes)),
     readonly: PropTypes.bool,
     disabled: PropTypes.bool,
     value: PropTypes.string,

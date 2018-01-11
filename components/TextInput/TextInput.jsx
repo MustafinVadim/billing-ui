@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import { PureComponent } from "react";
 import MaskedInput from "react-input-mask";
-import Tooltip, { TriggerTypes, PositionTypes, TooltipTypes } from "../Tooltip";
+import Tooltip, { PositionTypes, TooltipTypes, TriggerTypes } from "../Tooltip";
 import { validate } from "../../helpers/ValidationHelpers";
 import InputTypes from "./InputTypes";
+import { IconTypes } from "../Icon";
 import classnames from "classnames";
 
 class TextInput extends PureComponent {
@@ -69,6 +70,7 @@ class TextInput extends PureComponent {
             forceInvalid,
             maxCounter,
             inputType,
+            iconType,
             ...others
         } = this.props;
 
@@ -91,6 +93,7 @@ class TextInput extends PureComponent {
         const showWarning = tooltipType === TooltipTypes.warning && tooltipCaption;
 
         const inputClassNames = classnames(styles.input, inputClassName, {
+            [styles["with-icon"]]: !!iconType,
             [styles["input-validation-error"]]: isInvalid,
             [styles["input-warning"]]: showWarning,
             [styles.readonly]: others.readonly,
@@ -175,6 +178,7 @@ TextInput.propTypes = {
     onKeyDown: PropTypes.func,
     value: PropTypes.string,
     clearable: PropTypes.bool,
+    iconType: PropTypes.oneOf(Object.values(IconTypes)),
     readonly: PropTypes.bool,
     disabled: PropTypes.bool,
     isValid: PropTypes.bool,

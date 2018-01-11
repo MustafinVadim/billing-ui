@@ -6,7 +6,9 @@ import CompactTextInput from "./CompactTextInput";
 import CustomPropTypes from "../../helpers/CustomPropTypes";
 import TextInputType from "./TextInputType";
 import { TooltipTypes, PositionTypes } from "../Tooltip";
+import { IconTypes } from "../Icon";
 import Validation, { validate } from "../../helpers/ValidationHelpers";
+
 class TextInputWrapper extends PureComponent {
 
     _inputDom = null;
@@ -73,6 +75,7 @@ TextInputWrapper.propTypes = {
         "Use `tooltipProps: { positionType }` props instead"
     ),
 
+    iconType: PropTypes.oneOf(Object.values(IconTypes)),
     maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     maxCounter: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

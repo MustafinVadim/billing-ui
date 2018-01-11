@@ -12,6 +12,12 @@
         font-size: $fontSizeBig;
     }
 
+    .search {
+        @include position(absolute, 6px null null 2px);
+
+        color: $textSecondaryColor;
+    }
+
     .input {
         @extend %as-inline-block;
         @extend %material-input;
@@ -42,6 +48,10 @@
             outline-offset: 0;
             box-shadow: 0 1px $borderWarningColor;
         }
+
+        &.with-icon {
+            padding-left: 20px;
+        }
     }
 
     .placeholder-wrapper {
@@ -62,6 +72,10 @@
         color: $textSecondaryColor;
 
         user-select: none;
+
+        &.with-icon {
+            padding-left: 16px;
+        }
     }
 
     .clear {
