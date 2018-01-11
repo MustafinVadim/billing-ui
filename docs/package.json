@@ -33,8 +33,5 @@
   },
   "dependencies": {
     "sass-variable-loader": "^0.1.2"
-  },
-  "postcss": {
-      "parser": "postcss-scss"
   }
 }
