@@ -9,24 +9,6 @@
         position: relative;
     }
 
-    .input {
-        &.with-icon {
-            padding-left: 20px;
-        }
-    }
-
-    .placeholder {
-        &.with-icon {
-            padding-left: 16px;
-        }
-    }
-
-    .search {
-        @include position(absolute, 8px null null 2px);
-
-        color: $textSecondaryColor;
-    }
-
     .menu {
         @include position(absolute, null 0 -1px -3px);
 

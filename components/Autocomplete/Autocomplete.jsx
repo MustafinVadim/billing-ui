@@ -11,7 +11,7 @@ import TryAgain from "./TryAgain";
 import OptionsList from "./OptionsList";
 import keyCodes from "../../helpers/KeyCodes";
 
-import Icon, { IconTypes } from "../Icon";
+import { IconTypes } from "../Icon";
 import TextInput from "../TextInput";
 
 import styles from "./Autocomplete.scss";
@@ -326,12 +326,12 @@ class Autocomplete extends PureComponent {
 
         return (
             <div className={cx(styles.root, this.props.autocompleteWrapperClassName)} data-ft-id={ftId}>
-                {hasSearchIcon && <Icon type={IconTypes.Search} className={styles.search} />}
                 <TextInput {...inputProps}
                     ref={this._setTextInputNode}
-                    inputClassName={cx(styles.input, inputClassName, { [styles["with-icon"]]: hasSearchIcon })}
-                    placeholderClassName={cx(styles.placeholder, { [styles["with-icon"]]: hasSearchIcon })}
+                    inputClassName={cx(styles.input, inputClassName)}
+                    placeholderClassName={styles.placeholder}
                     isValid={isValid}
+                    iconType={hasSearchIcon ? IconTypes.Search : null}
                     tooltipCaption={tooltipErrorMessage}
                     onBlur={this._handleBlur}
                 />
