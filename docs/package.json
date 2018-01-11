@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "@storybook/addon-options": "^3.2.13",
     "@storybook/addon-actions": "^3.2.0",
     "@storybook/addon-backgrounds": "^3.0.0",
     "@storybook/addon-info": "^3.2.4",
     "@storybook/addon-knobs": "^3.2.0",
+    "@storybook/addon-options": "^3.2.13",
     "@storybook/react": "^3.2.3",
     "@storybook/storybook-deployer": "^2.0.0",
     "autoprefixer": "^6.5.1",
@@ -30,5 +30,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages"
+  },
+  "dependencies": {
+    "sass-variable-loader": "^0.1.2"
   }
 }

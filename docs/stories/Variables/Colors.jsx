@@ -10,7 +10,7 @@ class Colors extends PureComponent {
             <div className={styles.wrapper}>
                 {
                     (Object.keys(colorSettings)).map((color) => (
-                        <div className={styles["color-wrapper"]}>
+                        <div className={styles["color-wrapper"]} key={color}>
                             <div className={styles.color} style={{ background: colorSettings[color] }}></div>
                             <div className={styles.code}>{colorSettings[color]}</div>
                             <div className={styles.label}>{color}</div>

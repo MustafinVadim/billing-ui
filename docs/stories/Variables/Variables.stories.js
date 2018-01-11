@@ -3,4 +3,4 @@ import { storiesOf } from "@storybook/react";
 import Colors from "./Colors";
 
 storiesOf("Константы системы", module)
-    .addWithInfo("Цвета", () => <Colors />);
+    .add("Цвета", () => <Colors />);
