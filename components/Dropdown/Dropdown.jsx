@@ -181,15 +181,23 @@ class Dropdown extends PureComponent {
         this._caption = value && optionCaptions[value] ? optionCaptions[value] : defaultCaption;
     }
 
-    _addNodeInOptionsArray = (node) => {
+    _addNodeToOptionsArray = (node) => {
         this._availableOptions.push(node);
     }
 
     _cleanOptionsArray = () => {
-        this._availableOptions = [];
+        this._availableOptions.length = 0;
     }
 
-    getOptionsList() {
+    _addOptionRef = (node) => {
+        this._addNodeToOptionsArray(node);
+    }
+
+    _setOptionsListRef = (node) => {
+        this._optionsListNode = node;
+    }
+
+    getOptionsList = () => {
         this._cleanOptionsArray();
         const { value, styles, children, optionsClassName } = this.props;
 
@@ -200,9 +208,7 @@ class Dropdown extends PureComponent {
                     isSelected: value === option.props.value,
                     isActive: this.state.activeOption === option.props.value,
                     dataOptionId: option.props.value,
-                    optionRef: node => {
-                        this._addNodeInOptionsArray(node);
-                    },
+                    optionRef: this._addOptionRef.bind(this),
                     onClick: this.setValue,
                     onMouseOver: this.handleMouseOver
                 });
@@ -214,9 +220,7 @@ class Dropdown extends PureComponent {
 
         if (options) {
             return (
-                <div className={optionsStyles} ref={node => {
-                    this._optionsListNode = node
-                }} data-ft-id="dropdown-popup">
+                <div className={optionsStyles} ref={this._setOptionsListRef} data-ft-id="dropdown-popup">
                     {options}
                 </div>
             )
