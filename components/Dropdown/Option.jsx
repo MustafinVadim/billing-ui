@@ -4,9 +4,7 @@ import classnames from "classnames";
 import optionStyles from "./Option.scss";
 
 class Option extends PureComponent {
-    _optionNode = null;
-
-    handleClick() {
+    handleClick = () => {
         const { disabled, onClick, value, caption } = this.props;
 
         if (!disabled && onClick) {
@@ -14,7 +12,7 @@ class Option extends PureComponent {
         }
     }
 
-    handleHover() {
+    handleHover = () => {
         const { disabled, isSelected, onMouseOver, value } = this.props;
 
         if (!disabled && !isSelected && onMouseOver) {
@@ -24,7 +22,19 @@ class Option extends PureComponent {
 
     render() {
         const {
-            styles, caption, children, additionalData, wrapperClassName, captionClassName, isActive, isSelected, disabled, beforeCaption, title
+            styles,
+            caption,
+            children,
+            additionalData,
+            wrapperClassName,
+            captionClassName,
+            isActive,
+            isSelected,
+            disabled,
+            beforeCaption,
+            title,
+            optionRef,
+            dataOptionId
         } = this.props;
         const wrapperClassNames = classnames(styles.option, wrapperClassName, {
             [styles.disabled]: disabled,
@@ -34,14 +44,15 @@ class Option extends PureComponent {
         const captionClassNames = classnames(styles.caption, captionClassName);
 
         return (
-            <div className={wrapperClassNames}
-                 onClick={this.handleClick.bind(this)}
-                 onMouseOver={this.handleHover.bind(this)}
-                 title={title === undefined ? caption : title}
-                 data-ft-id="dropdown-option"
-                 ref={ node => {
-                     this._optionNode = node
-                 } }>
+            <div
+                className={wrapperClassNames}
+                onClick={this.handleClick}
+                onMouseOver={this.handleHover}
+                title={title === undefined ? caption : title}
+                data-ft-id="dropdown-option"
+                data-option-id={dataOptionId}
+                ref={optionRef}
+            >
                 {beforeCaption}
                 <div className={captionClassNames} data-ft-id="dropdown-option-caption">{children || caption}</div>
                 {additionalData && <span className={styles["additional-text"]}>{additionalData}</span>}
@@ -64,7 +75,9 @@ Option.propTypes = {
     additionalData: PropTypes.string,
     wrapperClassName: PropTypes.string,
     captionClassName: PropTypes.string,
-    styles: PropTypes.object
+    styles: PropTypes.object,
+    optionRef: PropTypes.func,
+    dataOptionId: PropTypes.string
 };
 
 Option.defaultProps = {

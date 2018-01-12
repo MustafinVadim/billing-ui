@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
-import { PureComponent, Children, cloneElement } from "react";
-import ReactDOM from "react-dom";
+import { PureComponent, Children, cloneElement, createElement, Fragment } from "react";
+import { findDOMNode } from "react-dom";
 import events from "add-event-listener";
 import classnames from "classnames";
+import findElement from "lodash/find";
 import KeyCodes from "./../../helpers/KeyCodes";
 import Icon, { IconTypes } from "./../Icon";
 import Option from "./Option.jsx";
@@ -14,6 +15,8 @@ class Dropdown extends PureComponent {
         activeOption: null,
         isOpened: false
     };
+
+    _availableOptions = [];
     _ignoreMouseOver = false;
     _optionsListNode = null;
     _ignoreTimeout = null;
@@ -74,12 +77,17 @@ class Dropdown extends PureComponent {
 
         clearTimeout(this._ignoreTimeout);
         if (this._optionsListNode && activeOption) {
-            const activeOptionNode = ReactDOM.findDOMNode(this.refs[activeOption]);
+            const activeOptionNode = findElement(
+                this._availableOptions,
+                (element) => element && element.attributes["data-option-id"].value === activeOption
+            );
 
-            this._optionsListNode.scrollTop = getScrollTopMenu(this._optionsListNode.scrollTop,
+            this._optionsListNode.scrollTop = getScrollTopMenu(
+                this._optionsListNode.scrollTop,
                 activeOptionNode.offsetTop,
                 activeOptionNode.offsetHeight,
-                this._optionsListNode.offsetHeight);
+                this._optionsListNode.offsetHeight
+            );
 
             this._ignoreTimeout = setTimeout(() => {
                 this._ignoreMouseOver = false;
@@ -99,7 +107,7 @@ class Dropdown extends PureComponent {
             return;
         }
 
-        if (this.state.isOpened && !ReactDOM.findDOMNode(this).contains(evt.target)) {
+        if (this.state.isOpened && !findDOMNode(this).contains(evt.target)) {
             this.toggleOptions(false);
         }
     };
@@ -111,13 +119,13 @@ class Dropdown extends PureComponent {
 
         const { activeOption, isOpened } = this.state;
 
-        if (!isOpened || !this.optionValues) {
+        if (!isOpened || !this._optionValues) {
             return;
         }
 
         evt.stopPropagation();
         evt.preventDefault();
-        const siblingOptions = getSiblingOptions(this.optionValues, activeOption);
+        const siblingOptions = getSiblingOptions(this._optionValues, activeOption);
 
         switch (evt.keyCode) {
             case KeyCodes.top:
@@ -163,7 +171,7 @@ class Dropdown extends PureComponent {
         const options = Children.toArray(children).filter(option => option.type === Option);
 
         const availableOptions = options.filter(option => !option.props.disabled && value !== option.props.value);
-        this.optionValues = availableOptions.map(option => option.props.value);
+        this._optionValues = availableOptions.map(option => option.props.value);
 
         const optionCaptions = options.reduce((result, option) => {
             result[option.props.value] = option.props.caption;
@@ -173,16 +181,28 @@ class Dropdown extends PureComponent {
         this._caption = value && optionCaptions[value] ? optionCaptions[value] : defaultCaption;
     }
 
+    _addNodeInOptionsArray = (node) => {
+        this._availableOptions.push(node);
+    }
+
+    _cleanOptionsArray = () => {
+        this._availableOptions = [];
+    }
+
     getOptionsList() {
+        this._cleanOptionsArray();
         const { value, styles, children, optionsClassName } = this.props;
 
         const options = Children.map(children, option => {
             if (option && option.type === Option) {
                 return cloneElement(option, {
-                    key: option.props.key || option.props.value,
+                    key: option.props.value || option.props.key,
                     isSelected: value === option.props.value,
                     isActive: this.state.activeOption === option.props.value,
-                    ref: option.props.value,
+                    dataOptionId: option.props.value,
+                    optionRef: node => {
+                        this._addNodeInOptionsArray(node);
+                    },
                     onClick: this.setValue,
                     onMouseOver: this.handleMouseOver
                 });
@@ -194,7 +214,9 @@ class Dropdown extends PureComponent {
 
         if (options) {
             return (
-                <div className={optionsStyles} ref={node => { this._optionsListNode = node }} data-ft-id="dropdown-popup">
+                <div className={optionsStyles} ref={node => {
+                    this._optionsListNode = node
+                }} data-ft-id="dropdown-popup">
                     {options}
                 </div>
             )
@@ -205,16 +227,16 @@ class Dropdown extends PureComponent {
 
     render() {
         const { value, additionalData, width, disabled, styles, className, attributes, fadeCaption, title } = this.props;
-        const wrapperClassNames = classnames(styles.wrapper, className, {"with-fade": fadeCaption});
+        const wrapperClassNames = classnames(styles.wrapper, className, { "with-fade": fadeCaption });
         const selectClassNames = classnames(styles.select, {
             [styles.disabled]: disabled,
             [styles.inactive]: !value
         });
 
         return (
-            <div className={wrapperClassNames} { ...attributes }>
+            <div className={wrapperClassNames} {...attributes}>
                 <div className={selectClassNames} onClick={this.handleClick} title={title === undefined ? this._caption : title}>
-                    <div className={styles["select-input"]} style={{"width": width}}>
+                    <div className={styles["select-input"]} style={{ "width": width }}>
                         <div className={styles.caption}>{this._caption}</div>
                         <div className={styles["additional-text"]}>{additionalData}</div>
                     </div>
