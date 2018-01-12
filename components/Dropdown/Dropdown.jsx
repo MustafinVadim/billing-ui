@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { PureComponent, Children, cloneElement, createElement, Fragment } from "react";
+import { PureComponent, Children, cloneElement } from "react";
 import { findDOMNode } from "react-dom";
 import events from "add-event-listener";
 import classnames from "classnames";
