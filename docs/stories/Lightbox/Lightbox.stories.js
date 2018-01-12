@@ -9,7 +9,7 @@ storiesOf("Lightbox", module)
             isOpened={boolean("isOpened", true)}
             width={number("width", 900)}
         >
-            <div style={{"text-align": "center", padding: "300px 0"}}>Пнивет! Я контент лайтбокса</div>
+            <div style={{"text-align": "center", padding: "300px 0"}}>Привет! Я контент лайтбокса</div>
         </Lightbox>
     ))
     .addWithInfo("middle", () => (
@@ -20,7 +20,7 @@ storiesOf("Lightbox", module)
             isOpened={boolean("isOpened", true)}
             width={number("width", 600)}
         >
-            <div style={{"text-align": "center", padding: "50px 0"}}>Пнивет! Я контент лайтбокса</div>
+            <div style={{"text-align": "center", padding: "50px 0"}}>Привет! Я контент лайтбокса</div>
         </Lightbox>
     ))
     .addWithInfo("bottom", () => (
@@ -30,6 +30,6 @@ storiesOf("Lightbox", module)
             isOpened={boolean("isOpened", true)}
             width={number("width", 900)}
         >
-            <div style={{"text-align": "center", padding: "300px 0"}}>Пнивет! Я контент лайтбокса</div>
+            <div style={{"text-align": "center", padding: "300px 0"}}>Привет! Я контент лайтбокса</div>
         </Lightbox>
     ));
